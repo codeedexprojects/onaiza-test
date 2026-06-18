@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if is_location_edit %}
+
+    <style>
+       .pincode-section-loader{
+        display: none;
+    }
+    </style>
+
+{% else %}
+
+    <style>
+       .pincode-section{
+        display: none;
+    }
+    </style>
+
+{% endif %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">Create</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" enctype="multipart/form-data" class="ajax redirect">
+                        <input type="hidden" id="hidden-pincode" data-url="{% url 'web:get_pincode_by_name' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.name.id_for_label }}">
+                                        {{ form.name.label }}
+
+                                        {% if form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.name }}
+                                </div>
+                                 <div class="form-group pincode-section-loader">
+                                     <p style="text-align: center;color: #006fe3;font-weight: bold;"></p>
+                                 </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.malayalam_name.id_for_label }}">
+                                        {{ form.malayalam_name.label }}
+
+                                        {% if form.malayalam_name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.malayalam_name }}
+                                </div>
+
+                                <div class="form-group pincode-section">
+                                    <label for="{{ form.pincode.id_for_label }}">
+                                        {{ form.pincode.label }}
+
+                                        {% if form.pincode.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.pincode }}
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block static %}
+<script>
+
+    $('#id_pincode').append($('<option>', {
+    value: 1,
+    text: {{instance.pincode}}
+}));
+    console.log("Scripti section");
+</script>
+{{ form.media }}
+{% endblock %}

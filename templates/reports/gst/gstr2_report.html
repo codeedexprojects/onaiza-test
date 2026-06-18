@@ -1,0 +1,318 @@
+{% extends 'base.html' %} {% block content %}
+<!-- Page Wrapper -->
+<div class="">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">{{title|title}}</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'app' %}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">{{title|title}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form method="get" action="">
+              <div class="row">
+                {% if is_admin %}
+                   <div class="col-md-4">
+                    <div class="form-group">
+                      <label> Warehouse </label>
+                      <select
+                        name="warehouse"
+                        id="id_warehouse"
+                        data-live-search='true'
+                        class="form-control selectpicker"
+                      >
+                        <option value="">-------------------------</option>
+                        {% for i in warehouse_instances %} {% if i.pk|stringformat:"s" == warehouse %}
+                        <option selected value="{{i.pk}}">{{i}}</option>
+                        {% else %}
+                        <option value="{{i.pk}}">{{i}}</option>
+                        {% endif %} {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                {% endif %}
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label> From Date </label>
+                    <input
+                      type="text"
+                      value="{{data.from_date}}"
+                      name="from_date"
+                      id="from_date"
+                      class="form-control date-picker-dd"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label> To Date </label>
+                    <input
+                      type="text"
+                      value="{{data.to_date}}"
+                      name="to_date"
+                      id="to_date"
+                      class="form-control date-picker-dd"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="text-right">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p style="text-align: center; font-size: 15px; margin-bottom: 30px">
+          Details of outward supplies of goods or services
+        </p>
+        <div class="table-responsive">
+          <table class="table table-striped custom-table mb-0">
+            <thead>
+              <tr>
+                <th style="width: 30px">GSTIN</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Taxable Value</th>
+                <th>Integrated Tax</th>
+                <th>Central Tax</th>
+                <th>State / UT Tax</th>
+                <th>State</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for instance in instances %}
+              <tr>
+                <td>{{ instance.gst_in }}</td>
+                <td>{{ instance.date|date:"d/m/y" }}</td>
+                <td class="amount total">{{ instance.total }}</td>
+                <td class="amount gross_amount">{{ instance.gross_amount }}</td>
+                <td class="amount igst">{{ instance.igst }}</td>
+                <td class="amount cgst">{{ instance.cgst }}</td>
+                <td class="amount sgst">{{ instance.sgst }}</td>
+                <td>{{ instance.state }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align: center">Total</td>
+                <td class="final total"></td>
+                <td class="final gross_amount"></td>
+                <td class="final igst"></td>
+                <td class="final cgst"></td>
+                <td class="final sgst"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <p style="text-align: center; font-size: 15px; margin-bottom: 30px">
+            Details of Credit Note
+          </p>
+          <table class="table table-striped custom-table mb-0">
+            <thead>
+              <tr>
+                <th style="width: 30px">GSTIN</th>
+                <th>Purchase No</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Integrated Tax</th>
+                <th>Central Tax</th>
+                <th>State / UT Tax</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for instance in returns_instances %}
+              <tr>
+                <td>{{ instance.gst_in }}</td>
+                <td>{{ instance.purchase_id }}</td>
+                <td>{{ instance.date|date:"d/m/y" }}</td>
+                <td class="return total">{{ instance.amount }}</td>
+                <td class="return igst">{{ instance.igst }}</td>
+                <td class="return cgst">{{ instance.cgst }}</td>
+                <td class="return sgst">{{ instance.sgst }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" style="text-align: center">Total</td>
+                <td class="final_return total"></td>
+                <td class="final_return igst"></td>
+                <td class="final_return cgst"></td>
+                <td class="final_return sgst"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <p style="text-align: center; font-size: 15px; margin-bottom: 30px">
+            Final Report
+          </p>
+          <table class="gstr table">
+            <thead class="thead-default">
+              <tr>
+                <th>Type</th>
+                <th data-column-id="name" data-type="numeric">Total</th>
+                <th data-column-id="name" data-type="numeric">
+                  Integrated Tax
+                </th>
+                <th data-column-id="name" data-type="numeric">Central Tax</th>
+                <th data-column-id="name" data-type="numeric">
+                  State / UT Tax
+                </th>
+              </tr>
+              <tr>
+                <td>Sale</td>
+                <td class="sale total_total">0</td>
+                <td class="sale igst">0</td>
+                <td class="sale cgst">0</td>
+                <td class="sale sgst">0</td>
+              </tr>
+              <tr>
+                <td>Sale Return</td>
+                <td class="sale_return return_total_total">0</td>
+                <td class="sale_return return_igst">0</td>
+                <td class="sale_return return_cgst">0</td>
+                <td class="sale_return return_sgst">0</td>
+              </tr>
+              <tr>
+                <th>Total</th>
+                <th class="total-2 total_total">0</th>
+                <th class="total-2 igst">0</th>
+                <th class="total-2 cgst">0</th>
+                <th class="total-2 sgst">0</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>
+<!-- /Page Wrapper -->
+{% endblock content %} {% block static %}
+<script>
+  $(document).ready(function () {
+    var total = 0;
+    var gross_amount = 0;
+    var igst = 0;
+    var cgst = 0;
+    var sgst = 0;
+    var cess = 0;
+    $(".amount.total").each(function () {
+      total += parseFloat($(this).html());
+    });
+    $(".amount.gross_amount").each(function () {
+      gross_amount += parseFloat($(this).html());
+    });
+    $(".amount.igst").each(function () {
+      igst += parseFloat($(this).html());
+    });
+    $(".amount.cgst").each(function () {
+      cgst += parseFloat($(this).html());
+    });
+    $(".amount.sgst").each(function () {
+      sgst += parseFloat($(this).html());
+    });
+    $(".amount.cess").each(function () {
+      cess += parseFloat($(this).html());
+    });
+    $(".final.total").html(Math.round(total * 100) / 100);
+    $(".final.gross_amount").html(Math.round(gross_amount * 100) / 100);
+    $(".final.igst").html(Math.round(igst * 100) / 100);
+    $(".final.cgst").html(Math.round(cgst * 100) / 100);
+    $(".final.sgst").html(Math.round(sgst * 100) / 100);
+    $(".final.cess").html(Math.round(cess * 100) / 100);
+
+    $(".sale.total_total").html(Math.round(total * 100) / 100);
+    $(".sale.igst").html(Math.round(igst * 100) / 100);
+    $(".sale.cgst").html(Math.round(cgst * 100) / 100);
+    $(".sale.sgst").html(Math.round(sgst * 100) / 100);
+    $(".sale.cess").html(Math.round(cess * 100) / 100);
+
+    var return_total = 0;
+    var return_gross_amount = 0;
+    var return_igst = 0;
+    var return_cgst = 0;
+    var return_sgst = 0;
+    var return_cess = 0;
+    $(".return.total").each(function () {
+      return_total += parseFloat($(this).html());
+    });
+    $(".return.gross_amount").each(function () {
+      return_gross_amount += parseFloat($(this).html());
+    });
+    $(".return.igst").each(function () {
+      return_igst += parseFloat($(this).html());
+    });
+    $(".return.cgst").each(function () {
+      return_cgst += parseFloat($(this).html());
+    });
+    $(".return.sgst").each(function () {
+      return_sgst += parseFloat($(this).html());
+    });
+    $(".return.cess").each(function () {
+      return_cess += parseFloat($(this).html());
+    });
+    $(".final_return.total").html(Math.round(return_total * 100) / 100);
+    $(".final_return.gross_amount").html(
+      Math.round(return_gross_amount * 100) / 100
+    );
+    $(".final_return.igst").html(Math.round(return_igst * 100) / 100);
+    $(".final_return.cgst").html(Math.round(return_cgst * 100) / 100);
+    $(".final_return.sgst").html(Math.round(return_sgst * 100) / 100);
+    $(".final_return.cess").html(Math.round(return_cess * 100) / 100);
+
+    $(".sale_return.return_total_total").html(
+      Math.round(return_total * 100) / 100
+    );
+    $(".sale_return.return_igst").html(Math.round(return_igst * 100) / 100);
+    $(".sale_return.return_cgst").html(Math.round(return_cgst * 100) / 100);
+    $(".sale_return.return_sgst").html(Math.round(return_sgst * 100) / 100);
+    $(".sale_return.return_cess").html(Math.round(return_cess * 100) / 100);
+
+    var final_total = total - return_total;
+    var final_igst = igst - return_igst;
+    var final_cgst = cgst - return_cgst;
+    var final_sgst = sgst - return_sgst;
+    var final_cess = cess - return_cess;
+
+    $(".total-2.total_total").html(Math.round(final_total * 100) / 100);
+    $(".total-2.igst").html(Math.round(final_igst * 100) / 100);
+    $(".total-2.cgst").html(Math.round(final_cgst * 100) / 100);
+    $(".total-2.sgst").html(Math.round(final_sgst * 100) / 100);
+    $(".total-2.cess").html(Math.round(final_cess * 100) / 100);
+  });
+</script>
+{% endblock %}

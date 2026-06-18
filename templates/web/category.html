@@ -1,0 +1,197 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load web_template_tags %}
+
+{% block content %}
+
+<div class="main-container">
+
+  {% if not is_search %}
+  {% if shop_instances %}
+  <section id="shops-home-page">
+    <section class="wrapper">
+      <div class="title">
+        <h3> {% trans "Shops" %}</h3>
+      </div>
+      <div class="shop-lists-container">
+        <div class="shop-cards">
+          {% for i in shop_instances %}
+          <div class="shop-item">
+            <div class="image-box">
+              {% if i.image %}
+               <img src="{{i.image.thumbnail.200x200}}" />
+              {% else %}
+               <img src="{% static 'web/images/placeholder.jpg' %}"/>
+              {% endif %}
+            </div>
+            <div class="content-box">
+              <div class="shop-name-box">
+                <h4>{% get_english_or_malayalam i.pk 'shop' language_code %}</h4>
+                <!-- <div class="rating-box">
+                    <div class="rating-icon-box">
+                      <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}" />
+                    </div>
+                   <h4>{{ i.current_rating|floatformat:"1" }} 4.5</h4>
+                </div> -->
+              </div>
+              <div class="bottom-box">
+                <div class="location-box">
+                  <div class="location-img-container">
+                    <img alt="location-icon" src="{% static 'web/images/icons/Icon material-location-on.svg' %}">
+                  </div>
+                  <h5>
+                    {% get_english_or_malayalam i.location.pk 'location' language_code %}
+                  </h5>
+                </div>
+                <a class="button" href="{% url 'web:shop' pk=i.pk %}">{% trans "Shop Now" %}</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  </section>
+  {% endif %}
+  {% endif %}
+
+  <section class="bottomCards">
+    <div class="wrapper">
+      <div class="SectionTitle">
+        <h1>{% trans "Products" %}</h1>
+      </div>
+      <div class="cards">
+        <div class="FPProductsCards boxitems">
+          {% if variants %}
+
+          {% load el_pagination_tags %}
+          {% paginate 12 variants %}
+          {% for i in variants %}
+          <div class="item">
+            <span class="wishlist" id="{{ i.pk }}">
+              <button data-id="add-to-wishlist" class="{% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ i.pk }}"
+                data-toggle="tooltip"
+                href="{% url 'web:add_to_wishlist' %}"
+                id="wish-empty"
+                style="cursor: pointer;" title="Wish List" type="button">
+                  <img
+                    data-path="{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %}"
+                    data-path-empty="{% static 'web/images/icons/wish-list-empty.svg' %}"
+                    src="{% if i.pk in wishlist_items %}{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %} {% else %} {% static 'web/images/icons/wish-list-empty.svg' %}{% endif %}"/>
+
+              </button>
+            </span>
+            <div class="item-img">
+              <a href="{% url 'web:product' pk=i.pk %}">
+                {% if i.image %}
+                <img src="{{i.image.thumbnail.200x200}}"/>
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:200px;"/>
+                {% endif %}
+              </a>
+            </div>
+            <a href="{% url 'web:product' pk=i.pk %}">
+              <h1>
+                {% get_english_or_malayalam i.pk 'product' language_code as PRODUCT %}
+                {{ PRODUCT.name }}
+              </h1>
+            </a>
+            <div class=item-bottom>
+              <div class="box">
+
+                <div class style="display: flex">
+                    <h2 style="margin-right: 10px;" class="product-mrp text-decoration-underline"><span class="rupees-symbol">₹ </span>{{i.mrp}}  /-</h2>
+                    <h2 class="product-mrp product-mrp"><span class="rupees-symbol">₹ </span>{{i.retail_price}}  /-</h2>
+                </div>
+                <span class="rating">
+                    <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}"/>
+                    <h4>{{i.current_rating|floatformat:"1"}}</h4>
+                </span>
+              </div>
+                {% if pincode_session %}
+                {% if not i.pk in is_cart %}
+
+                <div class="cart">
+                  <a class="add-to-cart-button {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ i.pk }}" data-url="" href="{% url 'web:add_to_cart' %}" data-image="{% static 'web/images/icons/cart-added-Icon.svg' %}">
+                    <img class=""  src="{% static 'web/images/icons/add-to-cart-2.svg' %}" />
+                  </a>
+                </div>
+
+                {% else %}
+                <div class="added-cart" style="background: none;">
+                  <a class=" {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ i.pk }}" data-url="" href="javascript:void(0)">
+                    <img class="" src="{% static 'web/images/icons/cart-added-Icon.svg' %}" />
+                  </a>
+                </div>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+
+          {% endif %}
+        </div>
+      </div>
+
+      {% if variants %}
+
+      <div class="pagination">
+        {% show_pages %}
+      </div>
+
+      {% else %}
+
+      <div class="empty-cards">
+        <div class="empty-box">
+          <img src="{% static 'web/images/empty-product.png' %}" alt="Image" />
+          <h4>Oops</h4>
+          <p>There's no products available here.</p>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+  {% if offer_instance %}
+
+<section id="banner">
+  <section class="wrapper">
+    <div class="container">
+        <a href="#">
+          {% if offer_instance.image %}
+            <img src="{{offer_instance.image.url}}" />
+          {% else %}
+            <img src="{% static 'web/images/placeholder.jpg' %}"/>
+          {% endif %}
+        </a>
+    </div>
+  </section>
+</section>
+
+{% endif %}
+
+</div>
+
+<script>
+        function slide(direction){
+          var container = document.getElementById('HorizondelScrollingCard');
+          scrollCompleted = 0;
+          var slideVar = setInterval(function(){
+            if(direction == 'left'){
+                container.scrollLeft -= 10;
+            } else {
+                container.scrollLeft += 10;
+            }
+            scrollCompleted += 10;
+                if(scrollCompleted >= 100){
+                    window.clearInterval(slideVar);
+                }
+            },
+          50);
+        }
+
+</script>
+
+{% endblock content %}

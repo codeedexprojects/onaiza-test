@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variant</title>
+    <style>
+        .danger{
+            background: red;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <table border=".5" >
+
+        <h3>Onaiza</h3>
+        <tr>
+            <th colspan="15" style="padding: 4px; line-height: 2">{{product}}</th>
+        </tr>
+
+        <tr style="padding: 2px; line-height: 2">
+            <th colspan="3">Brand Name</th>
+            <th colspan="3">Category</th>
+            <th colspan="3">Sub category</th>
+            <th colspan="3">Vendor</th>
+            <th colspan="3">HSN</th>
+
+        </tr>
+        <tr style="text-align: center; padding: 2px; line-height: 2">
+            <td colspan="3">{{product.brand}}</td>
+            <td colspan="3">{{product.category}}</td>
+            <td colspan="3">{{product.subcategory}}</td>
+            <td colspan="3">{{product.vendor}}</td>
+            <td colspan="3">{{product.hsn}}</td>
+        </tr>
+        <tr style="text-align: center; padding: 2px; line-height: 2">
+            <th colspan="4">Returnable Duration</th>
+            <td colspan="4">{{product.returnable_duration}}</td>
+            <th colspan="4">Cancellable Duration</th>
+            <td colspan="3">{{product.cancellable_duration}}</td>
+        </tr>
+        <tr style="text-align: center; padding: 2px; line-height: 2">
+            <th colspan="7">Total Stock</th>
+            <th colspan="8">560</th>
+        </tr>
+
+        <tr style="padding: 4px; line-height: 2">
+            <th colspan="15">Variants</th>
+        </tr>
+        <tr style="padding: 2px; line-height: 2">
+            <th>Code</th>
+            <th>Name</th>
+            <th>Warehouse</th>
+            <th>Stock</th>
+            <th>Btch No.</th>
+            <th>Units</th>
+            <th>Mfd Date</th>
+            <th>Exp. Date</th>
+            <th>Re. Price</th>
+            <th>Wh. Price</th>
+            <th>Cost</th>
+            <th>Mrp</th>
+            <th>Dis. Limit</th>
+            <th>Default</th>
+            <th>GST</th>
+        </tr>
+        {% for v in variants %}
+        <tr style="padding: 1px; line-height: 2; text-align: center">
+            <td>{{v.product_code}}</td>
+            <td>{{v.title}}</td>
+            <td>{{v.warehouse}}</td>
+            <td class="{% if v.stock <= v.low_stock_limit %} danger {% endif %}">{{v.stock}}</td>
+            <td>{{v.batch_number}}</td>
+            <td>{{v.unit}} / {{v.unit_of_measurement}}</td>
+            <td>{{v.manufacturing_date}}</td>
+            <td>{{v.expire_date}}</td>
+            <td>{{v.retail_price}}</td>
+            <td>{{v.whole_sale_price}}</td>
+            <td>{{v.cost}}</td>
+            <td>{{v.mrp}}</td>
+            <td>{{v.discount_limit}}</td>
+           <td>
+              {% if v.is_default %}
+                   Yes
+                {% else %}
+                No
+                {% endif %}
+           </td>
+            <td>
+                {% if v.gst_included %}
+                    GST Inclu.
+                {% else %}
+                No
+                {% endif %}
+
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</body>
+
+</html>

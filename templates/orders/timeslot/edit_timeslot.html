@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row">
+      <div class="col">
+        <h3 class="page-title">{{title|title}}</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+          <li class="breadcrumb-item active">{{title|title}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+
+        <div class="card-body">
+          <form action="{{url}}" class="ajax redirect" method="post">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.day.id_for_label }}">
+                    {{ form.day.label }}
+
+                    {% if form.day.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.day }}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.start_time.id_for_label }}">
+                    {{ form.start_time.label }}
+
+                    {% if form.start_time.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.start_time }}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="{{ form.end_time.id_for_label }}">
+                    {{ form.end_time.label }}
+
+                    {% if form.end_time.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.end_time }}
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <button class="btn btn-soft-primary btn-sm" type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+{% endblock %}

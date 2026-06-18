@@ -1,0 +1,292 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load web_template_tags %}
+{% block content %}
+
+{% if instances %}
+
+<div class="main-container">
+  <section class="boxitems slideritem shop-main" id="Grocery">
+    <section class="wrapper">
+      <div class="SectionTitle">
+        <h1>Near by Shops</h1>
+      </div>
+      <div id="NearByShop">
+        <div class="left-arrow">
+          <button aria-label="Previous" class="slick-prev slick-arrow" style="display: inline-block;" type="button">
+            <span class="zmdi zmdi-chevron-left"></span></button>
+        </div>
+        <div class="cards" id="slick-slider-shop-single">
+
+          {% for i in instances %}
+          <div class="item">
+            <a href="{% url 'web:shop' pk=i.pk %}" style="background-image: url({{i.image.url}});">
+              <div class="storeNameAndLocation">
+                <div class="shop-location">
+                  <h4 class="shop-name">
+                    {% get_english_or_malayalam i.pk 'shop' language_code %}
+                  </h4>
+                  <div class="loc">
+                    <span class="zmdi zmdi-pin" style="color:#fff" ></span>
+                    <p>
+                      {% get_english_or_malayalam i.location.pk 'location' language_code %}
+                    </p>
+                  </div>
+                </div>
+                <!-- <div class="StoreLocation">
+                  <span>{% get_english_or_malayalam i.pk 'shop' language_code %}</span>
+                  <div class="rate">
+                    <span class="zmdi zmdi-star"></span>
+                    <small>{% get_english_or_malayalam i.location.pk 'location' language_code %}</small>
+                  </div>
+                </div> -->
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="right-arrow">
+          <button aria-label="Next" class="slick-next slick-arrow" style="display: inline-block;" type="button">
+            <span class="zmdi zmdi-chevron-right"></span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </section>
+
+
+  <section class="FeaturedProducts">
+    <div class="wrapper">
+      <div class="SectionTitle">
+        <h1>Featured Products</h1>
+      </div>
+
+      <div class="FProductsDetailes">
+        {% if deals_of_day %}
+        <div class="SpotlightLeft">
+          <a href="#">
+            <img src="{% static 'web/images/empty-height.png' %}" alt="Image" />
+          </a>
+        </div>
+        {% endif %}
+
+        <div class="FPProductsCards boxitems">
+
+          {% for i in variants %}
+          <div class="item">
+            <span class="wishlist" id="{{ i.pk }}">
+
+                              <button data-id="add-to-wishlist" data-pk="{{ i.pk }}"
+                                      class="{% if not auth_status %}proceed_to_login {% endif %}"
+                                      data-toggle="tooltip"
+                                      href="{% url 'web:add_to_wishlist' %}"
+                                      id="wish-empty"
+                                      style="cursor: pointer;" title="Wish List" type="button">
+                                <img
+                                        data-path="{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %}"
+                                        data-path-empty="{% static 'web/images/icons/wish-list-empty.svg' %}"
+                                        src="{% if i.pk in wishlist_items %}{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %} {% else %} {% static 'web/images/icons/wish-list-empty.svg' %}{% endif %}"/>
+
+                              </button>
+                          </span>
+            <div class="item-img">
+              <a href="{% url 'web:product' pk=i.pk %}">
+                {% if i.image %}
+                <img src="{{i.image.thumbnail.200x200}}"/>
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:200px;"/>
+                {% endif %}
+              </a>
+            </div>
+            <a href="{% url 'web:product' pk=i.pk %}">
+              <h1>
+               {% get_english_or_malayalam i.pk 'product' language_code as PRODUCT %}
+                {{PRODUCT.name}}
+              </h1>
+            </a>
+            <div class=item-bottom>
+              <div class="box">
+                <div style="display: flex">
+                  <h2 ><span class="rupees-symbol">₹ </span>{{i.retail_price}}</h2>
+                  {% if i.retail_price < i.mrp%}
+                    <h2 class="text-decoration-underline" style="margin-left: 10px;">{{i.mrp}}</h2>
+                  {% endif %}
+               </div>
+                <span class="rating">
+                  <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}"/>
+                  <h4>{{i.current_rating|floatformat:"1"}}</h4>
+                </span>
+              </div>
+              {% if pincode_session %}
+              {% if not i.pk in is_cart %}
+
+              <div class="cart">
+                <a class="add-to-cart-button {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ i.pk }}" data-url="" href="{% url 'web:add_to_cart' %}" data-image="{% static 'web/images/icons/cart-added-Icon.svg' %}">
+                  <img class=""  src="{% static 'web/images/icons/add-to-cart-2.svg' %}" />
+                </a>
+              </div>
+
+              {% else %}
+              <div class="added-cart" style="background: none;">
+                <a class=" {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ i.pk }}" data-url="" href="javascript:void(0)">
+                  <img class="" src="{% static 'web/images/icons/cart-added-Icon.svg' %}" />
+                </a>
+              </div>
+              {% endif %}
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  {% if offer_instance %}
+<section id="banner">
+  <section class="wrapper">
+    <div class="container">
+        <a href="#">
+          {% if offer_instance.image %}
+                <img src="{{offer_instance.image.url}}" />
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:200px;"/>
+                {% endif %}
+
+        </a>
+    </div>
+  </section>
+</section>
+{% endif %}
+</div>
+{% else %}
+<section id="order-spotlight">
+  <section class="wrapper">
+      <div class="container">
+          <div class="img-container">
+              <img src="{% static 'web/images/icons/no_shops.svg' %}">
+          </div>
+          <p>Sorry, No shops in your location</p>
+          <div class="shop-link">
+            <a class="myPiccodePopup" href="#">Select Location</a>
+          </div>
+      </div>
+  </section>
+</section>
+{% endif %}
+
+{% endblock content %}
+{% block static %}
+<script>
+
+function shopsHomeSlick() {
+    var totalSlides = $('.view-id-faculty_carousel.view-display-id-block_1 > .view-content .views-row').length;
+        $(".shop-cards").slick({
+            autoplay: true,
+            autoplaySpeed: 3000,
+            arrows: false,
+            draggable: true,
+            infinite: true,
+            pauseOnHover: false,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            centerMode: false,
+            infinite: true,
+            dots: false,
+            nav: true,
+            responsive: [
+                {
+                    breakpoint: 1400,
+                    settings: {
+                        slidesToShow: 3,
+                    },
+                },
+                {
+                    breakpoint: 990,
+                    settings: {
+                        slidesToShow: 2,
+                    },
+                },
+                {
+                    breakpoint: 680,
+                    settings: {
+                        slidesToShow: 1,
+                    },
+                },
+            ],
+        });
+    }
+  shopsHomeSlick();
+
+   var length = $("#slick-slider-shop-single .item").length;
+    var width = $(document).width();
+
+    function MySlick1() {
+      console.log('tttttttttttttttt')
+      if (
+            (width > 320 && width <= 640 && length > 1) ||
+            (width > 640 && width <= 1280 && length > 2) ||
+            (width > 1280 && length > 3)
+        ) {
+            console.log("shib");
+            $("#slick-slider-shop-single").slick({
+                autoplay: true,
+                autoplaySpeed: 3000,
+                arrows: false,
+                draggable: true,
+                infinite: true,
+                pauseOnHover: false,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                centerMode: false,
+                infinite: true,
+                dots: false,
+                nav: true,
+                responsive: [
+                    {
+                        breakpoint: 950,
+                        settings: {
+                            slidesToShow: 2,
+                        },
+                    },
+                    {
+                        breakpoint: 640,
+                        settings: {
+                            slidesToShow: 1,
+                        },
+                    },
+                ],
+            });
+            // previous next button css
+
+        }
+    }
+    MySlick1();
+    $("#NearByShop .slick-next").click(function () {
+        $("#slick-slider-shop-single").slick("slickNext");
+    });
+    $("#NearByShop .slick-prev").click(function () {
+        $("#slick-slider-shop-single").slick("slickPrev");
+    });
+        function slide(direction){
+        var container = document.getElementById('HorizondelScrollingCard');
+        scrollCompleted = 0;
+        var slideVar = setInterval(function(){
+            if(direction == 'left'){
+                container.scrollLeft -= 10;
+            } else {
+                container.scrollLeft += 10;
+            }
+            scrollCompleted += 10;
+                if(scrollCompleted >= 100){
+                    window.clearInterval(slideVar);
+                }
+            }, 50);
+        }
+
+
+</script>
+{% endblock %}

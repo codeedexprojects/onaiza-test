@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'delivery_agent:create_delivery_agent' %}"
+                           role="button"><i class="fas fa-plus mr-2"></i>New Agent</a>
+                    </div>
+                    <!--end col-->
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'delivery_agent:delivery_agent_export'  %}"
+                           role="button"><i class="fas fa-plus mr-2"></i>Export To Excel</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="row">
+        <div class="col">
+            <h3>Filter</h3>
+            <form action="">
+                <div class="row">
+                    <div class="col-4">
+                        <select name="delivery_agent" id="" data-live-search='true'
+                                class="form-control selectpicker">
+                            {% for i in agents %}
+                            <option value="{{i.pk}}">{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <input
+                                    placeholder="From Date"
+                                    type="text"
+                                    value="{{filter_params.from_date}}"
+                                    name="start_date"
+                                    id="from_date"
+                                    class="form-control date-picker-dd"
+                                    autocomplete="off"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-group">
+                            <input
+                                    placeholder="To Date"
+                                    type="text"
+                                    value="{{filter_params.from_date}}"
+                                    name="end_date"
+                                    id="to_date"
+                                    class="form-control date-picker-dd"
+                                    autocomplete="off"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Delivery agent</th>
+                        <th>Handover warehouse name</th>
+                        <th>Amount</th>
+                        <th>Verification status</th>
+                        <th class="text-right">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% load el_pagination_tags %}
+                    {% paginate 20 instances %}
+                    {% for i in instances %}
+                    <tr>
+                        <td>{{ i.date_added }}</td>
+                        <td>{{ i.delivery_agent.name }}</td>
+                        <td>{{i.delivery_agent.warehouse}}</td>
+                        <td>{{ i.collected_amount }} ( {{i.payment_medium}} )
+                            {% if i.payment_medium == 'upi' %}
+                            <a href="{{i.image.url}}">View Screenshot</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if i.is_approved %}
+                            <span class="badge badge-success">Approved</span>
+                            {% elif i.is_declined %}
+                            <span class="badge badge-danger">Declined</span>
+                            <p class="text-grey mt-1">Declined for {{i.declined_reason}}</p>
+                            {% else %}
+                            <span class="badge badge-warning">Pending</span>
+                            {% endif %}
+                        </td>
+
+                        <td class="text-right">
+                            <a data-id="{{ offer.pk }}" class="action-button btn btn-primary remove"
+                               href="{% url 'delivery_agent:approve_hand_over' pk=i.pk %}"
+                               data-text="Are you sure want to approve this hand over ?" data-title="Are you sure?">Approve</a>
+
+                            <a data-id="{{ offer.pk }}" class="action-button btn btn-danger remove"
+                               href="{% url 'delivery_agent:decline_hand_over' pk=i.pk %}"
+                               data-text="Please specify why you want to decline the selected transaction"
+                               data-title="Decline ?">Decline</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+
+{% endblock %}

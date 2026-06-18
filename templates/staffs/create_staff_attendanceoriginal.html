@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+	<section id="content">
+        <div class="container card p-10">
+            
+			<div class="action-header palette-theme {{current_theme}} bg clearfix">
+                <div class="ah-label hidden-xs palette-White text">{{title}}</div>
+
+                <div class="ah-search">
+	            	<form method="get" action="{% url 'staffs:staff_attendances' %}">
+	                    <input name="q" type="text" placeholder="Start typing..." class="ahs-input">
+	
+	                    <i class="ah-search-close zmdi zmdi-long-arrow-left" data-ma-action="ah-search-close"></i>
+	                    <input type="submit" class="hidden" />
+	                </form>
+	            </div>
+
+                <ul class="ah-actions actions a-alt">
+                    <li>
+                        <a title="Search" data-ma-action="ah-search-open" class="ah-search-trigger" href="">
+                            <i class="zmdi zmdi-search"></i>
+                        </a>
+                    </li>
+                    {% if instance %}
+                    
+	                    {% if is_superuser or current_role in allowed_roles %}
+		                    <li>
+		                        <a title="View Staff Attendance" href="{% url 'staffs:staff_attendance' pk=instance.pk %}">
+		                            <i class="zmdi zmdi-eye"></i>
+		                        </a>
+		                    </li>
+	                    {% endif %}
+	                    {% if is_superuser or current_role in allowed_roles %}
+		                    <li>
+		                        <a title="Delete Staff Attendance" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}" data-title="Are you sure?" href="" class="action-button redirect">
+		                            <i class="zmdi zmdi-delete"></i>
+		                        </a>
+		                    </li> 
+	                    {% endif %}  
+                    {% endif %}                          
+                </ul>
+            </div>
+
+			{% if message %}
+	            <div class="alert alert-danger alert-dismissible" role="alert">
+	                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+	                {{message}}
+	            </div>
+            {% endif %}
+            
+            <form class="ajax reset {% if redirect %}redirect{% endif %}"  method="post" action="{{url}}">
+            	{% csrf_token %}
+            	<div class="row">
+            		<div class="col-sm-6">
+	            		<div class="card">
+	        				<div class="card-body card-padding">
+	                            <div class="form-group fg-line">
+                                    <label for="{{ attendance_date_form.date.id_for_label }}">
+                                    {{ attendance_date_form.date.label }}
+                                    {% if attendance_date_form.date.field.required %}
+                                        <small class="star">*</small>
+                                    {% endif %}
+
+                                    {% if attendance_date_form.date.help_text %}
+                                        <span data-original-title="Field Info" title="" data-content="{{ attendance_date_form.date.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
+                                    {% endif %}
+                                    </label>
+                                    {% if is_create_page %}
+                                        <input id="{{ attendance_date_form.date.id_for_label }}" type="text" class="required form-control date-picker"  name="{{attendance_date_form.date.html_name}}" placeholder="Enter date" value="{% now 'm-d-Y' %}">
+                                    {% else %}
+                                        <input id="{{ attendance_date_form.date.id_for_label }}" type="text" class="required form-control date-picker"  name="{{attendance_date_form.date.html_name}}" placeholder="Enter date" value="{{ attendance_date_form.date.value|date:'m-d-Y' }}">
+                                    {% endif %}
+                                    {% if attendance_date_form.date.errors %}
+                                        <label class="error">{{ attendance_date_form.date.errors.as_text }}</label>
+                                    {% endif %}
+                                </div>
+	                        </div>
+	                    </div>
+	                </div>
+
+            		<div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body card-padding add_item_container attendance_formset table-responsive ">         
+                        <table id="data-table-basic" class="table table-striped table-vmiddle">
+                            <thead>
+                                <tr>
+                                    <th>Staff</th>
+                                    <th>Present</th>
+                                    <th>Leave</th>
+                                    <th>Halfday Leave</th>
+                                    <th>Excuse Leave</th>
+                                    <th class="one"></th>
+                                </tr>   
+                            </thead>
+                            <tbody>
+                                {% for attendance in attendance_formset.forms %}
+                                    <tr class="check_items_row form_set_row">                                          
+                                        <td>
+                                            {{attendance.id}}
+                                            <span class="admission">                 
+                                                {{ attendance.staff }} 
+                                                {{attendance.staff_name}} 
+                                            </span>
+                                        </td>
+                                      
+                                        <td>
+                                            <span class="checkbox lgi-checkbox m-t-5">
+                                                <label>
+                                                    {{ attendance.is_present }}
+                                                    <i class="input-helper"></i>
+                                                </label>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="checkbox lgi-checkbox m-t-5">
+                                                <label>
+                                                    {{ attendance.is_leave }}
+                                                    <i class="input-helper"></i>
+                                                </label>
+                                            </span>
+                                        </td>
+                                         <td>
+                                            <span class="checkbox lgi-checkbox m-t-5">
+                                                <label>
+                                                    {{ attendance.is_halfday }}
+                                                    <i class="input-helper"></i>
+                                                </label>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="checkbox lgi-checkbox m-t-5">
+                                                <label>
+                                                    {{ attendance.is_excuseleave }}
+                                                    <i class="input-helper"></i>
+                                                </label>
+                                            </span>
+                                        </td>
+                                        <td class="one">{% if attendance.instance.pk %}{{ attendance.DELETE }}{% endif %}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {{ attendance_formset.management_form }}
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+	            </div>
+	            
+	            <div>
+	                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+	            </div> 
+	        </form>
+        </div>
+    </section>
+{% endblock %}
+
+
+{% block static %}
+	{% load static %}
+
+    <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+        // $(document).on('change',function(){
+        //     {% if not instance %}
+        //     	$('.attendance_item.working_hours input').val(0);
+        //     {% endif %}
+        	
+        // });
+        $(document).ready(function(){
+            $('input[type=text]').focus(function () {
+               $(this).select();
+            });
+
+            $('input[type="checkbox"]').click(function(){
+                $this = $(this);
+                var parent = $this.parents('.form_set_row');
+                var child = parent.find('input[type="checkbox"]')
+                $(child).not(this).prop('checked', false);                
+
+            });
+
+            $('.attendance_item.attendance_status select').load(function(){
+    		var $this = $(this);
+
+    		attendance_status($this);
+    	
+        	});
+
+
+            $('.attendance_item_formset table tr.form_set_row').formset({
+                prefix: '{{ attendance_item_formset.prefix }}', 
+                formCssClass: 'dynamic-formset1',
+                'added' : function (row) {
+                    row.find('.attendance_item select').selectpicker();
+                }
+            });
+
+
+        });
+
+
+        $('.attendance_item.attendance_status select').on('change' , function(){
+    		var $this = $(this);
+
+    		attendance_status($this);
+    	
+        });
+
+        function attendance_status($selector) {
+        	var $parent = $selector.parents('tr.form_set_row');
+    		
+        	var status = $selector.val();
+
+        	if (status == 'present') {
+        		$parent.find('.attendance_item.working_hours input').show();
+        		$parent.find('.attendance_item.absent_reason input').hide();
+        	}else if(status == 'absent'){
+        		$parent.find('.attendance_item.working_hours input').hide();
+        		$parent.find('.attendance_item.absent_reason input').show();
+        	}else{
+        		$parent.find('.attendance_item.working_hours input').hide();
+        		$parent.find('.attendance_item.absent_reason input').hide();
+        	}
+        }
+        
+        $('.techpe_staff select').on('change' , function(){
+    		var $this = $(this);
+    		get_staff_designation($this);
+    	
+        });
+
+        function get_staff_designation($selector) {
+        	var url = "{% url 'staffs:get_staff_designation' %}";
+        	var staff_id = $selector.val();
+        	var $parent = $selector.parents('tr.form_set_row');
+        	if(staff_id !=''){
+        		$.ajax({
+        			type : "GET",
+        			url : url,
+        			dataType : 'json',
+        			data : {
+        				id : staff_id,
+        			},
+        			success : function(data){
+        				var status = data['status'];
+        				if (status == "true"){
+
+        					var designation = data['designation'];
+        					$parent.find('.staff_designatin input').val(designation);
+        				}
+        			},
+        			error : function(data){
+
+        			}
+        		});
+        	}
+        }
+
+    </script>
+    {{ form.media }}
+    {{ attendance_formset.media }}
+{% endblock %}

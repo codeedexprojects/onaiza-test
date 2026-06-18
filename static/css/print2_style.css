@@ -1,0 +1,106 @@
+
+@font-face {
+    font-family: noto-sans;
+    src: url('../fonts/noto-sans/NotoSans_gdi.woff') format('woff'), url('../fonts/noto-sans/NotoSans_gdi.svg#icon') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/*
+* Noto Sans Bold
+*/
+
+@font-face {
+    font-family: noto-sans;
+    src: url('../fonts/noto-sans/NotoSans_Bold.woff') format('woff'), url('../fonts/noto-sans/NotoSans_Bold.svg#icon') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
+* {
+    font-size: 9px !important;
+    font-family: 'Times New Roman';
+    font-family: noto-sans;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+th,
+tr,
+table {
+    border-top: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+}
+table th,td {
+    padding: 3px 2px !important;
+}
+td.description,
+th.description {
+    width: 10px;
+    max-width: 75px;
+    text-align: left;
+}
+
+td.quantity,
+th.quantity {
+    width: 40px;
+    max-width: 40px;
+    /* word-break: break-all; */
+}
+
+td.price,
+th.price {
+    width: 40px;
+    max-width: 40px;
+    /* word-break: break-all; */
+}
+.container {
+    max-width: 300px;
+    margin: 0 auto;
+}
+.centered {
+    text-align: center;
+    align-content: center;
+}
+
+.ticket {
+    max-width: 300px;
+}
+.hidden-print {
+    display: block;
+    margin: 0 auto;
+}
+img {
+    max-width: inherit;
+    width: inherit;
+}
+.detail{
+    font-size: 12px;
+}
+
+@media print {
+    .hidden-print,
+    .hidden-print * {
+        display: none !important;
+    }
+}
+.text-center{
+    text-align: center;
+   }
+.text-left{
+ text-align: left;
+}
+.text-right{
+    text-align: right;
+}
+
+.text-uppercase{
+    text-transform: uppercase;
+}
+ .f-400{
+     font-weight: 600;
+ }

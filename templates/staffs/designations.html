@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+	<!-- Page Header -->
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="page-title-box">
+				<div class="row">
+					<div class="col">
+						<h4 class="page-title">{{title|title}}</h4>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+							<li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+							<li class="breadcrumb-item active">List</li>
+						</ol>
+					</div>
+					<!--end col-->
+					<div class="col-auto align-self-center">
+
+						<a class=" btn btn-sm btn-soft-primary" href="{% url 'staffs:create_designation' %}"
+							role="button"><i class="fas fa-plus mr-2"></i>New Designation</a>
+					</div>
+					<!--end col-->
+				</div>
+				<!--end row-->
+			</div>
+			<!--end page-title-box-->
+		</div>
+		<!--end col-->
+	</div>
+	<!-- /Page Header -->
+	<div class="table-responsive">
+		<table class="table table-striped mb-0">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Designation</th>
+					<th class="text-right">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for i in instances %}
+				<tr>
+					<td>{{ forloop.counter }}</td>
+					<td>{{ i.name }}</td>
+					<td class="text-right">
+						<a href="{% url 'staffs:designation' pk=i.pk %}"><i
+								class="las la-eye text-info font-18"></i></a>
+						<a href="{% url 'staffs:edit_designation' pk=i.pk %}"><i
+								class="las la-pen text-info font-18"></i></a>
+						<a data-id="{{ i.pk }}" class="action-button remove"
+							href="{% url 'staffs:delete_designation' pk=i.pk %}"
+							data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+								class="las la-trash-alt text-danger font-18"></i></a>
+					</td>
+				</tr>
+				{% endfor %}
+
+			</tbody>
+		</table>
+		<!--end /table-->
+	</div>
+	<!--end /tableresponsive-->
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

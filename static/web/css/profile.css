@@ -1,0 +1,640 @@
+body{
+    background-color: #f7f7f7;
+    font-family: 'Poppins', sans-serif;
+}
+#profileSinglePage.main-container{
+    width: 50%;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+.profile-Main-Container{
+    border-radius: 12px;
+    background-color: #ffff;
+}
+.profile-Main-SubContainer{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.profileTittleMainRow{
+
+}
+.profileTittleMainSubRow{
+    padding: 25px 20px;
+    color: #ff6f12;
+    border-bottom: 2px solid #eeeeee;
+    font-weight: 600;
+}
+.profileDetailsMainRow{
+   
+}
+.profileDetailsMainSubRow{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+.UserDetailsRow-Left{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.UserDetailsSubRow-Left{
+
+}
+.profileDetailsMainRow a{
+    background: #ff6f12;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    width: fit-content;
+}
+.UserDetailsSubRow-Left table{
+    text-align: left;
+}
+ table th{
+    font-size: 14px;
+    font-weight: normal;
+    color: rgb(131, 130, 130);
+}
+table td{
+    font-size: 15px;
+}
+th.main{
+    width: 105px;
+    text-align: left;
+}
+th.colon{
+    width: 12px;
+}
+.UserDetailsSubRow-Left table tr{
+   
+}
+.buttonArea-ChangePassword{
+    display: block;
+    width: 100%;
+    /* margin-top: 45px; */
+}
+.SubButtonArea-ChangePassword{
+    display: block;
+    width: 100%;
+}
+.SubButtonArea-ChangePassword button{
+    width: 65%;
+    height: 35px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    background-color: #ff6f12;
+    font-size: 13px;
+    
+}
+
+.rightprofile{
+    text-align: center;    
+}
+.UserProfileImage-Right{
+    width: 150px;
+    height: 150px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+}
+.UserProfileImage-Right img{
+    display:block;
+    width: 100%;
+}
+.UserProfileImageSub-Right{
+    display: block;
+    width: 100%;    
+    height: 100%;
+    /* margin: 4% 20% 0 20%; */
+    /* border-radius: 10px; */
+    /* background-color: thistle; */
+}
+.profileImageArea{
+  
+}
+.profileImageArea img{
+    max-width: 100%;
+    max-height: 100%;
+    
+}
+
+
+.buttonAreaRow{
+}
+.buttonAreaSubRow{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.buttonAreaSubRow .button-left{
+    display: block;
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+
+#EditProfile{
+    display: none;
+}
+#EditProfile .UserProfileImage-Center a.editPrf i{
+    color: #fff;
+    position: absolute;
+    top: 3px;
+    left: 7px;
+}
+#EditProfile .main-container-side form .updateButton {
+    background: #ff6f12;
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    width: 100%;
+    padding: 11px 0;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 16px;
+}
+#EditProfile .ContactDetails-Row input::placeholder{
+    color: #999;
+}
+#EditProfile .ContactDetails-Row input {
+    padding: 10px 20px;
+    font-size: 16px;
+    background: #fff;
+    width: 100%;
+    color: #000;
+    border-radius: 7px;
+    margin-top: 4px;
+}
+
+.buttonAreaSubRow .button-right{
+    display: block;
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+.buttonArea-EditProfile{
+    display: block;
+    /* margin-top: 17%; */
+    width: 100%;
+    height: 100%;
+}
+.SubButtonArea-EditProfile{
+    width: 100%;
+    text-align: right;
+    padding-right: 10%;
+
+}
+.SubButtonArea-EditProfile button i{
+    font-size: 16px;
+    margin-left: 6px;
+}
+.SubButtonArea-EditProfile button{
+    width: 50%;
+    height: 35px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    background-color: #ff6f12;
+    font-size: 13px;
+}
+.SubButtonArea-EditProfile button i img{
+    height: 12px;
+    width: 12px;
+}
+.UserAddress-Main-Container{
+    margin-top:10px;
+    border-radius: 12px;
+    background-color: white;
+}
+.UserAddress-Main-SubContainer{
+  
+}
+.UserAddressTittleMainRow{
+  
+}
+.UserAddressTittleMainSubRow{
+    display: block;
+    width: 100%;
+    padding: 2%;
+    color: #787878;
+    border-bottom: 2px solid #eeeeee;
+    padding: 25px 20px;
+}
+.UserAddressDetailsMainRow{
+
+}
+.UserAddressDetailsMainSubRow{
+}
+.UserAddressDetailsRow{
+  
+}
+.UserAddressDetailsSubRow{
+    padding: 20px;
+    display: flex;
+}
+.UserAddressDetailsSubRow p{
+    font-size: 14px;
+}
+.UserAddressDetailsSubRow .colorchange{
+    color: #787878;
+}
+/*
+.UserAddressDetailsSubRow table{
+    width: 100%;
+    height: 80%;
+    text-align: left;
+    table-layout: fixed;
+}
+.UserAddressDetailsSubRow table th,td{
+    vertical-align: top;
+    font-size: 14px;
+    width: 32p
+}
+.UserAddressDetailsSubRow table th.main{
+    color: #787878;
+    width: 105px;
+
+}
+.UserAddressDetailsSubRow table th.colon{
+    color: #787878;
+    width: 12px;
+}
+.UserAddressDetailsSubRow table td{
+    max-width: 100px;
+} */
+
+
+
+
+
+/* *********pincode overlay***************** */
+
+
+/* .SignMain-Container{
+    position: fixed;
+    display: none;
+    width: 32%;
+    height: 40%;
+    z-index: 2;
+    cursor: pointer;
+    margin: 13% 34%;
+    border-radius: 10px;
+    background-color: #fafafa;
+} */
+.SignSub-Container{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.SignTitleMain-Row{
+    display: block;
+    width: 100%;
+    height: 25px;
+    margin-top: 10%;
+    /* background-color: blueviolet; */
+}
+.SignTitleSub-Row{
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    color: #a5a5a5;
+}
+/* .SignInputAreaMain{
+    display: block;
+    width: 90%;
+    padding: 0 4%;
+    margin-top: 5%;
+
+} */
+.SignInputAreaSub{
+    display: block;
+    width: 100%;
+}
+.SignInputAreaSub .select{
+    width: 100%;
+    height: 40px;
+    border: none;
+    margin-bottom: 11%;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #ffff;
+    /* border: 1px solid #a5a5a5;  */
+    color: rgb(70, 70, 70);
+}
+.select {
+    position: relative;
+    margin-bottom: 15px;
+    width: 250px;
+  }
+  .select .selectBtn {
+    background: var(--bg1);
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    background: #fff;
+  }
+  .select .selectBtn:after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    right: 15px;
+    width: 6px;
+    height: 6px;
+    -webkit-transform: translateY(-50%) rotate(45deg);
+            transform: translateY(-50%) rotate(45deg);
+    border-right: 2px solid #666;
+    border-bottom: 2px solid #666;
+    transition: 0.2s ease;
+  }
+  .select .selectBtn.toggle {
+    border-radius: 3px 3px 0 0;
+  }
+  .select .selectBtn.toggle:after {
+    -webkit-transform: translateY(-50%) rotate(-135deg);
+            transform: translateY(-50%) rotate(-135deg);
+  }
+  .select .selectDropdown {
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    border-radius: 0 0 3px 3px;
+    overflow: hidden;
+    background: var(--bg1);
+    border-top: 1px solid #eee;
+    z-index: 1;
+    background: #fff;
+    -webkit-transform: scale(1, 0);
+            transform: scale(1, 0);
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
+    visibility: hidden;
+    transition: 0.2s ease;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+  }
+  .select .selectDropdown .option {
+    padding: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .select .selectDropdown .option:hover {
+    background: #f8f8f8;
+  }
+  .select .selectDropdown.toggle {
+    visibility: visible;
+    -webkit-transform: scale(1, 1);
+            transform: scale(1, 1);
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  /* Not needed */
+  
+  /* body {
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #eee;
+  } */
+
+
+
+/* .SignInputAreaSub button{
+    width: 90%;
+    height: 41px;
+    border: none;
+    float: left;
+    border-radius: 10px;
+    color: white;
+    background-color: #ff6f12;
+    margin: 5% 27%;
+    font-size: 16px;
+} */
+.SignInputAreaSub .left{
+    display: block;
+    float: left;
+    width: 50%;
+}
+.SignInputAreaSub .left button{
+    background-color: transparent;
+    color: #ff6f12;
+    border: 2px solid #ff6f12;
+}
+.SignInputAreaSub .right{
+    display: block;
+    float: left;
+    width: 50%;
+}
+.SignInputAreaSub .right button{
+    float: right;
+}
+.SignInputAreaSub .pageLink{
+    display: block;
+    font-size: 13px;
+    text-align: center;
+}
+.SignInputAreaSub .pageLink a{
+    color: #ff6f12;
+}
+
+
+/* *****************Support********************** */
+
+.Support-Row{
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.SupportPage{
+    height: 35%;
+    width: 34%;
+    /* background-color:  tomato; */
+}
+.SupportPageTitle{
+    margin-top: 7%;
+}
+
+.SupportIconsMain-Column{
+    display: block;
+    float: left;
+    width: 23%;
+    height: 52px;
+    padding: 20px 15px 15px;
+    border-radius: 5px;
+    background-color: white;
+}
+.SupportIconsSub-Column{
+    display: flex;
+    width: 25px;
+    height: 25px;
+    align-items: end;
+    margin-bottom: 15px;
+}
+.SupportIconsMain-Column:not(:last-child){
+    /* margin-right: 3%; */
+}
+.SupportIconsMain-Column img{
+    width: 100%;
+    display: block;
+}
+
+.SupportIconNameMain{
+    display: block;
+    width: 100%;
+    height: 30px;
+    /* background-color: wheat; */
+}
+.SupportIconNameSub{
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    /* background-color: wheat; */
+}
+.SupportIconsMain-Column{
+    box-shadow: 0px 4px 82px 8px rgba(0, 0, 0, 0.05);
+}
+
+#id02 .w3-section{
+    display: flex;
+    justify-content: space-between;
+}
+#id02 .w3-section .SupportIconsMain-Column a .SupportIconNameSub{
+    color:#a0a0a0;
+}
+#id02 .w3-section .SupportIconsMain-Column a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+#id02 .w3-center h3{
+    font-weight: normal;    
+}
+
+
+
+@media only screen and (max-width:900px) {
+    /* For tablets: */
+    body{
+        width: 90%;
+        padding: 5%;
+        /* background-color: #d41717; */
+        margin: 0;
+    }
+    
+    .main-Container{
+        width: 100%;
+        height: 100%;
+    }
+    .UserDetailsSubRow-Left table th{
+        font-size: 11px;
+    }
+    .UserDetailsSubRow-Left table td{
+        font-size: 12px;
+    }
+    .SignMain-Container {
+        position: fixed;
+        display: none;
+        width: 90%;
+        height: 30%;
+        margin: 13% 0;
+    }
+    @media only screen and ( orientation: landscape) {
+        /* For mobile phones: */
+        .SignMain-Container {
+            position: fixed;
+            display: none;
+            margin: 5% 20%;
+            width: 50%;
+            height: 60%;
+        }
+        .SupportIconsMain-Column{
+            padding-bottom: 14%;
+        }
+    }
+}
+@media only screen and (max-width:500px) {
+    /* For mobile phones: */
+    body{
+        width: 90%;
+        padding: 5%;
+        /* background-color: #d41717; */
+        margin: 0;
+    }
+    
+    .main-Container{
+        width: 100%;
+        height: 100%;
+    }
+    .UserDetailsSubRow-Left table th{
+        font-size: 11px;
+    }
+    .UserDetailsSubRow-Left table td{
+        font-size: 12px;
+    }
+    .SubButtonArea-EditProfile button{
+        width: 60%;
+        height: 35px;
+        border: none;
+        color: white;
+        border-radius: 10px;
+        background-color: #ff6f12;
+        font-size: 70%;
+    }
+    .SignMain-Container {
+        position: fixed;
+        display: none;
+        width: 90%;
+        height: 30%;
+        margin: 13% 0;
+    }
+    .SupportIconsMain-Column {
+        width: 34%;
+    }
+    #id02 .w3-section {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    #id02 .w3-section .SupportIconsMain-Column:last-child {
+        margin-top: 15px;
+    }
+    #id02 .w3-section .SupportIconsMain-Column:first-child {
+        margin-right: 15px;
+    }
+
+    @media only screen and ( orientation: landscape) {
+        /* For mobile phones: */
+        .SignMain-Container {
+            position: fixed;
+            display: none;
+            width: 50%;
+            height: 60%;
+        }
+        
+    }
+}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" class="ajax redirect">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.product.id_for_label }}">
+                                        {{ form.product.label }}
+
+                                        {% if form.product.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.product }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.product_variant.id_for_label }}">
+                                        {{ form.product_variant.label }}
+
+                                        {% if form.product_variant.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.product_variant }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.batch_number.id_for_label }}">
+                                        {{ form.batch_number.label }}
+
+                                        {% if form.batch_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.batch_number }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.manufacturing_date.id_for_label }}">
+                                        {{ form.manufacturing_date.label }}
+
+                                        {% if form.manufacturing_date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.manufacturing_date }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.expire_date.id_for_label }}">
+                                        {{ form.expire_date.label }}
+
+                                        {% if form.expire_date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.expire_date }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+{% endblock %}

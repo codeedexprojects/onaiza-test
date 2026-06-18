@@ -1,0 +1,122 @@
+{% extends 'base.html' %} {% block content %}
+<!-- Page Wrapper -->
+<div class="">
+    <!-- Page Content -->
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'app' %}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="get" action="">
+                            <div class="row">
+                                 {% if is_admin %}
+                                       <div class="col-md-4">
+                                        <div class="form-group">
+                                          <label> Warehouse </label>
+                                          <select
+                                            name="warehouse"
+                                            id="id_warehouse"
+                                            data-live-search='true'
+                                            class="form-control selectpicker"
+                                          >
+                                            <option value="">-------------------------</option>
+                                            {% for i in warehouse_instances %} {% if i.pk|stringformat:"s" == warehouse %}
+                                            <option selected value="{{i.pk}}">{{i}}</option>
+                                            {% else %}
+                                            <option value="{{i.pk}}">{{i}}</option>
+                                            {% endif %} {% endfor %}
+                                          </select>
+                                        </div>
+                                      </div>
+                                    {% endif %}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label> From Date </label>
+                                        <input type="text" value="{{data.from_date}}" name="from_date" id="from_date"
+                                            class="form-control date-picker-dd" autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label> To Date </label>
+                                        <input type="text" value="{{data.to_date}}" name="to_date" id="to_date"
+                                            class="form-control date-picker-dd" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p style="text-align: center; font-size: 15px; margin-bottom: 30px">
+                    Details of outward supplies of goods or services
+                </p>
+                <div class="table-responsive">
+                    <table class="gstr table">
+                        <thead class="thead-default">
+                            <tr>
+                                <th>Type</th>
+                                <th data-column-id="name" data-type="numeric">Value</th>
+                                <th data-column-id="name" data-type="numeric">Taxable Value</th>
+                                <th data-column-id="name" data-type="numeric">Integrated Tax</th>
+                                <th data-column-id="name" data-type="numeric">Central Tax</th>
+                                <th data-column-id="name" data-type="numeric">State / UT Tax</th>
+                            </tr>
+                            <tr>
+                                <td>Sale</td>
+                                <td class="total total_total">{{sale_final.total}}</td>
+                                <td class="total gross_amount">{{sale_final.gross_amount}}</td>
+                                <td class="total igst">{{sale_final.igst}}</td>
+                                <td class="total sgst">{{sale_final.cgst}}</td>
+                                <td class="total cgst">{{sale_final.sgst}}</td>
+                            </tr>
+                            <tr>
+                                <td>Purchase</td>
+                                <td class="total-1 return_total_total">{{purchase_final.total}}</td>
+                                <td class="total-1 return_taxable">{{purchase_final.gross_amount}}</td>
+                                <td class="total-1 return_igst">{{purchase_final.igst}}</td>
+                                <td class="total-1 return_cgst">{{purchase_final.cgst}}</td>
+                                <td class="total-1 return_sgst">{{purchase_final.sgst}}</td>
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                                <th class="total-2 total_total">{{total.total}}</th>
+                                <th class="total-2 taxable">{{total.gross_amount}}</th>
+                                <th class="total-2 igst">{{total.igst}}</th>
+                                <th class="total-2 cgst">{{total.cgst}}</th>
+                                <th class="total-2 sgst">{{total.sgst}}</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Content -->
+</div>
+<!-- /Page Wrapper -->
+{% endblock content %} {% block static %}
+<script>
+</script>
+{% endblock %}

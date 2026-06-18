@@ -1,0 +1,1993 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+<div class="content container-fluid">
+    <!-- Page Header -->
+
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{url}}" id="id_form" method="post" class="ajax skip_empty_row redirect">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label for="{{ form.sale_date.id_for_label }}">
+                                    {{ form.sale_date.label }}
+                                    {% if form.sale_date.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {% if is_create_page %}
+                                <input id="{{ form.sale_date.id_for_label }}" type="text" class="required form-control"
+                                    data-class="date-picker-dd" name="{{form.sale_date.html_name}}" readonly
+                                    placeholder="Enter Sale date" value="{% now 'd/m/Y' %}">
+                                {% else %}
+                                <input id="{{ form.sale_date.id_for_label }}" type="text"
+                                    class="required form-control date-picker-dd" name="{{form.sale_date.html_name}}"
+                                    placeholder="Enter sale date" value="{{ form.sale_date.value|date:'d/m/Y' }}">
+                                {% endif %}
+                                {% if form.date.errors %}
+                                <label class="error">{{ form.date.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-4 col-sm-6" style="display: block;">
+                                <label for="{{ form.sale_type.id_for_label }}">
+                                    {{ form.sale_type.label }}
+                                    {% if form.sale_type.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.sale_type }}
+                            </div>
+                            <div class="form-group col-md-4 col-sm-6" style="display: block;">
+                                <label for="{{ form.sale_prifix.id_for_label }}">
+                                    {{ form.sale_prifix.label }}
+                                    {% if form.sale_prifix.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.sale_prifix }}
+                            </div>
+                            <div class="form-group col-md-4 col-sm-6" style="display: block;">
+                                <label for="{{ form.sale_id.id_for_label }}">
+                                    {{ form.sale_id.label }}
+                                    {% if form.sale_id.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.sale_id }}
+                            </div>
+
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label for="{{ form.warehouse.id_for_label }}">
+                                    {{ form.warehouse.label }}
+                                    {% if form.warehouse.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.warehouse }}
+                            </div>
+
+                            <div class="form-group customer col-md-4 col-sm-6">
+                                <div class="d-flex justify-content-between">
+                                    <label for="{{ form.customer.id_for_label }}">
+                                        {{ form.customer.label }}
+                                        <small class="star text-danger">*</small>
+                                    </label>
+                                    <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;"
+                                        data-target="#exampleModalScrollable">Create new customer</p>
+                                </div>
+                                {{ form.customer }}
+                            </div>
+
+                            <div class="form-group col-md-4 col-sm-6 fg-line">
+                                <label for="id_balance">Balance <span class="balance_label">Debit</span></label>
+                                <input id="id_balance" data-model="" readonly="" name="balance" class=" form-control"
+                                    data-balance-type="debit">
+                            </div>
+
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label for="{{ form.shipment_date.id_for_label }}">
+                                    {{ form.shipment_date.label }}
+                                    {% if form.shipment_date.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {% if is_create_page %}
+                                <input id="{{ form.shipment_date.id_for_label }}" type="text"
+                                    class="required form-control date-picker-dd" name="{{form.shipment_date.html_name}}"
+                                    placeholder="Enter Sale date" value="{% now 'd/m/Y' %}">
+                                {% else %}
+                                <input id="{{ form.shipment_date.id_for_label }}" type="text"
+                                    class="required form-control date-picker-dd" name="{{form.shipment_date.html_name}}"
+                                    placeholder="Enter sale date" value="{{ form.shipment_date.value|date:'d/m/Y' }}">
+                                {% endif %}
+                                {% if form.date.errors %}
+                                <label class="error">{{ form.date.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label for="{{ form.customer_address.id_for_label }}">
+                                    {{ form.customer_address.label }}
+                                    {% if form.customer_address.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.customer_address }}
+                            </div>
+
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label for="{{ form.transporter.id_for_label }}">
+                                    {{ form.transporter.label }}
+                                    {% if form.transporter.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.transporter }}
+                            </div>
+
+                            <div class="form-group col-md-4 col-sm-6">
+                                <label for="{{ form.sale_category.id_for_label }}">
+                                    {{ form.sale_category.label }}
+                                    {% if form.sale_category.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.sale_category }}
+                            </div>
+
+                            <div class="col-sm-6" style="display: none;">
+                                <div class="form-group fg-line">
+                                    <label for="balance">Balance <span class="balance_label">Debit</span></label>
+                                    <input id="balance" data-model="" readonly="" name="balance" class=" form-control"
+                                        data-balance-type="debit">
+                                </div>
+                                <br>
+                            </div>
+
+                            <div class="form-group col-md-4 col-sm-6 row d-none">
+                                <div class="col-md-6" id="add_gst">
+                                    <label for="{{ form.add_gst.id_for_label }}">
+                                        {{ form.add_gst.label }}
+                                        {% if form.add_gst.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.add_gst }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card sale-item-card">
+                            <div class="table-responsive card-body add_item_container sale_item_formset">
+                                <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px;">Sl.No</th>
+                                            <th style="min-width: 140px;" data-column-id="barcode">Product code</th>
+                                            <!-- <th data-column-id="product">Product</th> -->
+                                            <th data-column-id="product">Product Variant</th>
+                                            <th data-column-id="qty">HSN Code</th>
+                                            <th data-column-id="batch">Batch</th>
+                                            <th data-column-id="current_stock">Available Stock</th>
+                                            <th data-column-id="qty">Quantity</th>
+                                            <th style="min-width: 100px;" data-column-id="category">MRP</th>
+
+                                            <th data-column-id="">SGST(%) </th>
+                                            <th data-column-id="">CGST(%) </th>
+                                            <!-- <th data-column-id="" class="product_cess">Cess(%) </th> -->
+                                            <!-- <th data-column-id="category">Min price</th> -->
+                                            <th style="min-width: 100px;" data-column-id="category"
+                                                style="width: 160px;">Selling Price</th>
+                                            <th style="min-width: 100px;" data-column-id="category">Gross Amount
+                                            </th>
+                                            <!-- <th data-column-id="category" class='hidden'>Discount Limit(%)</th> -->
+                                            <th style="min-width: 100px;" data-column-id="category">Discount</th>
+                                            <th style="min-width: 100px;" data-column-id="qty" hidden
+                                                class="cgst-amount">CGST </th>
+                                            <th style="min-width: 100px;" data-column-id="qty" hidden
+                                                class="sgst-amount">SGST </th>
+                                            <th style="min-width: 100px;" data-column-id="qty" hidden
+                                                class="igst-amount">IGST </th>
+                                            <!-- <th style="min-width: 100px;" data-column-id="cess" hidden
+                                                class="product_cess_aount">Cess </th> -->
+                                            <th style="min-width: 100px;" data-column-id="subcategory">Total</th>
+                                            <th data-column-id="subcategory">Comments</th>
+                                            <th class="one"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in sale_item_formset.forms %}
+                                        <tr class="form_set_row coloured-row">
+                                            <td class="rowIndex">
+                                                <input type="text" class="form-control" disabled
+                                                    value="{{ forloop.counter }}">
+                                            </td>
+                                            {{ item.id }}
+                                            <td>
+                                                <span class="sale_item_barcode p-relative">
+                                                    <input type="text" name="barcode" class="form-control">
+                                                </span>
+                                            </td>
+                                            <!-- <td>
+                                                {{ item.id }}
+                                                <span data-value="{% if is_edit %}{{ item.product.value }}{% endif %}"
+                                                    class="sale_item  product_price p-relative">
+                                                    {{ item.product }}
+                                                </span>
+                                            </td> -->
+                                            <td>
+                                                <span
+                                                    data-value="{% if is_edit %}{{ item.product_variant.value }}{% endif %}"
+                                                    class="sale_item  product_variant p-relative">
+                                                    {{ item.product_variant }}
+                                                </span>
+                                            </td>
+                                            <td class="hsn_code">
+                                                <span class="order_request_qty check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <td class="batch">
+                                                <span data-value="{% if is_edit %}{{ item.batch.value }}{% endif %}"
+                                                    class="batch">
+                                                    {{ item.batch }}
+                                                </span>
+                                            </td>
+
+                                            <td class="current_stock" style="width:2.5cm">
+                                                <span class="current_stock check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+                                            <td class="purchase_quantity"
+                                                data-value="{% if is_edit %}{{ item.quantity.value }}{% endif %}">
+                                                <span class="order_request_qty">
+                                                    {{ item.quantity }}
+                                                </span>
+                                            </td>
+
+                                            <td class="maximum_amount_price"
+                                                data-value="{% if is_edit %}{{ item.mrp.value }}{% endif %}">
+                                                <span class=" check_empty p-relative">
+                                                    {{ item.mrp }}
+                                                </span>
+                                            </td>
+
+                                            <td class="sgst">
+                                                <span class="order_request_qty check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <td class="cgst">
+                                                <span class="check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <!-- <td class="product_cess">
+                                                <span class="order_request_qty check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td> -->
+
+                                            <td class="minimum_amount" style="display: none;">
+                                                <span class="minimum_amount check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+
+                                            <td class="purchase_amount value"
+                                                data-value="{% if is_edit %}{{ item.amount.value }}{% endif %}">
+                                                <span class="">
+                                                    {{ item.amount }}
+                                                </span>
+                                            </td>
+                                            <td class="simple_total">
+                                                <span class="discount_limit check_empty p-relative">
+                                                    <input type="hidden" class="form-control" readonly value="" />
+                                                </span>
+                                                <span class="simple_total check_empty p-relative">
+                                                    <input type="text" class="form-control" readonly value="" />
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <!-- {% if is_edit == "True" %}
+                                                    <span>
+                                                        {{ item.discount_rate }}
+                                                    </span>
+                                                    {% else %} -->
+                                                <span class="discount_sale_rate">
+                                                    {{ item.discount_rate }}
+                                                </span>
+                                                <span class="mrp-price"
+                                                    data-value="{% if is_edit %}{{ item.discount.value }}{% endif %}">
+                                                    {{ item.discount }}
+                                                    <!-- <input type="text" class="form-control" readonly value="0" /> -->
+                                                </span>
+                                                <!-- {% endif %} -->
+                                            </td>
+
+                                            <!-- <td class="net_rate">
+                                                    <span class="net_rate">
+                                                        <input type="text" class="form-control" readonly value="" />
+                                                    </span>
+                                                </td> -->
+                                            <td hidden class="cgst-amount">
+                                                <span class="order_request_qty check_empty p-relative">
+                                                    <input type="text" class="form-control" readonly value="" name />
+                                                </span>
+                                            </td>
+                                            <td hidden class="sgst-amount">
+                                                <span class="order_request_qty check_empty p-relative">
+                                                    <input type="text" class="form-control" readonly value="" />
+                                                </span>
+                                            </td>
+                                            <td hidden class="igst-amount">
+                                                <span class="order_request_qty check_empty p-relative">
+                                                    <input type="text" class="form-control" readonly value="" />
+                                                </span>
+                                            </td>
+                                            <td hidden class="cess-amount">
+                                                <span class="order_request_qty check_empty p-relative">
+                                                    <input type="text" class="form-control" readonly value="" />
+                                                </span>
+                                            </td>
+                                            <td class="purchase_item_total">
+                                                {% if is_edit != true %}
+                                                <span class="purchase_item_total check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled
+                                                        value="{{item.instance.total}}" style="width:3cm" />
+                                                </span>
+                                                {% else %}
+                                                <span class="purchase_item_total check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled value="0"
+                                                        style="width:3cm" />
+                                                </span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="">
+                                                <span class="">
+                                                    {{ item.comments }}
+                                                </span>
+                                            </td>
+                                            <td class="delete">{% if item.instance.pk %}{{ item.DELETE }}{% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    {{ sale_item_formset.management_form }}
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.subtotal.id_for_label }}">
+                                    {{ form.subtotal.label }}
+                                    {% if form.subtotal.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.subtotal }}
+                            </div>
+                            <div class="form-group col-md-4 discount_rate">
+                                <label for="{{ form.discount_rate.id_for_label }}">
+                                    {{ form.discount_rate.label }}
+                                    {% if form.discount_rate.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.discount_rate }}
+                            </div>
+                            <div class="form-group col-md-4 discount_amount">
+                                <label for="{{ form.discount.id_for_label }}">
+                                    {{ form.discount.label }}
+                                    {% if form.discount.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.discount }}
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.round_off.id_for_label }}">
+                                    {{ form.round_off.label }}
+                                    {% if form.round_off.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.round_off }}
+                            </div>
+
+
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.total.id_for_label }}">
+                                    {{ form.total.label }}
+                                    {% if form.total.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.total }}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="id_cust_point">Current Privilege Point</label>
+                                <input type="text" id='id_cust_point' class="form-control" readonly />
+                            </div>
+
+                            <div class="form-group col-md-3 d-flex align-items-center justify-content-around">
+                                <label class="mb-0" for="{{ form.use_privilege_point.id_for_label }}">
+                                    {{ form.use_privilege_point.label }}
+                                    {% if form.use_privilege_point.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.use_privilege_point }}
+                            </div>
+
+                            <div class="form-group col-md-3 privilege_point_amnt">
+                                <label for="{{ form.privilege_point_used.id_for_label }}">
+                                    {{ form.privilege_point_used.label }}
+                                    {% if form.privilege_point_used.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.privilege_point_used }}
+                            </div>
+
+                            <div class="form-group col-md-3 privilege_point_used">
+                                <label for="{{ form.privilege_point_amnt.id_for_label }}">
+                                    {{ form.privilege_point_amnt.label }}
+                                    {% if form.privilege_point_amnt.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.privilege_point_amnt }}
+                                <input type="hidden" id='id_minimum_amount' class="form-control" />
+                                <input type="hidden" id='id_value_of_point' class="form-control" />
+                            </div>
+
+                            <!-- <div class="form-group col-md-3">
+                                <label for="id_total_outstanding">Total Outstanding</label>
+                                <input type="text" id='id_total_outstanding' class="form-control" readonly />
+
+                            </div> -->
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.total_outstanding.id_for_label }}">
+                                    {{ form.total_outstanding.label }}
+                                    {% if form.total_outstanding.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.total_outstanding }}
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.paid.id_for_label }}">
+                                    {{ form.paid.label }}
+                                    {% if form.paid.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.paid }}
+                            </div>
+
+                        </div>
+                        <div class="voucher-row row">
+                            <div class="col-sm-4 transfer_type">
+                                <div class="form-group transfer_type">
+                                    <label for="{{ voucher_form.transfer_type.id_for_label }}">
+                                        {{ voucher_form.transfer_type.label }}
+                                        {% if voucher_form.transfer_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.transfer_type }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4 bank">
+                                <div class="form-group bank">
+                                    <label for="{{ voucher_form.bank.id_for_label }}">
+                                        {{ voucher_form.bank.label }}
+                                        {% if voucher_form.bank.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.bank }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4 cheque">
+                                <div class="form-group cheque_number">
+                                    <label for="{{ voucher_form.cheque_number.id_for_label }}">
+                                        {{ voucher_form.cheque_number.label }}
+                                        {% if voucher_form.cheque_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.cheque_number }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4 cheque">
+                                <div class="form-group cheque_date">
+                                    <label for="{{ voucher_form.cheque_date.id_for_label }}">
+                                        {{ voucher_form.cheque_date.label }}
+                                        {% if voucher_form.cheque_date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.cheque_date }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4 transaction">
+                                <div class="form-group transfer_number">
+                                    <label for="{{ voucher_form.transfer_number.id_for_label }}">
+                                        {{ voucher_form.transfer_number.label }}
+                                        {% if voucher_form.transfer_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.transfer_number }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4 transaction">
+                                <div class="form-group transfer_date">
+                                    <label for="{{ voucher_form.transfer_date.id_for_label }}">
+                                        {{ voucher_form.transfer_date.label }}
+                                        {% if voucher_form.transfer_date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.transfer_date }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4 draft">
+                                <div class="form-group draft_number">
+                                    <label for="{{ voucher_form.draft_number.id_for_label }}">
+                                        {{ voucher_form.draft_number.label }}
+                                        {% if voucher_form.draft_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.draft_number }}
+                                </div>
+                            </div>
+                            <div class="col-sm-4 draft">
+                                <div class="form-group draft_date">
+                                    <label for="{{ voucher_form.draft_date.id_for_label }}">
+                                        {{ voucher_form.draft_date.label }}
+                                        {% if voucher_form.draft_date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.draft_date }}
+                                </div>
+                            </div>
+                            <!-- <div class="col-sm-4 bank">
+                                <div class="form-group has_transferred">
+                                    <label for="{{ voucher_form.has_transferred.id_for_label }}">
+                                        {{ voucher_form.has_transferred.label }}
+                                        {% if voucher_form.has_transferred.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ voucher_form.has_transferred }}
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="text-right">
+                            <input type="hidden" class="form-control" name='referer_url' value="{{ referer_url }}" />
+
+                            <button type="submit" class="submit-button btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- customer modal start -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Create Customer
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="address-form ajax reset form " method="post"
+                            action="{% url 'sales:customer_from_create' %}">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="{{ customer_form.name.id_for_label }}">
+                                        {{ customer_form.name.label }}
+
+                                        {% if customer_form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.name }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.address.id_for_label }}">
+                                        {{ customer_form.address.label }}
+
+                                        {% if customer_form.address.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.address }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.phone.id_for_label }}">
+                                        {{ customer_form.phone.label }}
+
+                                        {% if customer_form.phone.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.phone }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ customer_form.email.id_for_label }}">
+                                        {{ customer_form.email.label }}
+
+                                        {% if customer_form.email.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.email }}
+                                </div>
+                                <!-- == -->
+                                <div class="form-group">
+                                    <label for="{{ customer_form.gst_number.id_for_label }}">
+                                        {{ customer_form.gst_number.label }}
+
+                                        {% if customer_form.gst_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.gst_number }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ customer_form.customer_type.id_for_label }}">
+                                        {{ customer_form.customer_type.label }}
+
+                                        {% if customer_form.customer_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.customer_type }}
+                                </div>
+                                <!-- == -->
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.opening_balance.id_for_label }}">
+                                        {{ customer_form.opening_balance.label }}
+
+                                        {% if customer_form.state.opening_balanceeld.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.opening_balance }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.opening_type.id_for_label }}">
+                                        {{ customer_form.opening_type.label }}
+
+                                        {% if customer_form.opening_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.opening_type }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.district.id_for_label }}">
+                                        {{ customer_form.district.label }}
+
+                                        {% if customer_form.district.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.district }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.state.id_for_label }}">
+                                        {{ customer_form.state.label }}
+
+                                        {% if customer_form.state.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.state }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ customer_form.country.id_for_label }}">
+                                        {{ customer_form.country.label }}
+
+                                        {% if customer_form.country.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ customer_form.country }}
+                                </div>
+
+                            </div>
+
+                            <div class="text-right">
+                                <input type="hidden" class="form-control" name='referer_url'
+                                    value="{{ referer_url }}" />
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                            </div>
+                        </form>
+                        <!-- <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<!-- customer modal end -->
+
+<style>
+    .privilege_point_amnt {
+
+        display: none;
+    }
+
+    .privilege_point_used {
+        display: none;
+    }
+
+    .form_set_row td input {
+        min-width: 100px;
+    }
+
+    table .select2-container--default .select2-selection--single {
+        height: 43px;
+    }
+
+    .coloured-row td.batch {
+        background-color: #f3c9c9;
+    }
+
+    @media (max-width: 1024px) {
+        .page-wrapper {
+            margin: 0;
+            width: 100% !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .col-sm-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+    }
+</style>
+{% endblock %}
+{% block static %}
+{% load static %}
+<!-- {% if is_edit %}
+<script>
+    $(document).ready(function () {
+        $('tr.form_set_row .discount_sale_rate input').each(function () {
+            rate = $(this).attr('value');
+            $this = $(this);
+            $this.find('.purchase_item_total input').val(total);
+        });
+    })
+</script>
+{% endif %} -->
+<style>
+    #modal {
+        position: absolute;
+        width: 100%;
+        top: 10px;
+        left: -130px;
+        height: max-content;
+    }
+
+    #modal>div.card {
+        width: 60%;
+        padding: 30px 50px;
+        margin: 0 auto;
+    }
+
+    #modal div.card li.place-order {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+    }
+
+    #modal div.card li.place-order div.place-order-link .cancel {
+        background-color: #F69746;
+        border: 1px solid #F69746;
+        color: #fff;
+        border-radius: 5px;
+        padding: .375rem .75rem;
+    }
+
+    tr.form_set_row td input {
+        min-width: 70px;
+    }
+
+    .table tr.form_set_row td,
+    .table tr.form_set_row th {
+        padding: .75rem 0.2rem;
+    }
+</style>
+
+{% if is_edit %}
+<style>
+    .popup-box {
+        width: 100px;
+        height: 100px;
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        z-index: 1000;
+    }
+
+    .popup-bg {
+        background: rgba(0, 0, 0, 0.8);
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999;
+    }
+
+    .loader {
+        z-index: 120000;
+        border: 5px solid #f3f3f3;
+        /* Light grey */
+        border-top: 5px solid #3498db;
+        /* Blue */
+        border-radius: 50%;
+        width: 90px;
+        height: 90px;
+        position: fixed;
+        top: 50%;
+        bottom: 50%;
+        right: 50%;
+        left: 50%;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+{% endif %}
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    // $(document).ready(function() {
+    //   $(window).keydown(function(event){
+    //     if(event.keyCode == 13) {
+    //     $("#id_form").submit(function(){
+    //             return false;
+    //         });
+    //     }
+    //   });
+    // });
+
+    // {% if is_edit %}
+    function show_loader() {
+        if ($('body div.loader')['length'] == 0)
+            $('body').append('<div class="loader"></div><span class="popup-bg"></span>');
+    }
+
+    function remove_popup(from_sale = false) {
+        if (from_sale) {
+            var last_row_product = $('tr.form_set_row').last().find('.product_price select').val();
+            var last_row_batch = $('tr.form_set_row').last().find('td .batch').attr('data-value');
+
+            if (!last_row_product)
+                $('.popup-box, .loader, .popup-bg').remove();
+            else if (!last_row_batch)
+                $('.popup-box, .loader, .popup-bg').remove();
+        } else {
+            $('.popup-box, .loader, .popup-bg').remove();
+        }
+    }
+    // {% else %}
+    $(document).ready(function() {
+        $('#id_sale_type').change();
+    });
+    // {% endif %}
+
+    function RowIndexUpdate() {
+        $('table tr.form_set_row').each(function () {
+            var row = $(this);
+            row.find('.rowIndex input').val(row[0]['rowIndex']);
+        })
+    }
+    $('.sale_item_formset table tr.form_set_row').formset({
+        prefix: '{{ sale_item_formset.prefix }}',
+        formCssClass: 'dynamic-formset1',
+        'added': function (row) {
+            row.find('.selectpicker').selectpicker();
+            row.find('.purchase_quantity input').val()
+            row.find('.discount_sale_rate input').val(0.0)
+            gst_fields();
+
+            row.find('.rowIndex input').val(row[0]['rowIndex'])
+
+            // {% if is_edit %}
+            row.find('.product_price select option[value=""]').attr('selected', '');
+            row.find('.product_variant select option[value=""]').attr('selected', '');
+            row.find('.batch select option[value=""]').attr('selected', '');
+            row.find('.product_price').attr('data-value', '');
+            row.find('td.batch .batch').attr('data-value', '');
+            row.find('.product_variant').attr('data-value', '');
+            row.find('.purchase_quantity').attr('data-value', '');
+            row.find('.mrp-price').attr('data-value', '');
+            row.find('.purchase_amount.value').attr('data-value', '');
+            row.find('.maximum_amount_price').attr('data-value', '');
+            // {% endif %}
+
+            let row_batch = row.find('td .batch select')
+            let batch_select = `<select name="${row_batch.attr('name')}" id="${row_batch.attr('id')}" class="form-control selectpicker" data-live-search=true></select>`
+            row.find('td .batch').html(batch_select)
+
+            row.find('select.selectpicker').each(function () {
+                $(this).selectpicker('refresh');
+            })
+        },
+        'removed': function (row) {
+            RowIndexUpdate()
+            row.removeClass('form_set_row');
+            calculate();
+        }
+    });
+
+    $("#modal_button").on("click", function (event) {
+        event.stopPropagation();
+        event.preventDefault();
+        $("#overlay_page").css("display", "block");
+        $("section#modal").animate({ top: "10%" });
+    });
+    function modalHight() {
+        let modal_hei = $("section#modal").outerHeight(true);
+        modal_hei = 0 - modal_hei - 10;
+        $("section#modal").css("top", modal_hei);
+        $("#overlay_page").css("display", "none");
+    }
+    modalHight();
+    $('#modal .cancel').click(function () {
+        modalHight()
+    })
+
+    $(document).ready(function () {
+        $(document).on('click', '#id_use_privilege_point', function () {
+            if ($(this).prop('checked') == true) {
+                //do something
+                $(".privilege_point_amnt").css("display", "block");
+                $(".privilege_point_used").css("display", "block");
+                console.log($(this))
+            } else {
+                console.log("hiiiii")
+                $(".privilege_point_amnt").css("display", "none");
+                $(".privilege_point_used").css("display", "none");
+            }
+
+        });
+        $(document).on('change keyup', '#id_privilege_point_used', function () {
+            calculate()
+        });
+
+
+        $('#toggle_btn').click();
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+        $(document).on('click', 'section#model .cancel', function () {
+            modalHight();
+        });
+        $(document).on('click', "#modal_button", function (event) {
+            // event.stopPropagation();
+            // event.preventDefault();
+            $("section#model").animate({ top: "20%" });
+        });
+
+        // {% if is_create_page %}
+        // $('.purchase_quantity input').val(1.00);
+        // {% endif %}
+
+        // {% if is_edit %}
+        $('#id_customer').change();
+        // {% endif %}
+    });
+
+    $(document).ready(function () {
+        gst_fields();
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+
+        // {% if is_edit %}
+        $('.product_variant select').each(function () {
+            get_product_variant_items($(this))
+        })
+
+        var myVar = setInterval(function () {
+            remove_popup(true);
+            check_timer();
+        }, 5000);
+
+        function check_timer() {
+            let second_last_batch = $('tr.form_set_row:nth-last-child(2) .batch select');
+            let last_batch = $('tr.form_set_row').last().find('.batch select').val();
+            let pop_up = $('.popup-bg')['length'];
+
+            if (pop_up == 0) {
+                if (second_last_batch) {
+                    clearInterval(myVar);
+                }
+            }
+        }
+        // {% endif %}
+    });
+
+    $('#id_discount').on('change keyup', function () {
+        $this = $(this);
+        calculate();
+    });
+
+    $(document).on('change keyup', '#id_sale_type', function () {
+        $this = $(this);
+        console.log("asdasd")
+        get_prifix_sale_type()
+    });
+    $(document).on('change keyup', '#id_sale_prifix', function () {
+        $this = $(this);
+        get_prifix_sale_id();
+    });
+    $(document).on('change keyup', '.product_price select', function () {
+        $this = $(this);
+        get_product_items($this, false);
+    });
+
+    $(document).on('change keyup', '.product_variant select', function () {
+        $this = $(this);
+        get_product_variant_items($this, false);
+    });
+
+    $(document).on('focusout', 'tr.form_set_row .sale_item_barcode input', function () {
+        $selector = $(this);
+        if ($selector.val()) {
+            get_product_items($selector, true);
+        }
+    })
+    $(document).on('keypress', 'tr.form_set_row .sale_item_barcode input', function (event) {
+        if (event.which == '10' || event.which == '13') {
+            event.preventDefault();
+            $selector = $(this);
+            get_product_items($selector, true);
+        }
+    })
+
+    function get_product_items(element, barcode) {
+        var url = "{% url 'sales:get_product_items' %}"
+        var warehouse = $('#id_warehouse').val()
+        var product_id = element.val();
+        var $parent = element.parents('tr.form_set_row');
+        var selected_batch_pk = $parent.find('td.batch span.batch').attr('data-value')
+        var is_ok = true;
+
+        if (warehouse == undefined || warehouse == null || warehouse == "") {
+            is_ok = false;
+        }
+        if (product_id == undefined || product_id == null || product_id == "") {
+            is_ok = false
+        }
+
+        if (is_ok) {
+            var code = "no";
+            if (barcode) {
+                code = "yes";
+            }
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    warehouse: warehouse,
+                    batch_id: selected_batch_pk
+                },
+                success: function (data) {
+                    var status = data['status'];
+
+                    if (status == 'true') {
+                        var price = data['price'];
+                        var mrp = data['mrp'];
+                        var hsn = data['hsn'];
+                        var gst = data['gst'];
+                        var sgst = data['sgst'];
+                        var cgst = data['cgst'];
+                        var name = data['name'];
+                        var unit_type = data['unit'];
+                        var pk = data['pk'];
+                        var product_code = data['product_code'];
+                        var cess = data['cess'];
+                        var discount_limit = data['discount_limit'];
+                        var current_stock = data['stock'];
+                        var current_varient = data['current_varient'];
+                        var varient_barcode = data['varient_barcode'];
+                        var rate = 0;
+                        var varience = data['varience'];
+                        var batch_list = data['batch_list'];
+                        // console.log(batch_list);
+                        var product_name = data['product_name'];
+                        var variant_name = data['variant_name'];
+
+                        if (current_varient)
+                            var options = `<option value="${current_varient}" selected="">${variant_name}</option>`
+                        else
+                            var options = '<option value="" selected="">' + variant_name + '</option>'
+
+                        var i, maxlength = varience.length;
+                        for (i = 0; i < maxlength; i++) { options += `<option value="${varience[i]['varience_pk']}">${varience[i]['varience_name']}</<option>` }
+                        $parent.find(".product_variant select").html(options).selectpicker('refresh');
+                        $parent.find(".product_variant ").find('div.filter-option-inner-inner').html(variant_name);
+
+                        if ($parent.find(".product_variant").attr('data-value')) {
+                            var selected_variant = $parent.find(".product_variant").attr('data-value');
+                            $parent.find(`.product_variant select option[value="${selected_variant}"]`).attr('selected', '')
+                            $parent.find(".product_variant select").selectpicker('refresh');
+                            $parent.find(".product_variant select").trigger('change');
+                        }
+
+                        if (batch_list.length == 1) {
+                            var batch_list_option = '';
+                        } else {
+                            if (batch_list.length == 0) {
+                                var batch_list_option = '<option data-text="Stock Unavailable" value="">Stock Unavailable</option>';
+                            } else {
+                                var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>';
+                            }
+                        }
+                        for (j = 0; j < batch_list.length; j++) {
+                            item = batch_list[j]
+                            batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                        }
+
+                        let old_qty = $parent.find('.purchase_quantity').attr('data-value')
+                        if (!old_qty)
+                            old_qty = 1
+                        $parent.find(".purchase_quantity input").val(old_qty);
+
+                        $parent.find(".batch select").html(batch_list_option);
+                        $parent.find(".batch select").selectpicker('refresh');
+
+                        if (batch_list.length == 1) {
+                            $parent.find(".batch select").find('[data-text="0DEFLT"]').attr('selected', '')
+                        }
+
+                        if (selected_batch_pk && selected_batch_pk != '') {
+                            // $parent.find(".batch select option").removeAttr('selected') // not working don't know why
+                            $parent.find(".batch select").find(`[value="${selected_batch_pk}"]`).attr('selected', '')
+                        }
+
+                        $parent.find(".batch select").selectpicker('refresh');
+                        $parent.find(".batch select").trigger('change')
+
+                        if (mrp == 0) {
+                            mrp = price;
+                        } else {
+                            mrp = mrp;
+                        }
+                        // if (varient_barcode) {
+                        //     $parent.find(".product_variant select").val(current_varient).selectpicker('refresh');
+                        // }
+                        $parent.find(".minimum_amount input").val(0);
+                        $parent.find(".maximum_amount_price input").val(0);
+                        $parent.find(".purchase_amount.value input").val(0);
+                        $parent.find(".hsn_code input").val(hsn);
+                        $parent.find(".gst input").val(gst);
+                        $parent.find(".sgst input").val(sgst);
+                        $parent.find(".cgst input").val(cgst);
+                        // $parent.find(".product_cess input").val(cess);
+                        $parent.find(".discount_limit input").val(discount_limit);
+                        $parent.find(".current_stock input").val(current_stock);
+                        $parent.find(".current_stock input").attr('data-stock', current_stock);
+                        // $parent.find(".mrp-price input").val(mrp - price)
+                        $parent.find(".mrp-price input").val(0)
+                        // if (current_stock <= 0) {
+                        // $parent.find(".purchase_quantity input").attr('readonly', 'readonly');
+                        // $parent.find(".current_stock input").val(0);
+                        // $parent.find(".current_stock input").attr('data-stock', 0);
+                        // }
+                        // else {
+                        //     $parent.find(".purchase_quantity input").removeAttr('readonly', 'readonly');
+                        // }
+                        if (barcode) {
+                            // $parent.find('.product_price select').val(pk).selectpicker('refresh')
+                            $parent.find('.product_price select').html(`<option selected value=${pk}>${product_name}</option>`);
+
+                        } else {
+                            $parent.find('.sale_item_barcode input').val(product_code);
+                        }
+                        if (batch_list.length >= 1) {
+                            console.log(batch_list.length, "batch_list.lengthbatch_list.lengthbatch_list.lengthbatch_list.length");
+
+                            $parent.find(".maximum_amount_price input").val(0);
+                            $parent.find(".purchase_amount.value input").val(0).trigger('keyup');
+                            $parent.find(".current_stock input").val(0);
+                            $parent.find('.current_stock input').attr('data-stock', 0);
+                        }
+
+                        calculate()
+                    }
+                    else {
+                        var message = data['message']
+                        var title = data['title']
+                        if (barcode) {
+                            element.val('');
+                        } else if (element.parent().hasClass('product_variant')) {
+                            element.html('');
+                        }
+                        swal(title, message, "error");
+                        // var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                        // $parent.find(".batch select").html(batch_list_option);
+                        // $parent.find(".batch select").selectpicker('refresh');
+                        // $parent.find(".batch select").trigger('change')
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+
+        else {
+            if (warehouse == undefined || warehouse == null || warehouse == "") {
+                let title = "Warehouse not Selected..!";
+                let message = "Please Select a Warehouse";
+                if (barcode) {
+                    element.val('');
+                } else if (element.parent().hasClass('product_variant')) {
+                    element.html('');
+                }
+                swal(title, message, "error");
+            }
+        }
+    }
+
+    function get_product_variant_items(element, barcode) {
+        var url = "{% url 'sales:get_product_variant_items' %}"
+        var product_id = element.val();
+        var $parent = element.parents('tr.form_set_row');
+        var warehouse = $('#id_warehouse').val()
+        var selected_batch_pk = $parent.find('td.batch span.batch').attr('data-value')
+        var is_ok = true;
+
+        if (product_id == "") {
+            product_id = $parent.find('.product_price select').val();
+        }
+
+        if (warehouse == undefined || warehouse == null || warehouse == "") {
+            is_ok = false;
+        }
+        if (product_id == undefined || product_id == null || product_id == "") {
+            is_ok = false
+        }
+
+        if (is_ok) {
+            var code = "no";
+            if (barcode) {
+                code = "yes";
+            }
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    batch_id: selected_batch_pk,
+                    warehouse: warehouse,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var price = data['price'];
+                        var mrp = data['mrp'];
+                        var hsn = data['hsn'];
+                        var gst = data['gst'];
+                        var sgst = data['sgst'];
+                        var cgst = data['cgst'];
+                        var name = data['name'];
+                        var pk = data['pk'];
+                        var product_code = data['product_code'];
+                        var cess = data['cess'];
+                        var discount_limit = data['discount_limit'];
+                        var current_stock = data['stock'];
+                        var batch_list = data['batch_list'];
+
+                        if (batch_list.length == 1) {
+                            var batch_list_option = '';
+                        } else {
+                            if (batch_list.length == 0) {
+                                var batch_list_option = '<option data-text="Stock Unavailable" value="">Stock Unavailable</option>';
+                            } else {
+                                var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>';
+                            }
+                        }
+
+                        for (j = 0; j < batch_list.length; j++) {
+                            item = batch_list[j]
+                            batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                        }
+
+                        $parent.find(".batch select").html(batch_list_option);
+                        $parent.find(".batch select").selectpicker('refresh');
+
+                        if (batch_list.length == 1) {
+                            $parent.find(".batch select").find('[data-text="0DEFLT"]').attr('selected', '')
+                        }
+
+                        if (selected_batch_pk && selected_batch_pk != '') {
+                            // $parent.find(".batch select option").removeAttr('selected') // not working don't know why
+                            $parent.find(".batch select").find(`[value="${selected_batch_pk}"]`).attr('selected', '')
+                        }
+
+                        $parent.find(".batch select").selectpicker('refresh');
+                        $parent.find(".batch select").trigger('change')
+
+                        let old_qty = $parent.find('.purchase_quantity').attr('data-value')
+                        if (!old_qty) {
+                            // {% if is_edit %}
+                            old_qty = 1
+                            // {% else %}
+                            old_qty = 1
+                            // {% endif %}
+                        }
+                        $parent.find(".purchase_quantity input").val(old_qty);
+
+                        var rate = 0;
+
+                        if (mrp == 0) {
+                            mrp = price;
+                        } else {
+                            mrp = mrp;
+                        }
+
+                        $parent.find(".minimum_amount input").val(0);
+                        $parent.find(".maximum_amount_price input").val(0);
+                        $parent.find(".purchase_amount.value input").val(0);
+                        $parent.find(".hsn_code input").val(hsn);
+                        $parent.find(".gst input").val(gst);
+                        // $parent.find(".product_cess input").val(cess);
+                        $parent.find(".sgst input").val(sgst);
+                        $parent.find(".cgst input").val(cgst);
+                        $parent.find(".discount_limit input").val(discount_limit);
+                        $parent.find(".current_stock input").val(current_stock);
+                        $parent.find(".mrp-price input").val(0)
+                        // $parent.find(".mrp-price input").val(mrp - price)
+                        $parent.find(".current_stock input").attr('data-stock', current_stock);
+                        // if (current_stock <= 0) {
+                        // $parent.find(".purchase_quantity input").attr('readonly', 'readonly');
+                        // $parent.find(".current_stock input").val(0);
+                        // $parent.find(".current_stock input").attr('data-stock', 0);
+                        // }
+                        // else {
+                        //     $parent.find(".purchase_quantity input").removeAttr('readonly', 'readonly');
+                        // }
+                        if (barcode) {
+                            $parent.find('.product_variant select').val(pk).selectpicker('refresh')
+                            // $parent.find('.product_price select.select2-hidden-accessible').html('<option value=' + pk + '>' + product_code +  '-' + name + '</option>');
+                            // var title = '{{product_code}} - {{name}}'
+                            // $parent.find('.product_price .select2.select2-container').addClass();
+                            // $parent.find('.product_price select2 .select2-selection__rendered').attr('title',title);
+                        } else {
+                            $parent.find('.sale_item_barcode input').val(product_code);
+                        }
+
+                        if (batch_list.length >= 1) {
+                            console.log(batch_list.length, "batch_list.lengthbatch_list.lengthbatch_list.lengthbatch_list.length");
+
+                            $parent.find(".maximum_amount_price input").val(0);
+                            $parent.find(".purchase_amount.value input").val(0).trigger('keyup');
+                            $parent.find(".current_stock input").val(0);
+                            $parent.find('.current_stock input').attr('data-stock', 0);
+                        }
+
+
+                        calculate()
+                    } else {
+                        var message = data['message']
+                        var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                        $parent.find(".batch select").html(batch_list_option);
+                        $parent.find(".batch select").selectpicker('refresh');
+                        $parent.find(".batch select").trigger('change')
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+        else {
+            if (warehouse == undefined || warehouse == null || warehouse == "") {
+                let title = "Warehouse not selected..!";
+                let message = "Please Select a Warehouse";
+                if (barcode) {
+                    element.val('');
+                } else if (element.parent().hasClass('product_variant')) {
+                    element.html('');
+                }
+                swal(title, message, "error");
+            }
+        }
+    }
+
+    $(document).on('change keyup', '.discount_rate input', function () {
+        $rate = $('.discount_rate input')
+        rate = $rate.val()
+        if (rate != '') {
+            rate = parseFloat(rate)
+        } else {
+            rate = 0
+        }
+        subtotal = $('#meterial_subtotal').val()
+        if (subtotal != '') {
+            subtotal = parseFloat(subtotal)
+        } else {
+            subtotal = 0
+        }
+        amount = (rate / 100) * subtotal
+        amount = Math.round(amount * 100) / 100
+        $('.discount_amount input').val(amount)
+        total_amount = subtotal - amount
+        total_amount = Math.round(total_amount * 100) / 100
+        $('#meterial_total').val(Math.round(total_amount))
+        $('#id_round_off').val(Math.round((Math.round(total_amount) - total_amount) * 100) / 100)
+
+    });
+
+    $(document).on('change keyup', '.discount_amount input', function () {
+        $amount = $('.discount_amount input')
+        amount = $amount.val()
+        if (amount != '') {
+            amount = parseFloat(amount)
+        } else {
+            amount = 0
+        }
+        subtotal = $('#meterial_subtotal').val()
+        if (subtotal != '') {
+            subtotal = parseFloat(subtotal)
+        } else {
+            subtotal = 0
+        }
+        rate = (amount / subtotal) * 100
+        rate = Math.round(rate * 100) / 100
+        rate = rate.toFixed(2)
+        $('.discount_rate input').val(rate)
+    });
+
+    $('total_amouncontenttegory').on('change keyup', function () {
+        gst_fields();
+    });
+
+    $(document).on('change keyup', '.purchase_quantity input, .purchase_amount , .purchase_amount_value input, .discount_value ,.paid_amount input,#paid_amount, .discount_sale_rate input,#add_gst #id_add_gst,#cess #id_add_cess', function () {
+        var $this = $(this);
+        var parent = $this.parents('tr.form_set_row');
+        var purchase_quantity = parseFloat(parent.find('.purchase_quantity input').val());
+        var old_purchase_quantity = parseFloat(parent.find('.purchase_quantity').attr('data-value'));
+        if (!purchase_quantity) {
+            purchase_quantity = 0
+        } if (!old_purchase_quantity) {
+            old_purchase_quantity = 0
+        }
+        avaialable_stock = parseFloat(parent.find('.current_stock input').attr('data-stock'));
+        avaialable_stock += old_purchase_quantity
+        avaialable_stock -= purchase_quantity;
+        avaialable_stock = Math.round(avaialable_stock * 100) / 100
+        parent.find('.current_stock input').val(avaialable_stock);
+        calculate();
+        $('#id_discount_rate').change();
+    });
+
+    function gst_fields() {
+        var sale_category = $('#id_sale_category').val();
+        if (sale_category == "intra_state") {
+            $('.sale_item_formset table tr.form_set_row igst-amount').hide();
+            $('.igst-amount').hide();
+            $('.sale_item_formset table tr.form_set_row cgst-amount').show();
+            $('.cgst-amount').show();
+            $('.sale_item_formset table tr.form_set_row sgst-amount').show();
+            $('.sgst-amount').show();
+        } else if (sale_category == "inter_state") {
+            $('.sale_item_formset table tr.form_set_row cgst-amount').hide();
+            $('.cgst-amount').hide();
+            $('.sale_item_formset table tr.form_set_row sgst-amount').hide();
+            $('.sgst-amount').hide();
+            $('.sale_item_formset table tr.form_set_row igst-amount').show();
+            $('.igst-amount').show();
+        }
+    }
+
+    function calculate() {
+        var subtotal = 0;
+        var dis_amount = 0;
+        var total_amount = 0
+        var special_discount_amount = 0;
+
+        $('.sale_item_formset table tr.form_set_row').each(function () {
+            $this = $(this);
+            var qty = parseFloat($this.find('.purchase_quantity input').val());
+            if (!qty) {
+                qty = 0
+            }
+            selling_price = parseFloat($this.find('.purchase_amount input').val());
+            if (!selling_price) {
+                selling_price = 0
+            }
+            var discount_sale_rate = parseFloat($this.find('.discount_sale_rate input').val());
+            if (!discount_sale_rate) {
+                discount_sale_rate = 0
+            }
+            var discount_limit = parseFloat($this.find('.discount_limit input').val());
+            if (!discount_limit) {
+                discount_limit = 0
+            }
+            var gst = parseFloat($this.find('.gst input').val());
+            if (!gst) {
+                gst = 0
+            }
+            // var cess = parseFloat($this.find('.product_cess input').val());
+            // if (!cess) {
+            //     cess = 0
+            // }
+            var mrp = parseFloat($this.find('.maximum_amount_price input').val());
+            if (!mrp) {
+                mrp = 0
+            }
+            var price = parseFloat($this.find('.purchase_amount.value input').val());
+            if (!price) {
+                price = 0
+            }
+            $this.find(".mrp-price input").val(Math.round(((mrp - price) * qty) * 100) / 100)
+            var sale_category = $('#id_sale_category').val();
+            var taxable_amount = (qty * selling_price);
+            // if (discount_sale_rate > discount_limit && discount_limit != 0) {
+            //     alert("Product Discount rate must be less than Discount limit")
+            //     discount_sale_rate = discount_limit
+            //     $this.find('.discount_sale_rate input').val(discount_sale_rate)
+            // }else
+            if (selling_price < discount_sale_rate && discount_limit != 0) {
+                alert("Product Discount rate must be less than selling price")
+                discount_sale_rate = discount_limit
+                $this.find('.discount_sale_rate input').val(Math.round(discount_sale_rate * 100) / 100)
+            }
+            else if (selling_price >= discount_sale_rate) {
+                discount_sale_rate = discount_sale_rate * 100 / selling_price
+                if (!discount_sale_rate) {
+                    discount_sale_rate = 0
+                }
+                single_discount = (selling_price * discount_sale_rate) / 100;
+                // single_discount = (qty / discount_sale_rate);
+                discount = (taxable_amount * discount_sale_rate) / 100;
+            }
+            else {
+                discount_sale_rate = 0;
+            }
+            var tax_amount = ((taxable_amount * gst) / 100);
+            // var cess_total = ((parseFloat(taxable_amount) * cess) / 100);
+            // cess_total = Math.round(cess_total * 100) / 100;
+            single_tax = 0
+            single_tax = selling_price * (gst / 100)
+            net_rate = selling_price - single_discount;
+            var taxable_amount = ((qty * selling_price))
+            var taxable_amount_2 = ((qty * mrp))
+            var tax_amount = 0
+            total = (taxable_amount + tax_amount)
+            if (isNaN(total)) {
+                var total = 0;
+            } else if (total < 0 || taxable_amount < 0) {
+                var total = 0;
+                var taxable_amount = 0;
+            }
+            total = total;
+            net_rate = net_rate;
+            net_rate = Math.round(net_rate * 100) / 100;
+            total = total - discount
+            total = Math.round(total * 100) / 100
+            net_rate = Math.round(net_rate * 100) / 100;
+            taxable_amount_2 = Math.round(taxable_amount_2 * 100) / 100;
+
+            $this.find('.purchase_item_total input').val(total);
+            $this.find('.gst-amount input').val(tax_amount);
+            $this.find('.simple_total input').val(taxable_amount_2);
+            // $this.find('.cess-amount input').val(cess_total);
+            $this.find('.net_rate input').val(net_rate);
+            if (!total) {
+                total = 0;
+            }
+            subtotal += total;
+        });
+        var dis_amount = parseFloat($('#id_discount').val());
+        total_amount = subtotal - dis_amount
+        total_amount = Math.round(total_amount * 100) / 100
+        subtotal = Math.round(subtotal * 100) / 100
+        $("#meterial_total").val(Math.round(total_amount));
+
+
+        let current_balance = parseFloat($("#id_balance").val())
+        let balance_type = $("#id_balance").attr('data-balance-type')
+        let paid_amount = total_amount - parseFloat($("input#paid_amount").val())
+
+        // console.log(current_balance,balance_type,paid_amount)
+
+        if (current_balance && paid_amount) {
+            if (balance_type == 'credit')
+                balance = current_balance + paid_amount
+            else
+                balance = current_balance - paid_amount
+
+            $('#balance').siblings('label').text("Balance")
+            balance = Math.round(balance * 100) / 100
+            $('#balance').val(balance)
+        }
+
+        var out_standing = parseFloat($("#meterial_total").val());
+
+        // {% if is_edit %}
+        customer_pk = $('#id_customer').val();
+        if (customer_pk == '{{ instance.customer.pk|safe }}') {
+            out_standing -= parseFloat('{{ instance.total }}')
+        }
+        // {% endif %}
+
+        if (!current_balance)
+            current_balance = 0
+        if (balance_type == 'credit') {
+            out_standing -= current_balance
+        }
+        else if (balance_type == 'debit') {
+            out_standing += current_balance
+        }
+        if ($("#id_use_privilege_point").is(":checked")) {
+            // do something if the checkbox is NOT checked
+            var privilege_point_used = $('#id_privilege_point_used').val()
+            var value_of_point = $('#id_value_of_point').val()
+            if(!privilege_point_used){
+                privilege_point_used = 0
+            }
+            if(!value_of_point){
+                value_of_point = 0
+            }
+            point_amount = parseFloat(privilege_point_used) * parseFloat(value_of_point)
+            point_amount = Math.round(point_amount * 100) / 100
+            $('#id_privilege_point_amnt').val(point_amount)
+            out_standing = out_standing - point_amount
+        }
+        $('#id_total_outstanding').val(Math.round(out_standing * 100) / 100)
+
+        $('#id_round_off').val(Math.round((Math.round(total_amount) - total_amount) * 100) / 100)
+        $("#meterial_subtotal").val(subtotal);
+    }
+
+    function get_customer(element) {
+        var url = "{% url 'customers:get_customer' %}"
+        var customer_id = element.val();
+        var $parent = element.parents('tr.form_set_row');
+        if (customer_id != undefined || customer_id != null || customer_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: customer_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var state = data['state'];
+                        var type = data['type'];
+                        var current_balance = data['current_balance'];
+                        var current_privilege_points = data['current_privilege_points'];
+                        var privilege_points = data['privilege_points'];
+                        var address = data['address'];
+                        var minimum_amount = data['minimum_amount'];
+                        var value_of_point = data['value_of_point'];
+                        if (state == "Kerala") {
+                            options = `<option selected value="intra_state">Intra State</<option>`
+                        } else {
+                            options = `<option selected value="inter_state">Inter State</<option>`
+                        }
+                        $('#id_sale_category').html(options).selectpicker('refresh');
+                        $('#customer_type').val(type);
+                        $('#id_customer_address').val(address);
+                        $('#id_cust_point').val(privilege_points);
+                        $('#id_minimum_amount').val(minimum_amount);
+                        $('#id_value_of_point').val(value_of_point);
+                        $('#id_cust_point').val(current_privilege_points);
+                        $('#id_privilege_point_used').attr('max', current_privilege_points);
+
+                        gst_fields()
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+
+
+    function get_prifix_sale_id(element) {
+        var url = "{% url 'sales:get_prifix_sale_id' %}"
+        var prifix_id = $('#id_sale_prifix').val();
+        var sale_type = $('#id_sale_type').val()
+        if (prifix_id != undefined || prifix_id != null || prifix_id != "" || sale_type != undefined || sale_type != null || sale_type != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: prifix_id,
+                    sale_type: sale_type,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var sale_id = data['sale_id'];
+
+                        $('#id_sale_id').val(sale_id)
+
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+    function get_prifix_sale_type(element) {
+        var url = "{% url 'sales:get_prifix_sale_type' %}"
+        var sale_type = $('#id_sale_type').val()
+        if (sale_type != undefined || sale_type != null || sale_type != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    sale_type: sale_type,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var output = [];
+                        var data = data['data'];
+
+                        $.each(data, function(key, value){
+                            output.push('<option value="'+ value['id'] +'">'+ value['title'] +'</option>');
+                        });
+                        $('#id_sale_prifix').html(output.join(''));
+
+                        if (data.length == 1){
+                            $('#id_sale_prifix option').attr('selected', 'selected')
+                            $('#id_sale_prifix').change()
+                        }
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+
+    $('.customer select').on('change keyup', function () {
+        $this = $(this);
+        get_customer($this);
+    });
+
+    $('#cess #id_add_cess').on('change', function () {
+        // get_cess();
+        calculate();
+    })
+
+    $(document).on('change keyup', '.batch select', function () {
+        var parent = $this.parents('tr.form_set_row');
+
+        $this = $(this);
+        get_batch_data($this)
+    });
+
+    function get_batch_data($this) {
+        // {% if is_edit %}
+        show_loader();
+        // {% endif %}
+
+        var $parent = $this.parents('tr.form_set_row');
+        var batch_id = $this.val();
+        var url = "{% url 'general:get_batch_data' %}";
+
+        var sale_type = $('#id_sale_type').val()
+        console.log(sale_type)
+        if (batch_id != undefined && batch_id != null && batch_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: batch_id,
+                    sale_type: sale_type,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var stock = data['stock'];
+                        var mrp = data['mrp'];
+                        var price = data['price'];
+                        var cost = data['cost'];
+                        var retail_price = data['retail_price'];
+                        var whole_sale_price = data['whole_sale_price'];
+
+                        $parent.find(".maximum_amount_price input").val(mrp);
+                        $parent.find(".current_stock input").val(stock);
+                        $parent.find('.current_stock input').attr('data-stock', stock);
+
+
+                        //{% if is_edit %}
+                        if ($parent.find(".mrp-price").attr('data-value')) {
+                            old_discount = parseFloat($parent.find(".mrp-price").attr('data-value'));
+                            if (old_discount > 0) {
+                                $parent.find(".mrp-price input").val(old_discount);
+                            }
+                            $parent.find(".mrp-price").attr('data-value', '')
+                        }
+
+                        if ($parent.find(".maximum_amount_price").attr('data-value')) {
+                            old_mrp = parseFloat($parent.find(".maximum_amount_price").attr('data-value'));
+                            if (old_mrp > 0) {
+                                $parent.find(".maximum_amount_price input").val(old_mrp);
+                            }
+                            $parent.find(".maximum_amount_price").attr('data-value', '')
+                        }
+
+
+                        var sale_type = $("#id_sale_type").val()
+                        if (sale_type == "b2c") {
+                            $parent.find(".purchase_amount input").val(whole_sale_price);
+                            price = whole_sale_price
+
+                        } else {
+                            $parent.find(".purchase_amount input").val(retail_price);
+                            price = retail_price
+
+                        }
+
+                        if ($parent.find(".purchase_amount.value").attr('data-value')) {
+                            old_price = parseFloat($parent.find(".purchase_amount.value").attr('data-value'));
+                            if (old_price > 0) {
+                                price = old_price
+                                $parent.find(".purchase_amount.value input").val(old_price);
+                            }
+                            $parent.find(".purchase_amount.value").attr('data-value', '')
+                        }
+                        console.log(old_price, 'old_price')
+                        // {% else %}
+
+                        // if (stock=='0'){
+                        //     $('.submit-button').hide()
+                        //     console.log(stock);
+                        // }else{
+                        //     $('.submit-button').show()
+                        // }
+                        // {% endif %}
+
+                        let $last_parent = $('.sale_item_formset table tbody tr:nth-last-child(2)');
+                        test_name1 = $parent.find('.batch select').attr('name');
+                        test_name2 = $last_parent.find('.batch select').attr('name');
+
+                        if (test_name1 === test_name2) {
+                            $('.sale_item_formset .icon_add_item').click();
+                        }
+                        $parent.removeClass('coloured-row');
+                        $parent.next().find('.sale_item_barcode input').focus()
+
+                        $parent.find(".purchase_amount.value input").val(price).trigger('keyup');
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        } else {
+            $parent.addClass('coloured-row');
+        }
+
+        // {% if is_edit %}
+        remove_popup(true);
+        // {% endif %}
+    }
+
+    $('#id_customer').change(function () {
+
+        let customer = $(this).val()
+        let url = "";
+        getBalanceData(url, customer);
+    });
+
+    function getBalanceData(url, pk) {
+
+        $('#id_balance').val(0).attr('data-balance-type', '');
+        $('.balance_label').text('')
+
+    }
+
+</script>
+<script>
+    function TransferTypeChanged() {
+        $('#id_transfer_type option[value=""]').remove()
+        var transfer_type = $('#id_transfer_type').val()
+
+        $('.voucher-row .bank, .voucher-row .draft, .voucher-row .transaction, .voucher-row .cheque').hide()
+
+        if (transfer_type == 15) {
+            $('.voucher-row .bank, .voucher-row .cheque').show()
+        }
+        else if (transfer_type == 20) {
+            $('.voucher-row .bank, .voucher-row .draft').show()
+        }
+        else if (transfer_type == 25) {
+            $('.voucher-row .bank, .voucher-row .transaction').show()
+        }
+    }
+
+    $(document).ready(function () {
+        TransferTypeChanged()
+    })
+    $('#id_transfer_type').on('change', function () {
+        TransferTypeChanged()
+    })
+</script>
+{{ sale_item_formset.media }}
+{{ form.media }}
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+            {% if is_all_order %}
+            <div class="col-auto float-right ml-auto">
+                <a title="Filter" data-toggle="modal" data-target="#modal_aside_right" href="javascript:void(0)"
+                    class=" btn btn-sm btn-success">Filter
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">ID</th>
+                            <th>Name </th>
+                            <th>Address </th>
+                            <th>Payment Method</th>
+                            <th>Payment Status</th>
+                            <th>Time Slot</th>
+                            <th>Total Amount</th>
+                            {% if current_role == "superadmin" %}
+                            <th>Warehouse</th>
+                            {% endif %}
+                            {% if is_all_order %}
+                            <th>Delivery Agent</th>
+                            {% endif %}
+                            <th>Items</th>
+                            <th>Print</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for order in instances %}
+                        <tr>
+                            <td>{{ order.order_id }}</td>
+                            <td>{{ order.billing_name }}</td>
+                            <td>{{ order.get_full_address }}</td>
+                            <td>{{ order.payment_method }}</td>
+                            <td>
+                                {% if order.payment_status == '10' %}
+                                    Unpaid
+                                {% else %}
+                                Paid
+                                {% endif %}
+                            </td>
+                            <td>{{ order.time_slot }}</td>
+
+                            <td>{{ order.total_amt }}</td>
+
+                            {% if current_role == "superadmin" %}
+                            <th>{{ order.warehouse|default:'-' }}</th>
+                            {% endif %}
+
+                            {% if is_all_order %}
+                            <td>
+                                {% if order.delivery_agent %}
+                                    {{ order.delivery_agent }}
+                                {% else %}
+                                   <a class=" btn btn-sm btn-soft-primary" href="{% url 'orders:order' pk=order.pk %}" role="button">Assign Delivery Agent</a>
+                                {% endif %}
+                            </td>
+                            {% endif %}
+                            <td>
+                                <a class=" btn btn-sm btn-soft-primary" href="{% url 'orders:order' pk=order.pk %}" role="button">View Items</a>
+                            </td>
+                            <td>
+                                <a href="{% url 'orders:print_staff_view_order' view_type="customer" pk=order.pk %}" role="button" class="btn btn-sm btn-outline-primary">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download align-self-center icon-xs"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> -->
+                                    <i class="icon fa fa-print"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a title="Status" data-toggle="modal" data-id = {{order.id}} data-target="#modal_order_status" href="javascript:void(0)"
+                                    class="btn btn-sm btn-success status_button">Status
+                                </a>
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Order Status</label>
+                        <!-- <input name="category" type="text" class="form-control" /> -->
+                        <select class="select order-select-query form-control">
+                            <option {% if query == "all" %}selected {% endif %}value="all">---All----</option>
+                            <option {% if query == "pending" %}selected {% endif %}value="pending">Pending Orders</option>
+                            <option {% if query == "unassigned" %}selected {% endif %}value="unassigned">Delivery Agent Unassigned Orders</option>
+                            <option {% if query == "assigned" %}selected {% endif %}value="assigned">Delivery Agent Assigned Orders</option>
+                            <option {% if query == "shipped" %}selected {% endif %}value="shipped">Shipped Orders</option>
+                            <option {% if query == "completed" %}selected {% endif %}value="completed">Completed Orders</option>
+                            <option {% if query == "cancelled" %}selected {% endif %}value="cancelled">Cancelled Orders</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button"  class="btn btn-sm btn-primary order-filter-button" data-url="{% url 'orders:orders' order_type=order_type %}">Submit</button>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- modal -->
+<div id="modal_order_status" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="status_form" action="" method="post" class="ajax reload reset"
+                                            enctype="multipart/form-data" action="{{ url }}">
+                                            {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <div class="form-group">
+                            <label for="{{ order_status_form.order_status.id_for_label }}">
+                                {{ order_status_form.order_status.label }}
+
+                                {% if order_status_form.order_status.field.required %}
+                                <small class="star text-danger">*</small>
+                                {% endif %}
+                            </label>
+                            {{ order_status_form.order_status }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                    <!-- <button type="button"  class="btn btn-sm btn-primary order-filter-button" data-url="{% url 'orders:orders' order_type=order_type %}">Submit</button> -->
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+    <script src="{% static 'js/delivery_agent.js' %}"> </script>
+    <script>
+        $('.status_button').click(function (e) {
+            var pk = $(this).attr('data-id');
+            // var url = `{% url 'orders:change_order_status' pk="${String(pk)}" %}`
+            var url = "/en/app/orders/change-order-status/"+pk+"/"
+            $("#status_form").attr('action',url)
+            console.log(url,pk)
+
+	});
+    </script>
+{% endblock %}

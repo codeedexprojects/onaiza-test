@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <form enctype="multipart/form-data" class="ajax redirect reset" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <h4 class="mb-3 card-title">Vendor Information</h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.name.id_for_label }}">
+                                        {{ form.name.label }}
+
+                                        {% if form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{form.name}}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.malayalam_name.id_for_label }}">
+                                        {{ form.malayalam_name.label }}
+
+                                        {% if form.malayalam_name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{form.malayalam_name}}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.phone.id_for_label }}">
+                                        {{ form.phone.label }}
+
+                                        {% if form.phone.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{form.phone}}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.email.id_for_label }}">
+                                        {{ form.email.label }}
+
+                                        {% if form.email.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{form.email}}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.address.id_for_label }}">
+                                        {{ form.address.label }}
+
+                                        {% if form.address.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{form.address}}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.opening_type.id_for_label }}">
+                                        {{ form.opening_type.label }}
+
+                                        {% if form.opening_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{form.opening_type}}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.opening_balance.id_for_label }}">
+                                        {{ form.opening_balance.label }}
+
+                                        {% if form.opening_balance.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{form.opening_balance}}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.country.id_for_label }}">
+                                        {{ form.country.label }}
+
+                                        {% if form.country.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.country }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.location.id_for_label }}">
+                                        {{ form.location.label }}
+
+                                        {% if form.location.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.location }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.place.id_for_label }}">
+                                        {{ form.place.label }}
+
+                                        {% if form.place.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.place }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.state.id_for_label }}">
+                                        {{ form.state.label }}
+
+                                        {% if form.state.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.state }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.district.id_for_label }}">
+                                        {{ form.district.label }}
+
+                                        {% if form.district.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.district }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.gst_number.id_for_label }}">
+                                        {{ form.gst_number.label }}
+
+                                        {% if form.gst_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.gst_number }}
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.commission_type.id_for_label }}">
+                                        {{ form.commission_type.label }}
+
+                                        {% if form.commission_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.commission_type }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.commission_percentage.id_for_label }}">
+                                        {{ form.commission_percentage.label }}
+
+                                        {% if form.commission_percentage.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.commission_percentage }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.image.id_for_label }}">
+                                        {{ form.image.label }}
+
+                                        {% if form.image.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.image }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <h4 class="mb-3 card-title">Account Details</h4>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.bank_name.id_for_label }}">
+                                            {{ form.bank_name.label }}
+
+                                            {% if form.bank_name.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{form.bank_name}}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.branch.id_for_label }}">
+                                            {{ form.branch.label }}
+
+                                            {% if form.branch.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{form.branch}}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.bank_account_name.id_for_label }}">
+                                            {{ form.bank_account_name.label }}
+
+                                            {% if form.bank_account_name.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{form.bank_account_name}}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.ifsc_code.id_for_label }}">
+                                            {{ form.ifsc_code.label }}
+
+                                            {% if form.ifsc_code.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{form.ifsc_code}}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.account_num.id_for_label }}">
+                                            {{ form.account_num.label }}
+
+                                            {% if form.account_num.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{form.account_num}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if is_create %}
+                        <div class="card-body">
+                            <h4 class="mb-3 card-title">Login Credentials</h4>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="{{ form.username.id_for_label }}">
+                                            {{ form.username.label }}
+
+                                            {% if form.username.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{form.username}}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+
+                                    <div class="form-group">
+                                        <label for="{{ form.password.id_for_label }}">
+                                            {{ form.password.label }}
+
+                                            {% if form.password.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{form.password}}
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        {% endif %}
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+{% endblock %}

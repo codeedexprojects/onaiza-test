@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<!-- Page Wrapper -->
+ <div class="page-wrapper">
+            
+    <!-- Page Content -->
+    <div class="content container-fluid">
+    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        
+        <div class="row">
+            <div class="col-md-12" >
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table mb-0 datatable" id="mytab1">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">ID</th>
+                                <th>Customer </th>
+                                <th>Product </th>
+                                <th >Review </th>
+                                <th style="width: 100px;">rating </th>
+                                <!-- <th>Rating</th> -->
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for instance in instances %}
+                            <tr class="form_set_row">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ instance.customer }}</td>
+                                <td><a href="{% url 'products:product' pk=instance.product.pk %}">{{ instance.product }}</a></td>
+                                <td>{{ instance.review }}</td>
+                                <td style="width: 100px;">
+                                    <b><span id=current_rating data-rating="{{instance.product.current_rating}}"></span></b>
+                                </td>
+                                <td class="text-right">
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="action-button remove btn btn-light btn-rnd btn--icon dropdown-item" href="{% url 'customers:delete_review' pk=instance.pk %}" data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Content -->
+
+</div>
+
+{% endblock%}
+{% block static %}
+
+{% load static%}
+<script>
+        $( ".form_set_row" ).each(function(){
+            var rating = $(this).find('#current_rating').attr('data-rating')
+            console.log('rating')
+            console.log(rating)
+            rating = Math.round(rating * 2) / 2;
+            let output = [];
+            for (var i = rating; i >= 1; i--)
+                output.push('<i class="fa fa-star" aria-hidden="true" style="color: gold;"></i>&nbsp;');
+            if (i == .5) output.push('<i class="fa fa-star-half-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
+            for (let i = (5 - rating); i >= 1; i--)
+                output.push('<i class="fa fa-star-o" aria-hidden="true" style="color: gold;"></i>&nbsp;');
+                $(this).find('#current_rating').html(output.join(''))
+        });
+</script>
+{% endblock %}

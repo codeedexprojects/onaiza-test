@@ -1,0 +1,368 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+	<!-- Page Content -->
+	<div class="content container-fluid">
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col">
+					<h3 class="page-title">{{title|title}}</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+						<li class="breadcrumb-item active">{{title|title}}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<form method="get" action=".">
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label> From Date </label>
+										<input type="text" value="{{filter_data.from_date}}" name="from_date" id="from_date"
+											class="form-control date-picker-dd" autocomplete="off" />
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label> To Date </label>
+										<input type="text" value="{{filter_data.to_date}}" name="to_date" id="to_date"
+											class="form-control date-picker-dd" autocomplete="off" />
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label> Customer </label>
+										{{ customer_form.customer }}
+									</div>
+								</div>
+							</div>
+							<div class="text-right">
+								<button type="submit" class="btn btn-primary">Submit</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tab-content">
+			<!-- Profile Info Tab -->
+			{% comment %}
+			<div class="d-flex">
+				<div id="emp_profile" class="col-md-6 pro-overview tab-pane fade show active">
+					<div class="d-flex">
+						<div class="card profile-box flex-fill">
+							<div class="card-header">
+								<h3>Income</h3>
+							</div>
+							<div class="card-body">
+
+								<ul class="personal-info">
+									<li>
+										<div class="title">Online Sales</div>
+										<div class="text">{{online_sales_total}}</div>
+									</li>
+									<li>
+										<div class="title">Delivery Charge</div>
+										<div class="text">{{offline_sales_total}}</div>
+									</li>
+									<li>
+										<div class="title">Offline Sales</div>
+										<div class="text">{{offline_sales_total}}</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="emp_profile" class="col-md-6 pro-overview tab-pane fade show active">
+					<div class="d-flex">
+						<div class="card profile-box flex-fill">
+							<div class="card-header">
+								<h3>Expense</h3>
+							</div>
+							<div class="card-body">
+
+								<ul class="personal-info">
+									<li>
+										<div class="title">Purchase</div>
+										<div class="text">{{purchase_total}}</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endcomment %}
+
+			<!-- /Profile Info Tab -->
+			<div class="card">
+				<div class="card-body">
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table class="table table-striped custom-table mb-0">
+									<thead>
+										<tr>
+											<th style="width: 30px">ID</th>
+											<th>Invoice Id</th>
+											<th>Date</th>
+											<th>Customer</th>
+											<th>Purchase Value</th>
+											<th style="display: none;">Gst %</th>
+											<th>Sale Value</th>
+											<!-- <th>Profit</th> -->
+											<th>Profit</th>
+											<th>Profit(%)</th>
+											<th class="text-right">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% load el_pagination_tags %}
+										{% paginate 20 instances %}
+										{% for instance in instances %}
+										<tr class="print_row">
+											<td>{{ forloop.counter }}</td>
+											<td>{{ instance.sale_id }}</td>
+											<td>{{ instance.sale_date|date:"d/m/y" }}</td>
+											<td>{{ instance.customer }}</td>
+											<td class="amount cost">{{ instance.purchase_taxable_amount }}</td>
+											<td style="display: none;" class="amount gst">{{ instance.total_tax }}</td>
+											<td class="amount total">{{ instance.sale_taxable_amount }}</td>
+											<!-- <td style="display: none;" class="amount profit"></td> -->
+											<td class="{% if instance.total_profit < 0 %}text-danger {% endif %}new_profit">{{instance.total_profit}}</td>
+											<td class="{% if instance.profit_percentage < 0 %}text-danger {% endif %}">{{ instance.profit_percentage|default:0|floatformat:2 }}%</td>
+											<td class="text-right">
+												<div class="dropdown dropdown-action">
+													<a href="#" class="action-icon dropdown-toggle"
+														data-toggle="dropdown" aria-expanded="false"><i
+															class="material-icons">more_vert</i></a>
+													<div class="dropdown-menu dropdown-menu-right">
+														<a class="dropdown-item"
+															href="{% url 'sales:sale' pk=instance.pk %}"><i
+																class="fa fa-eye m-r-5"></i> View</a>
+
+													</div>
+												</div>
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="4" style="text-align: center">Total</td>
+											<td class="final cost">{{ total_instance.purchase_taxable_amount }}</td>
+											<td style="display: none;" class="final gst">{{ total_instance.gst_amount_total }}</td>
+											<td class="final total">{{ total_instance.all_total }}</td>
+											<td class="final profit">{{ total_instance.total_profit }}</td>
+											<td class="final profit">{{ total_instance.total_profit_percent }}%</td>
+											<td class="text-right">
+												<div class="dropdown dropdown-action">
+
+												</div>
+											</td>
+										</tr>
+									</tfoot>
+								</table>
+								{% get_pages %}
+								<div class="clearfix"></div>
+								<div class="row pagi m-t-5">
+									<div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+									<div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+										<div class="m-t-10">
+											Showing {{title}}
+											<span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+											class="current_end_status">{{ pages.current_end_index }}</span> of <span
+											class="total_count">{{ pages.total_count }}</span> </div>
+										</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-body">
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="table-responsive">
+							<table class="table table-striped custom-table mb-0 ">
+								<thead>
+									<tr>
+										<th style="width: 30px">ID</th>
+										<th>Order Id</th>
+										<th>Date</th>
+										<th>Purchase Value</th>
+										<th style="display: none;">Gst</th>
+										<th>Sale Value</th>
+										<!-- <th>Delivery charge</th> -->
+										<th>Profit</th>
+										<th class="text-right">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for order in order_instances %}
+									<tr class="order_print_row">
+										<td>{{ forloop.counter }}</td>
+										<td><a href="{% url 'orders:order' pk=order.pk %}">
+											{{order.order_id}}</a></td>
+										<td class="amount">{{ order.date_added }}</td>
+										<td class="amount order_cost">{{ order.order_items_cost }}</td>
+										<td style="display: none;" class="amount order_gst">
+											{{order.total_tax_amount}}
+										</td>
+										<td class="amount order_total">{{ order.amount_payable }}</td>
+										<!-- <td class="amount delivery_charge">{{ order.delivery_charge }}</td> -->
+										<!-- <td class="amount order_profit"></td> -->
+										<td class="{% if order.profit < 0 %}text-danger {% endif %}new_order_profit">{{ order.profit }}</td>
+
+										<td class="text-right">
+											<div class="dropdown dropdown-action">
+												<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
+													aria-expanded="false"><i class="material-icons">more_vert</i></a>
+												<div class="dropdown-menu dropdown-menu-right">
+
+													<a class="dropdown-item"
+														href="{% url 'orders:order' pk=order.pk %}"><i
+															class="fa fa-eye m-r-5"></i>
+														View</a>
+												</div>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+
+
+								</tbody>
+
+								<tfoot>
+									<tr>
+										<td colspan="3" style="text-align: center">Total</td>
+										<td class="order_final order_cost"></td>
+										<td style="display: none;" class="order_final order_gst"></td>
+										<td class="order_final order_total"></td>
+										<!-- <td class="order_final delivery_charge"></td> -->
+										<td class="order_final order_profit"></td>
+						<!-- </div> -->
+						<!-- </td> -->
+						<td></td>
+						</tr>
+						</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Content -->
+	</div>
+	<!-- /Page Wrapper -->
+	{% endblock %}
+	{% block static %}
+	<style>
+		form .select2-container .select2-selection--single{
+			height: 42px;
+		}
+	</style>
+	<script>
+		$(document).ready(function () {
+			var cost = 0;
+			var total = 0;
+			var profit = 0;
+			var gst = 0;
+			var order_cost = 0;
+			var order_total = 0;
+			var order_profit = 0;
+			var order_gst = 0;
+			var new_profit = 0;
+			var new_order_profit = 0;
+			// var delivery_charge = 0;
+
+			$(".amount.cost").each(function () {
+				cost += parseFloat($(this).html());
+			});
+			$(".amount.gst").each(function () {
+				gst += parseFloat($(this).html());
+			});
+
+			$(".amount.total").each(function () {
+				total += parseFloat($(this).html());
+			});
+			$(".amount.order_cost").each(function () {
+				order_cost += parseFloat($(this).html());
+			});
+
+			$(".amount.order_total").each(function () {
+				order_total += parseFloat($(this).html());
+			});
+			$(".amount.order_gst").each(function () {
+				order_gst += parseFloat($(this).html());
+			});
+			$(".amount.delivery_charge").each(function () {
+				delivery_charge += parseFloat($(this).html());
+			});
+
+
+			$(".print_row").each(function () {
+
+				let val1 = $(this).find('.amount.total').html()
+				let val0 = $(this).find('.amount.cost').html()
+				let val2 = $(this).find('.amount.gst').html()
+				let dif = parseFloat(val1) - parseFloat(val0) - parseFloat(val2)
+				$(this).find('.amount.profit').html(Math.round(dif * 100) / 100)
+			});
+
+			$(".order_print_row").each(function () {
+
+				let val1 = $(this).find('.amount.order_total').html()
+				let val0 = $(this).find('.amount.order_cost').html()
+				let val2 = $(this).find('.amount.delivery_charge').html()
+				let val3 = $(this).find('.amount.order_gst').html()
+				let dif = parseFloat(val1) - parseFloat(val0) - parseFloat(val3)
+				$(this).find('.amount.order_profit').html(Math.round(dif * 100) / 100)
+			});
+
+			$(".amount.profit").each(function () {
+				profit += parseFloat($(this).html());
+			});
+			$(".new_profit").each(function () {
+				new_profit += parseFloat($(this).html());
+			});
+			$(".amount.order_profit").each(function () {
+				order_profit += parseFloat($(this).html());
+			});
+			$(".new_order_profit").each(function () {
+				new_order_profit += parseFloat($(this).html());
+			});
+
+
+
+			// $(".final.cost").html(Math.round(cost * 100) / 100);
+			// $(".final.total").html(Math.round(total * 100) / 100);
+			// $(".final.gst").html(Math.round(gst * 100) / 100);
+			// // $(".final.profit").html(Math.round(profit*100)/100);
+			// $(".final.profit").html(Math.round(new_profit * 100) / 100);
+
+			$(".order_final.order_cost").html(Math.round(order_cost * 100) / 100);
+			$(".order_final.order_total").html(Math.round(order_total * 100) / 100);
+			$(".order_final.order_gst").html(Math.round(order_gst * 100) / 100);
+			$(".order_final.order_profit").html(Math.round(new_order_profit * 100) / 100);
+			// $(".order_final.delivery_charge").html(Math.round(order_profit*100)/100);
+		});
+
+
+	</script>
+	{{ customer_form.media }}
+	{% endblock %}

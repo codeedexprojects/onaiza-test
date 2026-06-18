@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+
+
+<section id="content">
+    <div class="container">
+        <div class="c-header">
+            <h2>Malinda Hollaway <small>Web/UI Developer, Edinburgh, Scotland</small></h2>
+        </div>
+
+        <div class="card" id="profile-main">
+            <div class="pm-overview c-overflow mCustomScrollbar _mCS_4 mCS-autoHide" style="overflow: visible;">
+                <div id="mCSB_4" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical_horizontal mCSB_outside"
+                    tabindex="0">
+                    <div id="mCSB_4_container" class="mCSB_container mCS_x_hidden mCS_no_scrollbar_x"
+                        style="position: relative; top: 0px; left: 0px; width: 100%;" dir="ltr">
+                        <div class="pmo-pic">
+                            <div class="p-relative">
+                                {% if staff_data.photo %}
+                                <a href="">
+                                    <img class="img-responsive mCS_img_loaded" src="{{staff_data.photo.crop.260x260}}"
+                                        alt="Photo">
+                                </a>
+
+                                {% else %}
+                                {% if staff_data.gender == 'male' %}
+                                <a href="">
+                                    <img class="img-responsive mCS_img_loaded" src="../../static/img/blank-male.jpg"
+                                        alt="Photo">
+                                </a>
+                                {% elif staff_data.gender == 'female' %}
+                                <a href="">
+                                    <img class="img-responsive mCS_img_loaded" src="../../static/img/blank-female.png"
+                                        alt="Photo">
+                                </a>
+                                {% else %}
+                                <a href="">
+                                    <img class="img-responsive mCS_img_loaded" src="../../static/img/photo-other.png"
+                                        alt="Photo">
+                                </a>
+                                {% endif %}
+
+
+                                {% endif %}
+
+                                <!-- <div class="dropdown pmop-message">
+                                        <a data-toggle="dropdown" href="" class="btn palette-White bg btn-float z-depth-1 waves-effect waves-circle waves-float">
+                                            <i class="zmdi zmdi-comment-text-alt"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu">
+                                            <textarea placeholder="Write something..."></textarea>
+
+                                            <button class="btn bgm-green btn-float waves-effect waves-circle waves-float"><i class="zmdi zmdi-mail-send"></i></button>
+                                        </div>
+                                    </div>
+ -->
+                                <a href="" class="pmop-edit">
+                                    <i class="zmdi zmdi-camera"></i> <span class="hidden-xs">Update Profile
+                                        Picture</span>
+                                </a>
+                            </div>
+
+
+                            <div class="pmo-stat p-t-15">
+                                <h4 class="m-0 c-white">{{staff_data.user}}</h4>
+
+                            </div>
+                        </div>
+
+                        <div class="pmo-block pmo-contact hidden-xs">
+                            <h2>Contact</h2>
+
+                            <ul>
+                                <li><i class="zmdi zmdi-phone"></i>{{staff_data.phone}}</li>
+                                <li><i class="zmdi zmdi-email"></i>{{staff_data.email}}</li>
+                                <li>
+                                    <i class="zmdi zmdi-pin"></i>
+                                    <address class="m-b-0 ng-binding">
+                                        {{staff_data.address}}
+                                    </address>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="my-buttons" style="display: flex;justify-content: center;">
+                            <a href="{% url 'staffs:view_staff' pk=staff_data.pk %}"
+                                class="m-r-10 btn btn-info">view</a>
+                            <a href="{% url 'staffs:edit_staff' pk=staff_data.pk %}"
+                                class="m-r-10 btn btn-warning">Edit</a>
+                            <a href="{% url 'staffs:edit_staff' pk=staff_data.pk %}" class="btn btn-danger">Delete</a>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="mCSB_4_scrollbar_vertical"
+                    class="mCSB_scrollTools mCSB_4_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical"
+                    style="display: block;">
+                    <div class="mCSB_draggerContainer">
+                        <div id="mCSB_4_dragger_vertical" class="mCSB_dragger"
+                            style="position: absolute; min-height: 50px; display: block; height: 617px; max-height: 713px;"
+                            oncontextmenu="return false;">
+                            <div class="mCSB_dragger_bar" style="line-height: 50px;"></div>
+                        </div>
+                        <div class="mCSB_draggerRail"></div>
+                    </div>
+                </div>
+                <div id="mCSB_4_scrollbar_horizontal"
+                    class="mCSB_scrollTools mCSB_4_scrollbar mCS-minimal-dark mCSB_scrollTools_horizontal"
+                    style="display: none;">
+                    <div class="mCSB_draggerContainer">
+                        <div id="mCSB_4_dragger_horizontal" class="mCSB_dragger"
+                            style="position: absolute; min-width: 50px; width: 0px; left: 0px;"
+                            oncontextmenu="return false;">
+                            <div class="mCSB_dragger_bar"></div>
+                        </div>
+                        <div class="mCSB_draggerRail"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pm-body clearfix">
+                <ul class="tab-nav tn-justified">
+                    <li class="waves-effect"><a href="{% url 'staffs:staff_about' pk=staff_data.pk %}">About</a> </li>
+                   
+                    <li class="waves-effect"><a
+                            href="{% url 'staffs:staff_attendance_single' pk=staff_data.pk %}">Attendance</a></li>
+                    <li class="waves-effect"><a href="{% url 'staffs:staff_salary' pk=staff_data.pk %}">Salary</a></li>
+                    <li class="waves-effect active"><a
+                            href="{% url 'staffs:staff_permissions' pk=staff_data.pk %}">Permissions</a></li>
+                </ul>
+
+                <div class="pmb-block my-style">
+                    {% if staff_data.permission %}
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Permissions<small></small></h2>
+                            </div>
+                            <div class="card-body">
+                                {% if admin_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading" style="color: #5e5e5e;">Admin Permissions</div>
+                                    </div>
+                                    {% for p in admin_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text" style="color: #5e5e5e;">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if staffs_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading" style="color: #5e5e5e;">Staff Permissions</div>
+                                    </div>
+                                    {% for p in staffs_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text" style="color: #5e5e5e;">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if customers_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Customer Permissions</div>
+                                    </div>
+                                    {% for p in customers_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if vendors_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Vendor Permissions</div>
+                                    </div>
+                                    {% for p in vendors_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if supplier_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Franchisee Permissions</div>
+                                    </div>
+                                    {% for p in supplier_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
+                                {% if products_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Inventory Permissions</div>
+                                    </div>
+                                    {% for p in products_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if sales_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Sale Permissions</div>
+                                    </div>
+                                    {% for p in sales_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% if purchase_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Purchase Permissions</div>
+                                    </div>
+                                    {% for p in purchase_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
+                                {% if account_permissions %}
+                                <div class="list-group-item media col-sm-12">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Accounts Permissions</div>
+                                    </div>
+                                    {% for p in account_permissions %}
+                                    <div class="list-group-item media col-sm-3">
+                                        <div class="media-body">
+                                            <div class="lgi-text">{{p.name}}</div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                <div class="card-body">
+                                    {% if report_permissions %}
+                                    <div class="list-group-item media col-sm-12">
+                                        <div class="media-body">
+                                            <div class="lgi-heading" style="color: #5e5e5e;">Report Permissions</div>
+                                        </div>
+                                        {% for p in report_permissions %}
+                                        <div class="list-group-item media col-sm-3">
+                                            <div class="media-body">
+                                                <div class="lgi-text" style="color: #5e5e5e;">{{p.name}}</div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+
+{% endblock %}
+{% block static %}
+<style>
+    div.my-style div.lgi-heading {
+        font-size: 12px;
+    }
+
+    div.my-style div.lgi-heading,
+    div.my-style div.lgi-text {
+        font-weight: bold;
+    }
+</style>
+{% endblock %}

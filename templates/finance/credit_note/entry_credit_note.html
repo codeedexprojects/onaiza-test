@@ -1,0 +1,700 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <form class="ajax reset redirect" method="post" action="{{url}}" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- <div class="col-sm-4"> -->
+                            <div class="card-body card-padding">
+                                <div class="">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="{{ form.voucher_number.id_for_label }}">
+                                                    {{ form.voucher_number.label }}
+                                                    {% if form.voucher_number.field.required %}
+                                                    <small class="star">*</small>
+                                                    {% endif %}
+                                                    {% if form.voucher_number.help_text %}
+                                                    <span data-original-title="Field Info" title=""
+                                                        data-content="{{ form.voucher_number.help_text }}"
+                                                        data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                        class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.voucher_number }}
+                                                {% if form.voucher_number.errors %}
+                                                <label class="error">{{ form.voucher_number.errors.as_text }}</label>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="id_voucher_date">Voucher Date</label>
+                                                {% if is_edit %}
+                                                <input type="text" name="voucher_date" readonly class="form-control" placeholder="Date" id="id_voucher_date" value="{{ instance.voucher_date|date:'d/m/Y' }}" />
+                                                {% else %}
+                                                <input type="text" name="voucher_date" readonly class="form-control" placeholder="Date" id="id_voucher_date" value="{% now 'd/m/Y' %}" />
+                                                {% endif %}
+                                                <br>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="{{ form.customer.id_for_label }}">
+                                                    {{ form.customer.label }}
+                                                    {% if form.customer.field.required %}
+                                                    <small class="star">*</small>
+                                                    {% endif %}
+                                                    {% if form.customer.help_text %}
+                                                    <span data-original-title="Field Info" title=""
+                                                        data-content="{{ form.customer.help_text }}"
+                                                        data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                        class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.customer }}
+                                                {% if form.customer.errors %}
+                                                <label class="error">{{ form.customer.errors.as_text }}</label>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="{{ form.sale_return.id_for_label }}">
+                                                    {{ form.sale_return.label }}
+                                                    {% if form.sale_return.field.required %}
+                                                    <small class="star">*</small>
+                                                    {% endif %}
+                                                    {% if form.sale_return.help_text %}
+                                                    <span data-original-title="Field Info" title=""
+                                                        data-content="{{ form.sale_return.help_text }}"
+                                                        data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                        class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.sale_return }}
+                                                {% if form.sale_return.errors %}
+                                                <label class="error">{{ form.sale_return.errors.as_text }}</label>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <!-- <div class="col-sm-3 sub_ledger">
+                                            <div class="form-group fg-line">
+                                                <label for="id_sub_ledger">Sale Return</label>
+                                                <select id='id_sub_ledger' data-value='{{ instance.sub_ledger }}' name='sub_ledger' class='selectpicker form-control'></select>
+
+                                            </div>
+                                            <br>
+                                        </div> -->
+
+                                        <div class="col-sm-3 balance">
+                                            <div class="form-group fg-line">
+                                                <label for="id_balance">Customer <span class="balance_label"></span> Balance </label>
+                                                <input id='id_balance' data-model='' readonly name='balance' class='selectpicker form-control'>
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="id_sale_amount">Sale Amount</label>
+                                                <input type="text" disabled class="form-control" id="id_sale_amount" value="0">
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="id_special_discount">Sale Special Discount Amount</label>
+                                                <input type="text" disabled class="form-control" id="id_special_discount" value="0">
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="id_sale_total_amount">Sale Total Amount</label>
+                                                <input type="text" disabled class="form-control" id="id_sale_total_amount" value="0">
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <div class="col-sm-3 returnable_amount">
+                                            <div class="form-group fg-line">
+                                                <label for="id_returnable_amount">Returnable Amount</label>
+                                                <input id='id_returnable_amount' data-model='' readonly name='returnable_amount' class='selectpicker form-control'>
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <!-- <div class="col-sm-3 hidden">
+                                            <div class="form-group fg-line">
+                                                <label for="{{ form.fine_amount.id_for_label }}">
+                                                    {{ form.fine_amount.label }}
+                                                    {% if form.fine_amount.field.required %}
+                                                    <small class="star">*</small>
+                                                    {% endif %}
+                                                    {% if form.fine_amount.help_text %}
+                                                    <span data-original-title="Field Info" title=""
+                                                        data-content="{{ form.fine_amount.help_text }}" data-placement="left"
+                                                        data-toggle="popover" data-trigger="hover"
+                                                        class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.fine_amount }}
+                                                {% if form.fine_amount.errors %}
+                                                <label class="error">{{ form.fine_amount.errors.as_text }}</label>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                        </div> -->
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="{{ form.amount.id_for_label }}">
+                                                    {{ form.amount.label }}
+                                                    {% if form.amount.field.required %}
+                                                    <small class="star">*</small>
+                                                    {% endif %}
+                                                    {% if form.amount.help_text %}
+                                                    <span data-original-title="Field Info" title=""
+                                                        data-content="{{ form.amount.help_text }}" data-placement="left"
+                                                        data-toggle="popover" data-trigger="hover"
+                                                        class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.amount }}
+                                                {% if form.amount.errors %}
+                                                <label class="error">{{ form.amount.errors.as_text }}</label>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <div class="col-sm-3 balance">
+                                            <div class="form-group fg-line">
+                                                <label for="balance">Balance</label>
+                                                <input type="text" disabled class="form-control" id="balance" value="0">
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="{{ form.title.id_for_label }}">
+                                                    {{ form.title.label }}
+                                                    {% if form.title.field.required %}
+                                                    <small class="star">*</small>
+                                                    {% endif %}
+                                                    {% if form.title.help_text %}
+                                                    <span data-original-title="Field Info" title=""
+                                                        data-content="{{ form.title.help_text }}" data-placement="left"
+                                                        data-toggle="popover" data-trigger="hover"
+                                                        class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.title }}
+                                                {% if form.title.errors %}
+                                                <label class="error">{{ form.title.errors.as_text }}</label>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group fg-line">
+                                                <label for="{{ form.description.id_for_label }}">
+                                                    {{ form.description.label }}
+                                                    {% if form.description.field.required %}
+                                                    <small class="star">*</small>
+                                                    {% endif %}
+                                                    {% if form.description.help_text %}
+                                                    <span data-original-title="Field Info" title=""
+                                                        data-content="{{ form.description.help_text }}"
+                                                        data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                        class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                    {% endif %}
+                                                </label>
+                                                {{ form.description }}
+                                                {% if form.description.errors %}
+                                                <label class="error">{{ form.description.errors.as_text }}</label>
+                                                {% endif %}
+                                            </div>
+                                            <br>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- </div>
+                            <div class="card-body card-padding"> -->
+                                <div class="row">
+                                    <div class="col-sm-3 transfer_type">
+                                        <div class="form-group fg-line transfer_type">
+                                            <label for="{{ form.transfer_type.id_for_label }}">
+                                                {{ form.transfer_type.label }}
+                                                {% if form.transfer_type.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+                                                {% if form.transfer_type.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ form.transfer_type.help_text }}"
+                                                    data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                {% endif %}
+                                            </label>
+                                            {{ form.transfer_type }}
+                                            {% if form.transfer_type.errors %}
+                                            <label class="error">{{ form.transfer_type.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-sm-3 bank">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ form.bank.id_for_label }}">
+                                                {{ form.bank.label }}
+                                                {% if form.bank.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+                                                {% if form.bank.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ form.bank.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                {% endif %}
+                                            </label>
+                                            {{ form.bank }}
+                                            {% if form.bank.errors %}
+                                            <label class="error">{{ form.bank.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-sm-3 cheque_no">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ form.cheque_no.id_for_label }}">
+                                                {{ form.cheque_no.label }}
+                                                {% if form.cheque_no.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+                                                {% if form.cheque_no.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ form.cheque_no.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                {% endif %}
+                                            </label>
+                                            {{ form.cheque_no }}
+                                            {% if form.cheque_no.errors %}
+                                            <label class="error">{{ form.cheque_no.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-sm-3 cheque_date">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ form.cheque_date.id_for_label }}">
+                                                {{ form.cheque_date.label }}
+                                                {% if form.cheque_date.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+                                                {% if form.cheque_date.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ form.cheque_date.help_text }}"
+                                                    data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                {% endif %}
+                                            </label>
+                                            {{ form.cheque_date }}
+                                            {% if form.cheque_date.errors %}
+                                            <label class="error">{{ form.cheque_date.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-sm-3 draft_no">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ form.draft_no.id_for_label }}">
+                                                {{ form.draft_no.label }}
+                                                {% if form.draft_no.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+                                                {% if form.draft_no.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ form.draft_no.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                {% endif %}
+                                            </label>
+                                            {{ form.draft_no }}
+                                            {% if form.draft_no.errors %}
+                                            <label class="error">{{ form.draft_no.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-sm-3 draft_date">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ form.draft_date.id_for_label }}">
+                                                {{ form.draft_date.label }}
+                                                {% if form.draft_date.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+                                                {% if form.draft_date.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ form.draft_date.help_text }}" data-placement="left"
+                                                    data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                {% endif %}
+                                            </label>
+                                            {{ form.draft_date }}
+                                            {% if form.draft_date.errors %}
+                                            <label class="error">{{ form.draft_date.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-sm-3 transaction_no">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ form.transaction_no.id_for_label }}">
+                                                {{ form.transaction_no.label }}
+                                                {% if form.transaction_no.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+                                                {% if form.transaction_no.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ form.transaction_no.help_text }}"
+                                                    data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                {% endif %}
+                                            </label>
+                                            {{ form.transaction_no }}
+                                            {% if form.transaction_no.errors %}
+                                            <label class="error">{{ form.transaction_no.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="col-sm-3 transaction_date">
+                                        <div class="form-group fg-line">
+                                            <label for="{{ form.transaction_date.id_for_label }}">
+                                                {{ form.transaction_date.label }}
+                                                {% if form.transaction_date.field.required %}
+                                                <small class="star">*</small>
+                                                {% endif %}
+                                                {% if form.transaction_date.help_text %}
+                                                <span data-original-title="Field Info" title=""
+                                                    data-content="{{ form.transaction_date.help_text }}"
+                                                    data-placement="left" data-toggle="popovebank" data-trigger="hover"
+                                                    class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                {% endif %}
+                                            </label>
+                                            {{ form.transaction_date }}
+                                            {% if form.transaction_date.errors %}
+                                            <label class="error">{{ form.transaction_date.errors.as_text }}</label>
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                    </div>
+
+                                    <div class="m-b-20 col-sm-12">
+                                        <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+{% endblock %}
+{% block static %}
+{% load static %}
+{{form.media}}
+<script type="text/javascript">
+    function TranferTypeReset() {
+        var transfer_type = $("#id_transfer_type").val();
+
+        if (transfer_type == 10 || transfer_type == 30) {
+            $('.bank').hide()
+            $('.cheque_no').hide()
+            $('.cheque_date').hide()
+            $('.draft_no').hide()
+            $('.draft_date').hide()
+            $('.transaction_no').hide()
+            $('.transaction_date').hide()
+        } else if (transfer_type == 15) {
+            $('.bank').show()
+            $('.cheque_no').show()
+            $('.cheque_date').show()
+            $('.draft_no').hide()
+            $('.draft_date').hide()
+            $('.transaction_no').hide()
+            $('.transaction_date').hide()
+        } else if (transfer_type == 20) {
+            $('.bank').show()
+            $('.cheque_no').hide()
+            $('.cheque_date').hide()
+            $('.draft_no').show()
+            $('.draft_date').show()
+            $('.transaction_no').hide()
+            $('.transaction_date').hide()
+        } else if (transfer_type == 25) {
+            $('.bank').show()
+            $('.cheque_no').hide()
+            $('.cheque_date').hide()
+            $('.draft_no').hide()
+            $('.draft_date').hide()
+            $('.transaction_no').show()
+            $('.transaction_date').show()
+        }
+    }
+
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+
+        // {% if is_edit %}
+        $('#id_customer').change()
+        // {% else %}
+        $('#id_transfer_type option[value=10]').prop('selected', true);
+        // {% endif %} just trying
+        $('#id_transfer_type').selectpicker('refresh')
+
+        $('.balance').hide()
+        TranferTypeReset();
+    });
+
+    $(document).on("change keyup", "#id_transfer_type", function () {
+        TranferTypeReset();
+    });
+
+    function getSubLedgerData() {
+        $('.sub_ledger.col-sm-3').show();
+        // $('.current_balance').show();
+        // $('.balance').show();
+        var customer_id = $('#id_customer').val();
+        url = "{% url 'sales:get_sale_returns' %}";
+
+        if (url != '') {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    customer_id: customer_id
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == "true") {
+                        var model = data['model']
+                        var instances = data['data']
+                        var sub_ledger = `<option value=''>----------</option>`;
+
+                        for (i = 0; i < instances.length; i++) {
+                            if ("{{form.sub_ledger.value}}" == instances[i]['pk']){
+                                console.log("hi");
+                                sub_ledger += `<option selected value='${instances[i]['pk']}'>${instances[i]['return']} </option>`
+                            }
+                            else{
+                                console.log("{{form.sub_ledger.value}}");
+                                sub_ledger += `<option value='${instances[i]['pk']}'>${instances[i]['return']} </option>`
+                            }
+                        }
+
+                        $('#id_sale_return').attr('data-model', model).html(sub_ledger).selectpicker('refresh');
+                        $('#id_sale_return').trigger('change');
+                    }
+                },
+                error: function (data) { }
+            });
+        }
+    }
+
+    function getBalanceData(url, pk) {
+        if (pk) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: pk,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == "true") {
+                        var current_balance = data['current_balance'];
+
+                        var debit = data['debit'];
+                        var credit = data['credit'];
+
+                        console.log(debit, credit);
+
+                        if (credit != "0") {
+                            $('#id_balance').val(credit).attr('data-balance-type', 'credit');
+                            $('.balance_label').text('Credit')
+                        }
+                        else if (debit != "0") {
+                            $('#id_balance').val(debit).attr('data-balance-type', 'debit');
+                            $('.balance_label').text('Debit')
+                        }
+                        else {
+                            $('#id_balance').val(0).attr('data-balance-type', '');
+                            $('.balance_label').text('')
+                        }
+                    }
+                },
+                error: function (data) {
+
+                }
+            });
+        }
+    }
+
+    function getSaleReturnBalance(pk) {
+        if (pk) {
+            $.ajax({
+                type: "GET",
+                url: "{% url 'sales:get_sale_return_amount' %}",
+                dataType: 'json',
+                data: {
+                    id: pk,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == "true") {
+                        var current_balance = data['amount'];
+                        $('#id_returnable_amount').val(current_balance)
+
+                        var total_amount = data['total_amount'];
+                        var sale_amount = data['sub_total_amount'];
+                        var special_discount = data['special_discount'];
+
+                        $('#id_sale_total_amount').val(total_amount);
+                        $('#id_sale_amount').val(sale_amount);
+                        $('#id_special_discount').val(special_discount);
+
+                    }
+                },
+                error: function (data) {
+
+                }
+            });
+        }
+        else {
+            $('#id_balance').val(0).attr('data-balance-type', '');
+            $('.balance_label').text('')
+        }
+    }
+
+    $('#id_customer').on('change keyup', function () {
+        $this = $(this);
+        getSubLedgerData();
+        // get_current_balance($this);
+        let customer = $this.val()
+        let url = "{% url 'customers:get_balance' %}";
+        getBalanceData(url, customer);
+    });
+
+    $('#id_sale_return').on('change', function(){
+        $this = $(this);
+        var pk = $(this).val()
+        getSaleReturnBalance(pk)
+        get_return_customer($this)
+    })
+
+    function get_return_customer($selector) {
+        var id = $selector.val();
+        var url = "{% url 'sales:get_return_customer' %}";
+        if (id != '' && id != null) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    var customer = data['customer'];
+                    var customer_name = data['customer_name'];
+
+                    if (status == "true") {
+
+                        var options = `<option value="${customer}" selected> ${customer_name} </option>`
+                        $("#id_customer").append(options);
+
+                    } else {
+                        var nothing_found = "class='text-center p-30'>No Products found</p>";
+                    }
+                },
+                error: function (data) {
+                    remove_popup_box();
+                }
+            });
+        }
+    }
+
+    $(document).on('change keyup', '#id_amount ,#id_fine_amount', function () {
+        let current_balance = parseFloat($("#id_balance").val())
+        let balance_type = parseFloat($("#id_balance").attr('data-balance-type'))
+
+        let amount = parseFloat($("#id_amount").val());
+        let fine_amount = parseFloat($("#id_fine_amount").val());
+        let returnable_amount = parseFloat($('#id_returnable_amount').val());
+
+        if (!returnable_amount)
+            returnable_amount = 0;
+
+        returnable_amount = returnable_amount - fine_amount;
+
+        if (balance_type == 'credit')
+            balance = (current_balance + returnable_amount) - amount;
+        else{
+            if (returnable_amount > current_balance){
+                balance = (returnable_amount - current_balance) - amount;
+            }else {
+                balance = (current_balance - returnable_amount) + amount;
+            }
+        }
+
+        $('#balance').siblings('label').text("Balance")
+        balance = Math.round(balance * 100)/100
+        $('#balance').val(balance)
+    })
+
+</script>
+{% endblock %}

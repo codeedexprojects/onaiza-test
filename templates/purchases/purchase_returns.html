@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+
+                <a class=" btn btn-sm btn-soft-primary" href="{% url 'purchases:create_purchase_return' %}"
+                    role="button"><i class="fas fa-plus mr-2"></i>Add Purchase Return</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable-">
+                    <thead>
+                        <tr>
+                            <th style="width:20px;"></th>
+                            <th>Id</th>
+                            <th>Date</th>
+                            <th>Vendor</th>
+                            <th>Amount Returned</th>
+                            <th>Cancelled?</th>
+                            <!-- <th>Total</th> -->
+                            <th data-column-id="action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for instance in instances %}
+                        <tr class="{% if instance.is_updated %}text-danger{% endif %}">
+                            <td style="width:20px;">
+                                <!-- <div class="hide checkbox lgi-checkbox m-t-5">
+                                    <label>
+                                        <input class="check check_item" type="checkbox" value="{{instance.pk}}"
+                                            name="delete_item">
+                                        <i class="input-helper"></i>
+                                    </label>
+                                </div> -->
+                            </td>
+                            <td><a href="{% url 'purchases:purchase_return' pk=instance.pk %}">{{forloop.counter}}</a>
+                            </td>
+                            <td>{{instance.date|date:"d/m/y"}}</td>
+                            <td>{{instance.vendor}}</td>
+                            <td>{{instance.amount_returned}}</td>
+                            <td class="text-danger">{{ instance.is_deleted|yesno:"Cancelled, " }}</td>
+                            <!-- <td>{{instance.total}}</td> -->
+
+                            <td class="text-right noExl">
+
+
+                                <a href="{% url 'purchases:purchase_return' pk=instance.pk %}"><i
+                                        class="las la-eye text-info font-18"></i></a>
+                                {% if not instance.is_deleted %}
+                                <a data-id="{{ instance.pk }}" class="action-button remove"
+                                    href="{% url 'purchases:delete_purchase_return' pk=instance.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+                                {% endif %}
+                            </td>
+
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

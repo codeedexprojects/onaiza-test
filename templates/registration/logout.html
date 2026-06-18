@@ -1,0 +1,35 @@
+{% extends "registration/auth_base.html" %}
+{% load i18n %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="main-wrapper">
+	<div class="account-content">
+		<div class="container">
+
+			<div class="account-box">
+				<div class="account-wrapper">
+
+					<div class="lb-body">
+						<p class="message center" style="text-align: center;">You are successfully logged out. <br />
+							<a class="color_link center" href="{% url 'auth_login' %}">Login Again</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.main-wrapper{
+		width:inherit;
+		display:flex;
+		justify-content: center;
+		align-items:center
+	}
+</style>
+
+{% endblock %}

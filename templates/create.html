@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+
+                    <form action="{{url}}" method="post" class="ajax redirect">
+                        {% csrf_token %}
+                        <div class="row">
+                            {% for f in form %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.f.id_for_label }}">
+                                       {{f.label}}
+                                        {% if f.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ f }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+<script src="{% static 'web/js/banner.js' %}"></script>
+{% endblock %}

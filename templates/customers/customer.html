@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+   <!-- Page Header -->
+   <div class="page-header">
+      <div class="row">
+         <div class="col">
+            <h3 class="page-title">{{title|title}}</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+               <li class="breadcrumb-item active">{{title|title}}</li>
+            </ul>
+         </div>
+         <div class="col-auto float-right ml-auto">
+            <h3 class="ah-label hidden-xs palette-White text">{{instance.customer|title}}
+               {{instance.phone}}</h3>
+
+            <ul class="personal-info row">
+               <li class="col">
+                  <a title="Create new Customer" href="{% url 'customers:create' %}" class=" text-white edit-icon">
+                     <i style="color: #000000;" class="las la-plus"></i>
+                  </a>
+               </li>
+
+               <li class="col">
+                  <a title="Edit Customer" href="{% url 'customers:edit' pk=instance.pk %}" class="edit-icon">
+                     <i class="las la-pen"></i>
+                  </a>
+               </li>
+               <li class="col">
+                  <a title="Delete Customer" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                     data-title="Are you sure?" href="{% url 'customers:delete' pk=instance.pk %}"
+                     class="action-button redirect delete-icon edit-icon">
+                     <i class="las la-trash"></i>
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <!-- /Page Header -->
+
+
+   <div class="tab-content row">
+      <!-- Profile Info Tab -->
+      <div id="c-grid" class="col-sm-8 clearfix" data-columns="2">
+         <div class="card">
+            <div class="card-header">
+               <h4>Customer Info <small></small></h4>
+            </div>
+            <div class="card-body">
+
+
+               <div class="row">
+
+                  <div class="list-group col-sm-6 lg-alt c-overflow">
+                     {% if instance.image %}
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Photo </div>
+                           <img src="{{ instance.image.thumbnail.150x150 }}" alt="">
+                        </div>
+                     </div>
+                     {% endif %}
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Name</div>
+                           <small class="lgi-text">{{instance.name|default:"-"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Phone </div>
+                           <small class="lgi-text">{{instance.phone|default:"-"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Email </div>
+                           <small class="lgi-text">{{instance.email|default:"-"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Address </div>
+                           <small class="lgi-text">{{instance.address|default:"-"}}</small>
+                        </div>
+                     </div>
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Customer Type</div>
+                           <small class="font-weight-bold lgi-text">{{instance.get_customer_type_display}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">GST Number </div>
+                           <small class="lgi-text">{{instance.gst_number|default:"-"}}</small>
+                        </div>
+                     </div>
+
+                  </div>
+                  <div class="list-group col-sm-6 lg-alt c-overflow">
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Country </div>
+                           <small class="lgi-text">{{instance.country|default:"-"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">State </div>
+                           <small class="lgi-text">{{instance.state|default:"-"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">District </div>
+                           <small class="lgi-text">{{instance.district|default:"-"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Total Privilege points </div>
+                           <small class="lgi-text">{{instance.privilege_points|default:"0"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Available Privilege points </div>
+                           <small class="lgi-text font-weight-bold">{{instance.current_privilege_points|default:"0"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Current Balance({{instance.get_balance_data.balance_type}}) : </div>
+                           <small class="lgi-text">{{instance.get_balance_data.balance}}</small>
+                        </div>
+                     </div>
+
+                  </div>
+
+               </div>
+            </div>
+         </div>
+         <!-- /Page Content -->
+      </div>
+
+      <div class="col-sm-4">
+         <div class="card">
+            <div class="card-header">
+               <h4>Basic Info <small></small></h4>
+            </div>
+
+            <div class="card-body">
+               <div class="list-group lg-alt c-overflow">
+
+                  <div class="list-group-item media ">
+                     <div class="media-body">
+                        <div class="lgi-heading">Creator </div>
+                        <small class="lgi-text">{{instance.creator}}</small>
+                     </div>
+                  </div>
+
+                  <div class="list-group-item media ">
+                     <div class="media-body">
+                        <div class="lgi-heading">Date Added </div>
+                        <small class="lgi-text">{{instance.date_added|date:"d, M Y P"}}</small>
+                     </div>
+                  </div>
+
+                  <div class="list-group-item media ">
+                     <div class="media-body">
+                        <div class="lgi-heading">Updater </div>
+                        <small class="lgi-text">{{instance.updater}}</small>
+                     </div>
+                  </div>
+
+                  <div class="list-group-item media ">
+                     <div class="media-body">
+                        <div class="lgi-heading">Date Updated </div>
+                        <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+      <div class="row">
+         {% if sale_instances %}
+         <div class="col-lg-6">
+            <div class="card">
+               <div class="card-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                           <h4 class="card-title">Sales</h4>
+                     </div><!--end col-->
+                  </div>  <!--end row-->
+               </div><!--end card-header-->
+               <div class="card-body">
+                     <div class="table-responsive">
+                        <table class="table mb-0">
+                           <thead class="thead-light">
+                                 <tr>
+                                    <th class="border-top-0">Sale Number</th>
+                                    <th class="border-top-0">Date</th>
+                                    <th class="border-top-0">Sale Type</th>
+                                    <th class="border-top-0">Subtotal</th>
+                                 </tr><!--end tr-->
+                           </thead>
+                           <tbody>
+                              {% for sale in sale_instances %}
+                                 <tr>
+                                    <td>
+                                       <a class="text-primary" href="{% url 'sales:sale' sale.pk %}">{{ sale.sale_id }}</a></td>
+                                    <td>{{ sale.sale_date }}</td>
+                                    <td>{{ sale.sale_type }}</td>
+                                    <td>{{ sale.subtotal }}</td>
+
+                                 </tr><!--end tr-->
+                              {% endfor %}
+                           </tbody>
+                        </table> <!--end table-->
+                     </div><!--end /div-->
+               </div><!--end card-body-->
+            </div>
+         </div>
+         {% endif %}
+         {% if order_instances %}
+         <div class="col-lg-6">
+            <div class="card">
+               <div class="card-header">
+                  <div class="row align-items-center">
+                     <div class="col">
+                           <h4 class="card-title">Orders</h4>
+                     </div><!--end col-->
+                  </div>  <!--end row-->
+               </div><!--end card-header-->
+               <div class="card-body">
+                     <div class="table-responsive">
+                        <table class="table mb-0">
+                           <thead class="thead-light">
+                                 <tr>
+                                    <th class="border-top-0">Order ID</th>
+                                    <th class="border-top-0">Billing Name</th>
+                                    <th class="border-top-0">Delivery Date</th>
+                                    <th class="border-top-0">Order Status</th>
+                                    <th class="border-top-0">Total</th>
+                                 </tr><!--end tr-->
+                           </thead>
+                           <tbody>
+                              {% for order in order_instances %}
+                                 <tr>
+                                    <td>
+                                       <a class="text-primary" href="{% url 'orders:order' order.pk %}">{{ order.order_id }}</a></td>
+                                    </td>
+                                    <td>{{ order.billing_name }}</td>
+                                    <td>{{ order.delivery_date }}</td>
+                                    <td>{{ order.get_order_status_display }}</td>
+                                    <td>{{ order.total_amt }}</td>
+
+                                 </tr><!--end tr-->
+                              {% endfor %}
+                           </tbody>
+                        </table> <!--end table-->
+                     </div><!--end /div-->
+               </div><!--end card-body-->
+            </div>
+         </div>
+         {% endif %}
+         {% if receipt_instances %}
+         <div class="col-lg-6">
+            <div class="card">
+               <div class="card-header">
+                  <h4 class="card-title">Receipt Voucher</h4>
+               </div><!--end card-header-->
+               <div class="card-body">
+                     <div class="table-responsive">
+                        <table class="table mb-0">
+                           <thead class="thead-light">
+                                 <tr>
+                                    <th class="border-top-0">Voucher Number</th>
+                                    <th class="border-top-0">Title</th>
+                                    <th class="border-top-0">Date</th>
+                                    <th class="border-top-0">Amount</th>
+                                 </tr><!--end tr-->
+                           </thead>
+                           <tbody>
+                              {% for receipt in receipt_instances %}
+                                 <tr>
+                                    <td>
+                                       <a href="{% url 'finance:receipt_voucher' receipt.pk %}" class="text-primary lgi-text">{{ receipt.voucher_number }}</a>
+                                    </td>
+                                    <td>{{ receipt.title }}</td>
+                                    <td>{{ receipt.voucher_date }}</td>
+                                    <td>{{ receipt.amount }}</td>
+
+                                 </tr><!--end tr-->
+                              {% endfor %}
+                           </tbody>
+                        </table> <!--end table-->
+                     </div><!--end /div-->
+               </div><!--end card-body-->
+            </div>
+         </div>
+         {% endif %}
+         {% if payment_instances %}
+         <div class="col-lg-6">
+            <div class="card">
+               <div class="card-header">
+                  <h4 class="card-title">Payment Voucher</h4>
+               </div><!--end card-header-->
+               <div class="card-body">
+                     <div class="table-responsive">
+                        <table class="table mb-0">
+                           <thead class="thead-light">
+                                 <tr>
+                                    <th class="border-top-0">Voucher Number</th>
+                                    <th class="border-top-0">Title</th>
+                                    <th class="border-top-0">Date</th>
+                                    <th class="border-top-0">Amount</th>
+                                 </tr><!--end tr-->
+                           </thead>
+                           <tbody>
+                              {% for payment in payment_instances %}
+                                 <tr>
+                                    <td>
+                                       <a href="{% url 'finance:payment_voucher' payment.pk %}" class="text-primary lgi-text">{{ payment.voucher_number }}</a>
+                                    </td>
+                                    <td>{{ payment.title }}</td>
+                                    <td>{{ payment.voucher_date }}</td>
+                                    <td>{{ payment.amount }}</td>
+
+                                 </tr><!--end tr-->
+                              {% endfor %}
+                           </tbody>
+                        </table> <!--end table-->
+                     </div><!--end /div-->
+               </div><!--end card-body-->
+            </div>
+         </div>
+         {% endif %}
+      </div>
+   </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

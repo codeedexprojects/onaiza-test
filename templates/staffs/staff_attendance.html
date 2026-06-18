@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+
+<section id="content">
+                <div class="container">
+                    <div class="c-header">
+                        <h2>Malinda Hollaway <small>Web/UI Developer, Edinburgh, Scotland</small></h2>
+                    </div>
+
+                    <div class="card" id="profile-main">
+                        <div class="pm-overview c-overflow mCustomScrollbar _mCS_4 mCS-autoHide" style="overflow: visible;"><div id="mCSB_4" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical_horizontal mCSB_outside" tabindex="0"><div id="mCSB_4_container" class="mCSB_container mCS_x_hidden mCS_no_scrollbar_x" style="position: relative; top: 0px; left: 0px; width: 100%;" dir="ltr">
+                            <div class="pmo-pic">
+                                <div class="p-relative">
+                                    {% if staff_data.photo %}
+                                        <a href="">
+                                            <img class="img-responsive mCS_img_loaded" src="{{staff_data.photo.crop.260x260}}" alt="Photo">
+                                        </a>
+                                        
+                                    {% else %}
+                                        {% if staff_data.gender == 'male' %}
+                                            <a href="">
+                                                <img class="img-responsive mCS_img_loaded" src="../../static/img/blank-male.jpg" alt="Photo">
+                                            </a>
+                                        {% elif staff_data.gender == 'female' %}
+                                            <a href="">
+                                                <img class="img-responsive mCS_img_loaded" src="../../static/img/blank-female.png" alt="Photo">
+                                            </a>
+                                        {% else %}
+                                            <a href="">
+                                                <img class="img-responsive mCS_img_loaded" src="../../static/img/photo-other.png" alt="Photo">
+                                            </a>
+                                        {% endif %}
+
+
+                                    {% endif %}
+
+                                    <!-- <div class="dropdown pmop-message">
+                                        <a data-toggle="dropdown" href="" class="btn palette-White bg btn-float z-depth-1 waves-effect waves-circle waves-float">
+                                            <i class="zmdi zmdi-comment-text-alt"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu">
+                                            <textarea placeholder="Write something..."></textarea>
+
+                                            <button class="btn bgm-green btn-float waves-effect waves-circle waves-float"><i class="zmdi zmdi-mail-send"></i></button>
+                                        </div>
+                                    </div>
+ -->
+                                    <a href="" class="pmop-edit">
+                                        <i class="zmdi zmdi-camera"></i> <span class="hidden-xs">Update Profile Picture</span>
+                                    </a>
+                                </div>
+
+
+                                <div class="pmo-stat p-b-15">
+                                    <h4 class="m-0 c-white">{{staff_data.user}}</h4>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="pmo-block pmo-contact hidden-xs">
+                                <h2>Contact</h2>
+
+                                <ul>
+                                    <li><i class="zmdi zmdi-phone"></i>{{staff_data.phone}}</li>
+                                    <li><i class="zmdi zmdi-email"></i>{{staff_data.email}}</li>
+                                    <li>
+                                        <i class="zmdi zmdi-pin"></i>
+                                        <address class="m-b-0 ng-binding">
+                                            {{staff_data.address}}
+                                        </address>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                           
+
+                        <div class="my-buttons" style="display: flex;justify-content: center;">
+                            <a href="{% url 'staffs:view_staff' pk=staff_data.pk %}" class="m-r-10 btn btn-info">view</a>
+                            <a href="{% url 'staffs:edit_staff' pk=staff_data.pk %}" class="m-r-10 btn btn-warning">Edit</a>
+                            <a href="{% url 'staffs:edit_staff' pk=staff_data.pk %}" class="btn btn-danger">Delete</a>
+                        </div>
+                        </div></div><div id="mCSB_4_scrollbar_vertical" class="mCSB_scrollTools mCSB_4_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical" style="display: block;"><div class="mCSB_draggerContainer"><div id="mCSB_4_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 50px; display: block; height: 617px; max-height: 713px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar" style="line-height: 50px;"></div></div><div class="mCSB_draggerRail"></div></div></div><div id="mCSB_4_scrollbar_horizontal" class="mCSB_scrollTools mCSB_4_scrollbar mCS-minimal-dark mCSB_scrollTools_horizontal" style="display: none;"><div class="mCSB_draggerContainer"><div id="mCSB_4_dragger_horizontal" class="mCSB_dragger" style="position: absolute; min-width: 50px; width: 0px; left: 0px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar"></div></div><div class="mCSB_draggerRail"></div></div></div></div>
+
+                        <div class="pm-body clearfix">
+                            <ul class="tab-nav tn-justified">
+                                <li class="waves-effect"><a href="{% url 'staffs:staff_about' pk=staff_data.pk %}">About</a> </li>
+                                <li class="active waves-effect"><a href="{% url 'staffs:staff_attendance_single' pk=staff_data.pk %}">Attendance</a></li>
+                                <li class="waves-effect"><a href="{% url 'staffs:staff_salary' pk=staff_data.pk %}">Salary</a></li>
+                                <li class="waves-effect"><a href="{% url 'staffs:staff_permissions' pk=staff_data.pk %}">Permissions</a></li>
+                            </ul>
+                            <div class="card">
+
+                            <section id="content" style="width:80%;margin:0 auto;color:white !important" class="white">
+                              <div id="calendar"></div>
+                            </section>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+{% endblock%}
+
+{% block static %}
+    {% load static %}
+    <script>
+        $('#calendar').fullCalendar({
+            dayClick: function(date, jsEvent, view) {
+                var redirect_url = "{% url 'staffs:staff_attendance_single_view' pk=staff_data.pk %}?date=" + date.format('MM/DD/YYYY');
+                window.location.href = redirect_url;
+                
+            }
+        });
+    </script>
+
+    <style>
+        .card {
+            margin-bottom: 0 !important;
+        }
+        .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover, .fc-unthemed .fc-list-view, .fc-unthemed .fc-list-heading td {
+            border-color: #afa7a7;
+        }
+        #calendar .fc-day-number {
+                color: #fff !important;
+        }
+         .color-widget {
+            background: -webkit-linear-gradient(-45deg, #091204, #128a04);
+            background: -o-linear-gradient(-45deg, #091204, #128a04);
+            background: -moz-linear-gradient(-45deg, #091204, #128a04);
+            background: linear-gradient(-45deg, #091204, #128a04);
+            width: 100%;
+            min-height: 80px;
+            border-radius: 4px;
+            -webkit-box-shadow: 3px 3px 10px rgba(0,0,0,.3);
+            box-shadow: 3px 3px 10px rgba(0,0,0,.3);
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 15px;
+            color: #fff;
+            position: relative;
+        }
+        .color-widget.two {
+            background: -webkit-linear-gradient(-45deg, #091204, #F2002F);
+            background: -o-linear-gradient(-45deg, #091204, #F2002F);
+            background: -moz-linear-gradient(-45deg, #091204, #F2002F);
+            background: linear-gradient(-45deg, #091204, #F2002F);
+        }
+        .color-widget h4 {
+            font-size: 15px;
+            font-weight: 500;
+            color: #fff;
+            margin-top: 0;
+        }
+        .color-widget small {
+            font-size: 23px;
+            font-weight: 500;
+            position: absolute;
+            bottom: 4px;
+            right: 15px;
+            color: #fff;
+        }
+        .m-b-30{
+            margin-bottom: 30px;
+        }
+        .p30{
+            padding:30px;
+        }
+        .table td {
+            padding: 0.9375rem;
+            text-align: center;
+        }
+        .table thead th{
+            padding-top: 4%;
+            text-align: center;
+        }
+        .tac{
+            text-align: center;
+        }
+    </style>
+{% endblock %}

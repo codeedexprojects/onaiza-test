@@ -1,0 +1,109 @@
+<table id="data-table-basic" class="table table-striped table-vmiddle">
+    <thead>
+        <tr>
+            <th style="width:20px;"></th>
+            <th data-column-id="product">Product</th>
+            <th data-column-id="product">Batch</th>
+            <th data-column-id="qty">Purchased Qty</th>
+            <th data-column-id="qty">Qty</th>
+            <!-- <th data-column-id="qty">Already Return Qty</th>
+            <th data-column-id="unit">GST</th>
+            <th data-column-id="price">Amount</th> -->
+            <!-- <th data-column-id="Discount">Discount</th> -->
+            <!-- <th data-column-id="gst_amount">GST Amount</th> -->
+            <!-- <th data-column-id="total">Sub Total</th> -->
+            <th data-column-id="status">Status</th>
+            <th data-column-id="sub_total">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in sale_items %}
+        <tr class="return_data">
+            {% if item.quantity == 0 %}
+            <td></td>
+            {% else %}
+            <td style="width:20px;">
+                <!-- <div class="checkbox lgi-checkbox m-t-5">
+                    <label>
+                        <input class="check_item return_product_check" data-unit="{{item.unit.pk}}"
+                            type="checkbox" data-qty="{{item.quantity}}" data-cess="{{item.cess}}" data-gst="{{item.gst_amount}}" value="{{item.pk}}" name="purchase_item_pk">
+                        <i class="input-helper"></i>
+                    </label>
+                </div> -->
+
+                <div class="col-sm-10 ml-auto">
+                    <div class="custom-control custom-checkbox">
+
+
+                        <input type="checkbox" data-cess="{{item.cess}}" data-gst="{{item.gst_amount}}"
+                            value="{{item.pk}}" data-qty="{{item.quantity}}" data-unit="{{item.unit.pk}}"
+                            name="purchase_item_pk" class="check_item return_product_check custom-control-input"
+                            id="horizontalCheckbox{{item.id}}" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                        <label class="custom-control-label" for="horizontalCheckbox{{item.id}}"></label>
+                    </div>
+                </div>
+            </td>
+            {% endif %}
+            <td class="product_datail">
+                {% if item.product_variant %}
+                {{ item.product_variant }}
+                {% else %}
+                {{item.product}}
+                {% endif %}
+            </td>
+            <td class="batch">
+                {{ item.batch }}
+            </td>
+            <td class="quantity_td">
+                {{ item.quantity }}
+                <span class="">
+                    <input type="hidden" class="returned_qty" value="{{ item.return_qty|default:0 }}" />
+                    <input type="hidden" class="purchase_qty" value="{{ item.quantity|default:0 }}" />
+                    <input type="hidden" class="return_qty" value="{{ item.retrun|default:0 }}" />
+                </span>
+            </td>
+            <td class="sale_return_item_qty_td">
+                <span class="sale_return_item_qty">
+                    {{ item.quantity }}
+                </span>
+            </td>
+            <!-- <td>
+                <span>
+                    {{item.return_qty}}
+                </span>
+            </td> -->
+            <!-- <td>
+                {{item.tax}}
+            </td> -->
+            <!-- <td class="product_price">
+                {{item.amount}}
+            </td> -->
+            <!-- <td class="productsale_discount">
+            {{item.discount}}
+        </td> -->
+            <!-- <td class="product_tax">
+                {% if item.purchase.add_gst %}
+                {{item.tax_amount}}
+                {% else %}
+                0
+                {% endif %}
+            </td> -->
+            <td>
+                <span class="sale_return_item_status p-relative">
+                    Change Status
+                </span>
+            </td>
+            <td class="productsale_subtotal">
+                {{item.total}}
+            </td>
+
+            <!-- <td>
+                <span class="sale_return_item_subtotal p-relative">
+                    <input type="text" disabled class="form-control" value="{{item.total}}" />
+                </span>
+            </td> -->
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>

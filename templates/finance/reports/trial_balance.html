@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body card-padding">
+                        <form action="" method="get">
+                            <div class="row m-b-20" style="align-items: center;">
+
+                                <div class="col-md-4">
+                                    <label for="id_date">Date</label>
+                                    <input type="text" class="form-control date-picker-dd" value="{{filter_date}}"
+                                        id="id_date" name="date" />
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card p-20">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <h4 style="text-align: center;">{{title}}</h4>
+                                <table class="table table-bordered table2excel">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:20px;"></th>
+                                            <th style="font-weight: bold">Particulars</th>
+                                            <th style="font-weight: bold">Debit</th>
+                                            <th style="font-weight: bold">Credit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for instance in instances %}
+                                        <tr>
+                                            <td></td>
+                                            <td>{{instance.account_head}}</td>
+
+                                            {% if instance.close_debit %}
+                                            <td class="debit">{{instance.closing_balance}}</td>
+                                            <td>0</td>
+                                            {% else %}
+                                            <td>0</td>
+                                            <td class="credit">{{instance.closing_balance}}</td>
+                                            {% endif %}
+
+                                        </tr>
+                                        {% endfor %}
+                                        <tr class="difference_debit_credit">
+                                            <td></td>
+                                            <td>Difference in opening balance</td>
+
+
+                                            <td class="difference_debit">0</td>
+                                            <td class="difference_credit">0</td>
+
+
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td class="total total_row">Total</td>
+
+                                            <td class="total total_row total_debit"></td>
+                                            <td class="total total_row total_credit"></td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                {% if is_excel_export %}
+                                <div class="export_button">
+                                    <button class="exportToExcel" title="Export to XLS"><i
+                                            class="la la-download"></i></button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Page Wrapper -->
+{{ form.media }}
+{% endblock %}
+{% block static %}
+<script>
+    var total_debit = 0;
+    var total_credit = 0;
+    $(".debit").each(function () {
+        total_debit += parseFloat($(this).html());
+    });
+    $(".credit").each(function () {
+        total_credit += parseFloat($(this).html());
+    });
+
+    var temp_total_debit = total_debit
+    var temp_total_credit = total_credit
+
+    if(total_credit-total_debit > 0){
+        difference = total_credit-total_debit
+        $('.difference_debit').html(difference)
+        temp_total_debit += difference
+    }
+    else if(total_credit-total_debit < 0){
+        difference = total_debit - total_credit
+        $('.difference_credit').html(difference)
+        temp_total_credit += difference
+    }
+    else{
+        $('.difference_debit_credit').remove()
+    }
+
+    $(".total_debit").html(Math.round(temp_total_debit * 100) / 100);
+    $(".total_credit").html(Math.round(temp_total_credit * 100) / 100);
+
+
+</script>
+
+<script>
+    function showSubLedger() {
+        var url = '';
+        account_head = $('#id_account_head option:selected').text();
+
+        $('.sub_ledger.col-sm-3').hide();
+
+        if (account_head == "Sundry Debtor") {
+            $('.sub_ledger.col-sm-3').show();
+            var url = "{% url 'customers:get_customers' %}";
+        }
+        else if (account_head == "Sundry Creditor (Vendor)") {
+            $('.sub_ledger.col-sm-3').show();
+            var url = "{% url 'vendors:get_vendors' %}";
+        }
+        else if (account_head == "Sundry Creditor (Delivery Agent)") {
+            $('.sub_ledger.col-sm-3').show();
+            url = "{% url 'users:get_delivery_agents' %}";
+        }
+
+        getSubLedgerData(url)
+    }
+
+    function getSubLedgerData(url) {
+        if (url != '') {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == "true") {
+                        var instances = data['instances']
+                        var sub_ledger = `<option value=''>----------</option>`;
+
+                        if (instances) {
+                            for (i = 0; i < instances.length; i++) {
+                                sub_ledger += `<option value='${instances[i]['pk']}'>${instances[i]['name']} </option>`
+                            }
+                            $('#id_sub_ledger').html(sub_ledger).selectpicker('refresh');
+
+                            var selected = $('#id_sub_ledger').attr('data-active')
+
+                            if (selected != '')
+                                $(`#id_sub_ledger option[value="${selected}"]`).attr('selected', '').parent().selectpicker('refresh')
+                        }
+                    }
+                },
+                error: function (data) { }
+            });
+        }
+    }
+
+    $('#id_account_head').on('change keyup', function () {
+        $this = $(this);
+        showSubLedger();
+    });
+
+    $(document).ready(function () {
+        showSubLedger();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" class="ajax redirect">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.name.id_for_label }}">
+                                        {{ form.name.label }}
+
+                                        {% if form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.name }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.description.id_for_label }}">
+                                        {{ form.description.label }}
+
+                                        {% if form.description.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.description }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.unit.id_for_label }}">
+                                        {{ form.unit.label }}
+
+                                        {% if form.unit.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.unit }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.igst_rate.id_for_label }}">
+                                        {{ form.igst_rate.label }}
+
+                                        {% if form.igst_rate.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.igst_rate }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.hsn_number.id_for_label }}">
+                                        {{ form.hsn_number.label }}
+
+                                        {% if form.hsn_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.hsn_number }}
+                                </div>
+                                <!-- ====== -->
+                                <div class="form-group">
+                                    <label for="{{ form.unit_quantity_code.id_for_label }}">
+                                        {{ form.unit_quantity_code.label }}
+
+                                        {% if form.unit_quantity_code.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.unit_quantity_code }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.sgst_rate.id_for_label }}">
+                                        {{ form.sgst_rate.label }}
+
+                                        {% if form.sgst_rate.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.sgst_rate }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.cgst_rate.id_for_label }}">
+                                        {{ form.cgst_rate.label }}
+
+                                        {% if form.cgst_rate.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.cgst_rate }}
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+<script>
+    $(document).ready(function () {
+        $('#id_igst_rate').keyup(function () {
+            let gst = parseFloat($(this).val()) ? parseFloat($(this).val()) : 0
+            $('#id_sgst_rate').val(Math.round((gst / 2) * 10) / 10)
+            $('#id_cgst_rate').val(Math.round((gst / 2) * 10) / 10)
+        })
+        $('#id_sgst_rate,#id_cgst_rate').keyup(function () {
+            let cgst = parseFloat($('#id_sgst_rate').val()) ? Math.round((parseFloat($('#id_sgst_rate').val())) * 10) / 10 : 0
+            let sgst = parseFloat($('#id_cgst_rate').val()) ? Math.round((parseFloat($('#id_cgst_rate').val())) * 10) / 10 : 0
+            $('#id_igst_rate').val(sgst + cgst)
+        });
+    });
+</script>
+{% endblock %}

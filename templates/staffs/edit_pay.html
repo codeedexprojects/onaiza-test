@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+<section id="content">
+    <div class="container card p-10">
+
+        <div class="action-header palette-theme {{current_theme}} bg clearfix">
+            <div class="ah-label hidden-xs palette-White text">{{title}}</div>
+
+            <div class="ah-search">
+                <form method="get" action="#">
+                    <input name="q" type="text" placeholder="Start typing..." class="ahs-input">
+
+                    <i class="ah-search-close zmdi zmdi-long-arrow-left" data-ma-action="ah-search-close"></i>
+                    <input type="submit" class="hidden" />
+                </form>
+            </div>
+
+        </div>
+
+        <form class="ajax reset {% if redirect %}redirect{% endif %}" method="post" action="{{url}}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+
+                        <div class="card-body card-padding">
+                            <div class="row">
+
+                                <div class="col-sm-6 m-t-10 form-group fg-line">
+                                    <label for="staff_name">Staff</label>
+                                    <div class="mt-2 fz-12">
+                                        <input type="text" id='staff_name' class="form-control" readonly value="{{instance}}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 m-t-10 form-group fg-line">
+                                    <label for="date">Date</label>
+                                    <div class="mt-2 fz-12">
+                                        <input type="text" id="date" class="form-control" readonly value="{{date|date:'d/m/Y'}}">
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+
+                                <div class="col-sm-6 m-t-10 form-group fg-line">
+                                    <label for="{{ form.leave_count.id_for_label }}">
+                                        {{ form.leave_count.label }}
+                                        {% if form.leave_count.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+
+                                        {% if form.leave_count.help_text %}
+                                        <span data-original-title="Field Info" title=""
+                                            data-content="{{ form.name.help_text }}" data-placement="left"
+                                            data-toggle="popover" data-trigger="hover"
+                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.leave_count }}
+                                    <i class="input-helper"></i>
+
+                                    {% if form.leave_count.errors %}
+                                    <label class="error">{{ form.leave_count.errors.as_text }}</label>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-sm-6 m-t-10 form-group fg-line">
+                                    <label for="{{ form.half_leave_count.id_for_label }}">
+                                        {{ form.half_leave_count.label }}
+                                        {% if form.half_leave_count.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+
+                                        {% if form.half_leave_count.help_text %}
+                                        <span data-original-title="Field Info" title=""
+                                            data-content="{{ form.name.help_text }}" data-placement="left"
+                                            data-toggle="popover" data-trigger="hover"
+                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.half_leave_count }}
+                                    <i class="input-helper"></i>
+
+                                    {% if form.half_leave_count.errors %}
+                                    <label class="error">{{ form.half_leave_count.errors.as_text }}</label>
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-6 m-t-10 form-group fg-line">
+                                    <label for="{{ form.salary.id_for_label }}">
+                                        {{ form.salary.label }}
+                                        {% if form.salary.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+
+                                        {% if form.salary.help_text %}
+                                        <span data-original-title="Field Info" title=""
+                                            data-content="{{ form.name.help_text }}" data-placement="left"
+                                            data-toggle="popover" data-trigger="hover"
+                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.salary }}
+                                    <i class="input-helper"></i>
+
+                                    {% if form.salary.errors %}
+                                    <label class="error">{{ form.salary.errors.as_text }}</label>
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-5 m-t-10 m-l-15 form-group fg-line checkbox">
+                                    <label for="{{ form.is_paid.id_for_label }}">
+                                        {{ form.is_paid.label }}
+                                        {% if form.is_paid.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+
+                                        {% if form.is_paid.help_text %}
+                                        <span data-original-title="Field Info" title=""
+                                            data-content="{{ form.name.help_text }}" data-placement="left"
+                                            data-toggle="popover" data-trigger="hover"
+                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.is_paid }}
+                                    <i class="input-helper"></i>
+
+                                    {% if form.is_paid.errors %}
+                                    <label class="error">{{ form.is_paid.errors.as_text }}</label>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="m-t-10">
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block static %}
+{% load static %}
+<script>
+
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+
+        $('input[type="]').click(function () {
+
+            $('input[type="]').not(this).prop('checked', false);
+        });
+
+    });
+
+</script>
+{{form.media}}
+{% endblock %}

@@ -1,0 +1,504 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load django_template_maths %}
+{% load web_template_tags %}
+{% load i18n %}
+{% block content %}
+
+<div class="main-container" id="myOrders">
+  <div class="wrapper">
+    <div class="top">
+      <h3>{% trans "My Oders" %}</h3>
+    </div>
+
+
+    {% load el_pagination_tags %}
+    {% paginate 12 instances %}
+    {% for i in instances %}
+
+    <div class="product-details-main-container">
+      <div class="productOrderDetails-row">
+        <div class="leftorderId">
+          <div class="orderIdcontent">
+            <label for="OrderID">
+              {% trans "Order ID" %} :
+            </label>
+            <span id="OrderID">#{{i.order_id}}</span>
+          </div>
+        </div>
+
+        <div class="rightorderDate">
+          <div class="orderDatecontent">
+            <label for="OrderDate">
+              {% trans "Order Date" %} :
+            </label>
+            <span id="OrderDate">{{i.date_added}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="productDetails-row">
+
+        {% for prod in i.get_order_items %}
+        <!-- product details starting -->
+        <a href="#" onclick="SingleOrderOn()">
+          <div class="product-details-container">
+            <div class="product-details-Subrow">
+              <div class="productContainer">
+                <div class="ProductImageArea">
+                  {% if prod.product_variant.image %}
+                  <img src="{{ prod.product_variant.image.thumbnail.600x600 }}">
+                  {% else %}
+                  <img src="{% static 'web/images/placeholder.jpg' %}" style="width:70px;"/>
+                  {% endif %}
+                </div>
+                <div class="subdivision">
+                  <div class="ProductName">
+                    <p>{{ prod.product_variant }}</p>
+                  </div>
+                  <div class="ProductCatogery">
+                    <p>{{prod.product_variant.product.category}}</p>
+                  </div>
+                  <div class="ProductNameCatogery"style="margin-top:10px;">
+                    <div class="ProductRate">
+                        <span><i><span class="rupees-symbol">₹ </span></i>{{ prod.price|mul:prod.qty }}</span>
+                    </div>
+              </div>
+                </div>
+              </div>
+
+              <div class="ProductDeliveryDetails" style="display:flex;flex-direction:column;">
+                <div class="DeliveryStatus">
+                  <i><img src="images/icons/radio-button-checked-white.svg"></i>
+                  <span>{% trans "Delivery expected" %}</span>
+                </div>
+                <div class="ProductCatogery">
+                  <div>By
+                    {% if i.delivery_date %}
+                    <span class="deliveryDate">{{i.delivery_date}}</span>
+                    {% else %}
+                    <span class="deliveryDate">{{i.date_added}}</span>
+                    {% endif %}
+                  </div>
+                </div>
+
+                  {% is_return_button prod.product_variant.pk i.pk as a %}
+                  <div class="cancelButton-Row">
+                  {% if a %}
+                  <a href="#">
+                    <button onclick="" class="cancel-order-popup" data-pk="{{prod.pk}}" data-url="{% url 'web:get_product_details_from_order_item' %}">{% trans "Return Product" %}</button>
+                  </a>
+                  {% endif %}
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </a>
+        <!-- product details end -->
+        {% endfor %}
+
+      </div>
+
+
+      <div class="productDetailsFooter">
+        {% if i.order_status == "30" %}
+        <div class="leftSide">
+          <a href="#" class="rating-button" data-pk="{{i.pk}}">
+            {% trans "Rate & Review Order" %}
+          </a>
+        </div>
+        {% endif %}
+        <div class="rightSide">
+          <a href="#" class="review-button" data-pk="{{i.pk}}">
+            <div class="rightOrderStatusButton" >
+              <span>{% trans "Order Status" %}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="pagination" style="text-align:center">
+  {% get_pages %}
+  <a aria-label="Previous" class="slick-prev slick-arrow" href="{{ pages.previous.path }}" role="presentation"
+     style="display: inline-block;" type="button"><img
+          alt="" src="{% static 'web/images/icons/Icon ionic-ios-arrow-back.svg' %}"></a>
+  <ul class="slick-dots" role="tablist">
+    {% show_pages %}
+  </ul>
+
+  <a aria-label="Next" class="slick-next slick-arrow" href="{{ pages.next.path }}" role="presentation" style="display: inline-block;"
+     type="button"><img alt=""
+                                         src="{% static 'web/images/icons/Icon ionic-ios-arrow-Right.svg' %}"></a>
+</div>
+<!-- overlays starting-->
+
+<!-- ********product single************  -->
+
+
+{% for i in instances %}
+<div class="OverLay single-order {{i.pk}}" >
+    <span class="side-popup-close">×</span>
+  <div class="main-container-side">
+
+    <!-- <div class="OrderSingle-name-div">
+        <span class="side-popup-close" onclick="SingleOrderOff()">
+            ×
+        </span>
+        <span class="mycart-name">
+            Order Single
+        </span>
+    </div> -->
+
+    <div class="orderIdandDateRow">
+      <div class="leftside">
+        <div class="orderid">
+          <span class="orange">OID :</span>
+          <span class="black">#{{i.order_id}}</span>
+        </div>
+      </div>
+      <div class="rightside">
+        <div class="orderdate">
+          <span>{{i.date_added}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- **************** -->
+
+
+    <div class="deliveryAddressArea">
+      <div class="sub">
+        <div class="titlearea">
+          {% trans "Delivery Address" %}
+        </div>
+        <div class="detailaddress">
+          <div class="customerName">
+            {{i.billing_name}}
+          </div>
+
+          <div class="address">{% trans "Address" %} :
+            <span>{{i.billing_address}}</span>
+          </div>
+          <div class="phone">{% trans "Phone" %} :
+            <span>{{i.billing_phone}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- **************** -->
+
+
+    <div class="SideproductDetails-row">
+      <div class="SideproductListTitleRow">
+        <div class="SidesubRow">
+          {% trans "Product List" %}
+        </div>
+      </div>
+
+      {% for p in i.get_order_items %}
+      <!-- product details starting -->
+      <div class="Sideproduct-details-container">
+        <a href="#">
+          <div class="Sideproduct-details-Subrow">
+            <div class="SideProductImageArea">
+              {% if p.product_variant.image %}
+                  <img src="{{p.product_variant.image.thumbnail.200x200}}"/>
+              {% else %}
+                  <img src="{% static 'web/images/placeholder.jpg' %}" style="width:68px;"/>
+              {% endif %}
+              <!-- <img src=" images/Baby-png.png"> -->
+            </div>
+
+            <div class="SideProductNameCatogery">
+              <div>
+                <p class="Sideproductname">{{ p.product_variant }}, {{p.qty}}</p>
+                <p class="Sideproductcatogery">{{p.product_variant.product.category}}</p>
+              </div>
+            </div>
+
+            <div class="SideProductRate">
+              <p><i><span class="rupees-symbol">₹ </span></i>{{ p.price|mul:p.qty }}</p>
+            </div>
+
+
+          </div>
+        </a>
+      </div>
+      <!-- product details end -->
+      {% endfor %}
+
+    </div>
+
+    <!-- *********************** -->
+
+
+    <div class="orderTrackingMain-Container ">
+      <div class="orderTrackingSub-Container">
+
+        {% if i.order_status == '10' %}
+        <div class="cancelButton-Row">
+          <a href="#">
+            <button onclick="" class="cancel-order-buttton" data-pk="{{i.pk}}" data-url="{% url 'web:cancel_order' %}">{% trans "Cancel Order" %}</button>
+          </a>
+        </div>
+        {% endif %}
+
+        <div class="trackerAreaMain">
+          <div class="trackerAreaSub">
+
+            <ul class="StepProgress">
+
+              <li class="StepProgress-item {% if i.order_status == '10' or i.order_status == '20' or i.order_status == '30' %} is-done {% endif %}">
+                <span class="proccessContent">Pending</span>
+                <span class="timeAndDate">{{i.date_added}}</span>
+              </li>
+
+              <li class="StepProgress-item {% if i.order_status == '20' or i.order_status == '30' %} is-done {% endif %}{% if i.order_status == '10' %} current {% endif %}">
+                <span class="proccessContent">Shipped</span>
+                <span class="timeAndDate">{% if i.order_status == '20' %} {{i.date_updated}} {% endif %}</span>
+              </li>
+              <li class="StepProgress-item {%if i.order_status == '30' %} is-done {% endif %} {% if i.order_status == '20' %} current {% endif %}">
+                <span class="proccessContent">Delivered</span>
+                <span class="timeAndDate">{% if i.order_status == '30' %} {{i.date_updated}} {% endif %}</span>
+              </li>
+
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- ****** cancel Order **** -->
+
+
+<div class="OverLay cancel-order-popup-container" id="CancelOrder">
+  <div class="main-container-side">
+
+    <div class="proRate-name-div">
+                <span class="side-popup-close" >
+                    ×
+                </span>
+      <span class="mycart-name">
+                    {% trans "Cancel Order" %}
+                </span>
+    </div>
+
+    <div class="orderIdandDateRow">
+      <div class="leftside">
+        <div class="orderid">
+                        <span class="orange">
+                            OID :
+                        </span>
+          <span class="black">
+                            #-{{order_id}}
+                        </span>
+        </div>
+      </div>
+      <div class="rightside">
+        <div class="orderdate">
+          <span>25th July 2021</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- **************** -->
+
+
+    <div class="SideproductDetails-row">
+      <div class="SideproductListTitleRow">
+        <div class="SidesubRow">
+          {% trans "Product List" %}
+        </div>
+      </div>
+      <!-- product details starting -->
+      <div class="Sideproduct-details-container">
+        <a href="#">
+          <div class="Sideproduct-details-Subrow">
+            <div class="SideProductImageArea">
+              <img class="product-image" src="images/Banana-png.png">
+            </div>
+
+            <div class="SideProductNameCatogery">
+              <div>
+                <p class="Sideproductname product_name"></p>
+                <p class="Sideproductcatogery product_category"></p>
+              </div>
+            </div>
+
+            <div class="SideProductRate">
+              <p class="product-mrp"><i><span class="rupees-symbol">₹ </span></i></p>
+            </div>
+          </div>
+        </a>
+      </div>
+      <!-- product details end -->
+    </div>
+
+    <!-- *********************** -->
+
+    <form action="#">
+
+      <div class="SideproductSelectMainContainer">
+        <div class="SideproductSelectSubContainer">
+
+          <select id="cancelreason" name="cancelreason">
+            <option value="">{% trans "Select Reason" %}*</option>
+            <option value="product_damage">Product Damage</option>
+            <option value="size_not_fit">Size Not Fit</option>
+            <option value="others">Others</option>
+          </select>
+
+        </div>
+      </div>
+
+      <!-- ************************************ -->
+
+      <div class="SideTextareaMainContainer" style="display:none">
+        <div class="SideTextareaContainerSub">
+          <textarea cols="41" id="cancel-review" name="review" placeholder="Specify the Reason" rows="4"></textarea>
+        </div>
+      </div>
+
+      <div class="buttonArea">
+        <div class="buttonAreaSub">
+          <button class="return-product-button" data-url="{% url 'web:product_return' %}" data-pk="l" type="submit">{% trans "Continue" %}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ****** rate And Review ****** -->
+
+{% for i in instances %}
+<div class="OverLay {{i.pk}}review" id="ProductRating">
+  <div class="main-container-side">
+
+    <div class="proRate-name-div">
+      <span class="side-popup-close" onclick="">×</span>
+      <span class="mycart-name">{% trans "Rate Product" %}</span>
+    </div>
+
+    <div class="orderIdandDateRow">
+      <div class="leftside">
+        <div class="orderid">
+            <span class="orange">OID :</span>
+            <span class="black">#{{i.order_id}}</span>
+        </div>
+      </div>
+      <div class="rightside">
+        <div class="orderdate">
+          <span>{{i.date_added}}</span>
+        </div>
+      </div>
+    </div>
+    {{i.order_id}}
+    <input type="hidden" value="{{i.pk}}" class="hidden-order-id">
+
+    <!-- **************** -->
+
+
+    <div class="SideproductDetails-row">
+      <div class="SideproductListTitleRow">
+        <div class="SidesubRow">
+          {% trans "Product List" %}
+        </div>
+      </div>
+      <!-- product details starting -->
+      {% for p in i.get_order_items %}
+      <div class="Sideproduct-details-container">
+        <a href="#">
+          <div class="Sideproduct-details-Subrow">
+            <div class="SideProductImageArea">
+              {% if p.product_variant.image %}
+                  <img src="{{p.product_variant.image.thumbnail.200x200}}"/>
+              {% else %}
+                  <img src="{% static 'web/images/placeholder.jpg' %}" style="width:68px;"/>
+              {% endif %}
+            </div>
+
+            <div class="SideProductNameCatogery">
+              <div>
+                <p class="Sideproductname">{{p}}</p>
+                <p class="Sideproductcatogery">{{p.product_variant.product.category}}</p>
+              </div>
+            </div>
+
+            <div class="SideProductRate">
+              <span><i><span class="rupees-symbol">₹ </span></i>{{p.price}}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+      <!-- product details end -->
+    </div>
+
+    <!-- *********************** -->
+
+    <form action="#">
+
+      <div class="SaidproductRateMainContainer">
+        <div class="SaidproductRateSubContainer">
+          <div class="SaidproductRateLeftSide">
+            <div class="SaidproductRateLeftSideSub">
+              <p>{% trans "Rate Product" %}</p>
+            </div>
+          </div>
+
+          <div class="SaidproductRateRightSide">
+            <div class="SaidproductRateRightSideSub">
+
+              <div class="Saidrate">
+                  <div class="rating">
+                      <input type="radio" name="rating" value="5" class="count" id="rating-5">
+                      <label for="rating-5"></label>
+                      <input type="radio" name="rating" value="4" class="count" id="rating-4">
+                      <label for="rating-4"></label>
+                      <input type="radio" name="rating" value="3" class="count" id="rating-3">
+                      <label for="rating-3"></label>
+                      <input type="radio" name="rating" value="2" class="count" id="rating-2">
+                      <label for="rating-2"></label>
+                      <input type="radio" name="rating" value="1" class="count" id="rating-1">
+                      <label for="rating-1"></label>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- ************************************ -->
+
+      <div class="reviewwritingContainer">
+        <div class="reviewwritingContainerSub">
+          <textarea cols="41" class="product-review" id="review" name="review" placeholder="Write a product review" rows="6"
+                    rows="4"></textarea>
+        </div>
+      </div>
+
+      <div class="buttonArea">
+        <div class="buttonAreaSub">
+          <button class="rating-product-submit" data-order-id="{{i.pk}}" data-url="{% url 'web:post_rating' %}">{% trans "Continue" %}</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endfor %}
+
+<!-- overlays ending -->
+{% endblock content %}

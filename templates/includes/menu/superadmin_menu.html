@@ -1,0 +1,421 @@
+{% if request.user.is_superuser %}
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="home" class="align-self-center menu-icon"></i>
+        <span>Warehouses</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'warehouses:warehouses' %}"><i class="ti-control-record"></i>Warehouses</a>
+            <a href="{% url 'warehouses:create_warehouse' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'warehouses:locations' %}"><i class="ti-control-record"></i>Locations</a>
+            <a href="{% url 'warehouses:create_location' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="grid" class="align-self-center menu-icon"></i>
+        <span>Products</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:products' %}"><i class="ti-control-record"></i>Products</a>
+            <a href="{% url 'products:create' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:categories' %}"><i class="ti-control-record"></i>Categories</a>
+            <a href="{% url 'products:create_category' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:brands' %}"><i class="ti-control-record"></i>Brands</a>
+            <a href="{% url 'products:create_brand' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:unit_measurements' %}"><i class="ti-control-record"></i>Unit Of Measurement</a>
+            <a href="{% url 'products:create_unit_measurement' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:units' %}"><i class="ti-control-record"></i>Unit</a>
+            <a href="{% url 'products:create_unit' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'general:damaged_products' %}"><i class="ti-control-record"></i>Damaged Products</a>
+            <a href="{% url 'general:create_damaged_product' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:hsn_codes_all' %}"><i class="ti-control-record"></i>Hsn Code</a>
+            <a href="{% url 'products:create_hsn_codes' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'general:stock_transfers' %}"><i class="ti-control-record"></i>Stock Transfer</a>
+            <a href="{% url 'general:create_stock_transfer' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:create_barcode' %}"><i class="ti-control-record"></i>Barcode</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'general:stock_updates' %}">
+                <i class="ti-control-record"></i>Stock Updations
+            </a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:update_varying_product_price' %}">
+                <i class="ti-control-record"></i>Update Varying Price
+            </a>
+        </li>
+
+    </ul>
+</li>
+
+<li class="d-flex nav-item">
+    <a class="nav-link" href="{% url 'web:spotlight_banners' %}?query=product">
+        <i data-feather="user" class="align-self-center menu-icon"></i>Spotlight Banner
+    </a>
+    <a href="{% url 'web:create_spotlight_banner' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+</li>
+<li class="d-flex nav-item">
+    <a class="nav-link" href="{% url 'customers:customers' %}">
+        <i data-feather="user" class="align-self-center menu-icon"></i>Customers
+    </a>
+    <a href="{% url 'customers:create' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+</li>
+
+<li class="d-flex nav-item">
+    <a class="nav-link" href="{% url 'suppliers:suppliers' %}">
+        <i data-feather="users" class="align-self-center menu-icon"></i>Suppliers
+    </a>
+    <a href="{% url 'suppliers:create_supplier' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="users" class="align-self-center menu-icon"></i>
+        <span>Vendors</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:vendors' %}"><i class="ti-control-record"></i>Vendors</a>
+            <a href="{% url 'vendors:create_vendor' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:vendor_activities' %}"><i class="ti-control-record"></i>Vendor Acitivties</a>
+        </li>
+
+    </ul>
+</li>
+
+<li class="d-flex nav-item">
+    <a class="nav-link" href="{% url 'delivery_agent:delivery_agents' %}">
+        <i data-feather="truck" class="align-self-center menu-icon"></i>Delivery Agents
+    </a>
+    <a href="{% url 'delivery_agent:create_delivery_agent' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="sidebar" class="align-self-center menu-icon"></i>
+        <span>Purchase</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'purchases:purchases' %}"><i class="ti-control-record"></i>Purchase</a>
+            <a href="{% url 'purchases:create_new_purchase' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'purchases:purchase_orders' %}"><i class="ti-control-record"></i>Purchase Orders</a>
+            <a href="{% url 'purchases:create_purchase_order' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'purchases:purchase_returns' %}"><i class="ti-control-record"></i>Purchase Returns</a>
+            <a href="{% url 'purchases:create_purchase_return' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="shopping-bag" class="align-self-center menu-icon"></i>
+        <span>Sales</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'sales:sales' %}"><i class="ti-control-record"></i>Sales</a>
+            <a href="{% url 'sales:create' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'sales:sale_returns' %}"><i class="ti-control-record"></i>Sales Returns</a>
+            <a href="{% url 'sales:create_sale_return' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'general:invoice_designs' %}"><i class="ti-control-record"></i>Invoice Design</a>
+            <a href="{% url 'general:create_invoice_design' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="shopping-cart" class="align-self-center menu-icon"></i>
+        <span>Orders</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:orders' order_type='pending' %}"><i class="ti-control-record"></i>Pending Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:orders' order_type='shipped' %}"><i class="ti-control-record"></i>Shipped Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:orders' order_type='delivered' %}"><i class="ti-control-record"></i>Delivered Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:orders' order_type='cancelled' %}"><i class="ti-control-record"></i>Cancelled Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:orders' order_type='all' %}"><i class="ti-control-record"></i>All Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:bookings' %}"><i class="ti-control-record"></i>Bookings</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:returns' %}"><i class="ti-control-record"></i>Returns</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:time_slots' %}"><i class="ti-control-record"></i>Time Slots</a>
+            <a href="{% url 'orders:create_time_slot' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="file-text" class="align-self-center menu-icon"></i>
+        <span>Finance</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:financial_years' %}"><i class="ti-control-record"></i>Financial year</a>
+            <a href="{% url 'finance:create_financial_year' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:invoice_prifixs' %}"><i class="ti-control-record"></i>Invoice Prefix</a>
+            <a href="{% url 'finance:create_invoice_prifix' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:bank_accounts' %}"><i class="ti-control-record"></i>Bank Accounts</a>
+            <a href="{% url 'finance:create_bank_account' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:account_groups' %}"><i class="ti-control-record"></i>Account Groups</a>
+            <a href="{% url 'finance:create_account_group' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:account_heads' %}"><i class="ti-control-record"></i>Account Heads</a>
+            <a href="{% url 'finance:create_account_head' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:payment_vouchers' %}"><i class="ti-control-record"></i>Payment Voucher</a>
+            <a href="{% url 'finance:create_payment_voucher' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:receipt_vouchers' %}"><i class="ti-control-record"></i>Receipt Voucher</a>
+            <a href="{% url 'finance:create_receipt_voucher' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:journal_vouchers' %}"><i class="ti-control-record"></i>Journal Voucher</a>
+            <a href="{% url 'finance:create_journal_voucher' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:credit_note_vouchers' %}"><i class="ti-control-record"></i>Credit Note</a>
+            <a href="{% url 'finance:create_credit_note_voucher' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'finance:debit_note_vouchers' %}"><i class="ti-control-record"></i>Debit Note</a>
+            <a href="{% url 'finance:create_debit_note_voucher' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="user-plus" class="align-self-center menu-icon"></i>
+        <span>Staffs</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'staffs:staffs' %}"><i class="ti-control-record"></i>Staffs</a>
+            <a href="{% url 'staffs:create_staff' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+            <div class="clearfix"></div>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'staffs:designations' %}"><i class="ti-control-record"></i>Staff Designation</a>
+            <a href="{% url 'staffs:create_designation' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+            <div class="clearfix"></div>
+        </li>
+        <li class="nav-item d-flex">
+            <a class="nav-link" href="{% url 'staffs:staff_attendances' %}"><i class="ti-control-record"></i>Attendances</a>
+            <a href="{% url 'staffs:create_staff_attendance' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+            <div class="clearfix"></div>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'staffs:allowances' %}"><i class="ti-control-record"></i>Salary Allowances</a>
+            <a href="{% url 'staffs:create_salary_allowance' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i class="dripicons-briefcase" class="align-self-center menu-icon"></i>
+        <span>Offers</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'customers:privilege_point' %}"><i class="ti-control-record"></i>Privilege Point</a>
+            <a href="{% url 'customers:create_privilege_point' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'offers:offers' %}"><i class="ti-control-record"></i>Offers</a>
+            <a href="{% url 'offers:create_offer' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'offers:dealofdays' %}"><i class="ti-control-record"></i>Deal of the day</a>
+            <a href="{% url 'offers:create_dealofday' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'offers:vouchers' %}"><i class="ti-control-record"></i>Voucher Codes</a>
+            <a href="{% url 'offers:create_voucher' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i class="dripicons-tags" class="align-self-center menu-icon"></i>
+        <span>Tickets</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'customers:pending_tickets' %}"><i class="ti-control-record"></i>Pending Tickets</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'customers:in_progress_tickets' %}"><i class="ti-control-record"></i>In Progress Tickets</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'customers:rejected_tickets' %}"><i class="ti-control-record"></i>Rejected Tickets</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'customers:solved_tickets' %}"><i class="ti-control-record"></i>Solved Tickets</a>
+        </li>
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i class="dripicons-stack" class="align-self-center menu-icon"></i>
+        <span>Reports</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:sales_report' %}"><i class="ti-control-record"></i>Sales Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:purchase_report' %}"><i class="ti-control-record"></i>Purchase Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:batch_stock_report' %}"><i class="ti-control-record"></i>Stock Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:daily_report' %}"><i class="ti-control-record"></i>Daily Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:purchase_report' %}"><i class="ti-control-record"></i>Profit Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:ledger_report' %}"><i class="ti-control-record"></i>Ledger Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:trial_balance' %}"><i class="ti-control-record"></i>Trial Balance</a>
+        </li>
+
+         <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:trial_balance' %}"><i class="ti-control-record"></i>Profit and Loss</a>
+        </li>
+
+         <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:trial_balance' %}"><i class="ti-control-record"></i>Balance Sheet</a>
+        </li>
+        <li class=" nav-item">
+            <a href="javascript: void(0);">
+                <i class="dripicons-stack" class="align-self-center menu-icon"></i>
+                <span>GST Reports</span>
+                <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+            </a>
+            <ul class="nav-second-level" aria-expanded="false">
+                <li class="d-flex nav-item">
+                    <a class="nav-link" href="{% url 'reports:gstr1_report' %}"><i class="ti-control-record"></i>GSTR-1 Report</a>
+                </li>
+                 <li class="d-flex nav-item">
+                    <a class="nav-link" href="{% url 'reports:gstr2_report' %}"><i class="ti-control-record"></i>GSTR-2 Report</a>
+                </li>
+                <li class="d-flex nav-item">
+                    <a class="nav-link" href="{% url 'reports:gstr3_report' %}"><i class="ti-control-record"></i>GSTR-3 Report</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</li>
+{% endif %}

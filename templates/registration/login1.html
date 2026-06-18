@@ -1,0 +1,133 @@
+{% extends "registration/auth_base.html" %}
+{% load i18n %}
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+{% load static %}
+<!-- Main Wrapper -->
+
+<div class="page-wrapper ml-0 pb-6" style="background-color: #fff; width: 100%;display: flex;
+align-items: center;
+justify-content: center ">
+	<div class="tab-content">
+		<div class="tab-pane show active" id="tab_username">
+
+			<div class="account-content">
+				<div class="container">
+
+					<div class="account-box">
+						<div class="account-wrapper">
+							<h3 class="account-title">Login</h3>
+							<p class="account-subtitle">Welcome, Please Login to continue</p>
+							{% if form.non_field_errors %}
+							<div class="palette-Red-500 text m-b-20">
+								{{form.non_field_errors}}
+							</div>
+							<br />
+							{% endif %}
+							<!-- Account Form -->
+							<form action="." method="post">
+								{% csrf_token %}
+								<div class="form-group">
+									<label>Username</label>
+									<input type="text" placeholder="{{ form.username.label }}" name="username"
+										class="form-control" tabindex="1">
+									{% if form.username.errors %}
+									<span class="error">{{ form.username.errors.as_text }}</span>
+									{% endif %}
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col">
+											<label>Password</label>
+										</div>
+										<div class="col-auto">
+											<a class="text-muted" href="{% url 'auth_password_reset' %}">
+												Forgot password?
+											</a>
+										</div>
+									</div>
+									<div class="input-group">
+										<input name="password" placeholder="{{ form.password.label }}" type="password"
+											id="myInput" class="form-control eyesty" tabindex="2">
+										<button class="input-group-text inpeye" data-target="myInput"><i
+												class="fa fa-eye"></i></button>
+										{% if form.password.errors %}
+										<span class="error"
+											style="display: block; width: 100%;">{{ form.password.errors.as_text }}</span>
+										{% endif %}
+									</div>
+
+
+								</div>
+								<div class="form-group row">
+									<div class="col-md-12">
+										<div class="custom-checkbox">
+											<label>
+												<input type="checkbox" name="checkbox"> &nbsp;&nbsp;Stay Logged In
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group text-center">
+									<input type="hidden" name="next" value="{{ next }}" />
+									<button type="submit" class="btn btn-primary btn-block btn-lg">Sign in</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="tab-pane" id="tab_otp">
+
+			<div class="account-content">
+				<div class="container">
+
+					<div class="account-box">
+						<div class="account-wrapper">
+							<h3 class="account-title">Login</h3>
+							<p class="account-subtitle">Welcome, Please Login to continue</p>
+							{% if form.non_field_errors %}
+							<div class="palette-Red-500 text m-b-20">
+								{{form.non_field_errors}}
+							</div>
+							<br />
+							{% endif %}
+							<!-- Account Form -->
+							<form action="." method="post">
+								{% csrf_token %}
+								<div class="form-group">
+									<label>Username</label>
+									<input type="text" placeholder="{{ form.username.label }}" name="username"
+										class="form-control" tabindex="1">
+									{% if form.username.errors %}
+									<span class="error">{{ form.username.errors.as_text }}</span>
+									{% endif %}
+								</div>
+
+								<div class="form-group row">
+									<div class="col-md-12">
+										<div class="custom-checkbox">
+											<label>
+												<input type="checkbox" name="checkbox"> &nbsp;&nbsp;Stay Logged In
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group text-center">
+									<input type="hidden" name="next" value="{{ next }}" />
+									<button type="submit" class="btn btn-primary btn-block btn-lg">Sign in</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}

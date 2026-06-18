@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+
+<!-- Page Wrapper -->
+ <div class="page-wrapper">
+
+    <!-- Page Content -->
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a href="{% url 'customers:create' %}" class="btn add-btn"><i class="fa fa-plus"></i> Add New</a>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="card">
+            <div class="card-body card-padding">
+                <form action="" method="get">
+                <div class="row m-b-20">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="id_payment">Customer:</label><br />
+                                    <select name="customer" id="id_customer" data-live-search='true' class="form-control selectpicker">
+                                        <option value="">------------ALL-----------</option>
+                                        {% for i in all_customers %} {% if i.pk|safe == filter_form.customer %}
+                                        <option selected value="{{i.pk}}">{{i}}</option>
+                                        {% else %}
+                                        <option value="{{i.pk}}">{{i}}</option>
+                                        {% endif %} {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="from_date">From Date:</label><br />
+                                    <input type="text" class="date-picker-dd form-control" {%if filter_form.from_date%}value="{{filter_form.from_date}}" {% endif %} id="from_date"
+                                        name="from_date" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="to_date">To Date:</label><br />
+                                    <input type="text" class="date-picker-dd form-control" {%if filter_form.to_date%}value="{{filter_form.to_date}}" {% endif %} id="to_date"
+                                        name="to_date" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="id_payment">Payment Type:</label><br />
+                                    <select name="payment" id="id_payment" class="selectpicker form-control">
+                                        <option {% if filter_form.payment == 'all' %}selected{% endif %} value="all">All</option>
+                                        <option {% if filter_form.payment == 'paid' %}selected{% endif %} value="paid">Full Paid</option>
+                                        <option {% if filter_form.payment == 'credit' %}selected{% endif %} value="credit">Credit</option>
+                                    </select>
+                                </div>
+                            <!-- </div> -->
+                            <div class="col-sm-1">
+                                <!-- <div class="m-t-20"> -->
+                                    <button type="submit" style="margin-top: 30px;" class="btn btn-info waves-effect">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table mb-0 datatable-">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">ID</th>
+                                <th>Name </th>
+                                <th>Phone </th>
+                                <td>Sales</td>
+                                <td>Total Amount</td>
+                                <td>Paid Amount</td>
+                                <td>Balance Amount</td>
+                                <td>Customer Balance</td>
+                                <!-- <th class="text-right">Action</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% load el_pagination_tags %}
+                            {% paginate 20 customers %}
+                            {% for instance in customers %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>
+                                    <a class="" href="{% url 'customers:customer' pk=instance.pk %}" >{{ instance }}</a>
+                                </td>
+                                <td>{{ instance.phone }}</td>
+
+                                {% with instance.pk|get_customer_sales:filter_string as sales %}
+                                <td>{{ sales.total_count }}</td>
+                                <td>{{ sales.subtotal }}</td>
+                                <td>{{ sales.paid }}</td>
+                                <td>{{ sales.balance }}</td>
+                                <td>{{ sales.current_balance }} ({{ sales.current_balance_type }})</td>
+                                {% endwith %}
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% get_pages %}
+                    <div class="clearfix"></div>
+                    <div class="row pagi m-t-5">
+                        <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                        <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                            <div class="m-t-10">Showing {{title}}
+                                <span class="current_page_index">{{ pages.current_start_index }}</span> -
+                                <span class="current_end_status">{{ pages.current_end_index }}</span> of
+                                <span class="total_count">{{ pages.total_count }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Content -->
+
+</div>
+<!-- /Page Wrapper -->
+{% endblock %}

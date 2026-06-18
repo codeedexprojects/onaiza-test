@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{% static 'css/print.css' %}" type="text/css"/>
+    <script src="{% static 'vendors/bower_components/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jsbarcode.min.js' %}"></script>
+    <style type="text/css">
+      body {
+        width:107mm;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      ul{
+        float: left;
+      }
+      ul li{
+        float: left;
+        width:50mm;
+        height:25mm;
+        margin-top:3mm;
+        text-align: center;
+      }
+      ul li{
+        padding-left: 2mm;
+      }
+      ul li img{
+        width:75%;
+        height:auto;
+      }
+      ul li:nth-child(2n+1){
+        clear:both;
+      }
+      p.code {
+        line-height: 1em;
+        font-size: 7pt;
+        font-weight: bold;
+        text-align: center;
+      }
+      div.details {
+        text-align: center;
+      }
+      div.details h6 {
+        font-size: 8pt;
+        font-weight: bold;
+        line-height: 1em;
+      }
+      div.details p.shop_address {
+        font-size: 6pt;
+        font-weight: bold;
+        line-height: 1em;
+      }
+      div.details p.product_code {
+        font-size: 9pt;
+        font-weight: bold;
+        text-transform: capitalize;
+        line-height: 1em;
+      }
+      div.details p.shop_phone {
+        font-size: 7pt;
+        font-weight: bold;
+        line-height: 1em;
+      }
+      div.details p.product_name {
+        font-size: 9pt;
+        font-weight: bold;
+        line-height: 1em;
+      }
+      div.details p.product_price {
+        font-size: 12pt;
+        font-weight: bold;
+        line-height: 1em;
+        font-size: 11px;
+      }
+      div.details p.product_mrp {
+        font-size: 9pt;
+        font-weight: bold;
+        line-height: 1em;
+        font-size: 11px;
+      }
+      h5.title {
+        font-weight: bold;
+      }
+      p.product_date{
+        font-size: 10px;
+      }
+
+      @page{
+          size: 38mm 25mm landscape;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      {% for n in n_range %}
+        <li>
+
+          <h5 class="title">Onaiza</h5>
+          <h5 class="title">{{instance.name}} {{instance.product.name}} - {{ instance.unit_type }} {{ instance.title }}</h5>
+          <img id="{{n}}"/>
+          <div class="details">
+            <p class="product_code">{{instance.product_code}}</p>
+            <p class="product_mrp">MRP : {{batch_instance.mrp}}</p>
+            <p class="product_price">Price : {{batch_instance.retail_price}}</p>
+            <!-- <p class="product_price">PKD : {% now 'd/m/Y' %}</p> -->
+            <!-- <p class="product_name">{{instance.name}} - {{ instance.unit.code }}</p> -->
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    <br class="clear" />
+    <script>
+      $(document).ready(function(){
+        // {% for n in n_range %}
+        $("#{{n}}").JsBarcode(
+          "{{instance.product_code}}",
+          {
+            format: "CODE128",
+            width: 2,
+            height: 20,
+            margin:0,
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 5,
+            marginBottom:0,
+            displayValue : false
+          }
+        );
+        // {% endfor %}
+
+      });
+
+    </script>
+  </body>
+</html>

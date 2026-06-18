@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.order_id}}</h3>
+                <ul class="personal-info row">
+                    <li class="col">
+                       <a title="Print Order" href="{% url 'orders:print_staff_view_order' view_type='staff' pk=instance.pk %}" class="btn btn-soft-success edit-icon">
+                          <i class="las la-print"></i> Staff
+                       </a>
+                       <a title="Print Order" href="{% url 'orders:print_staff_view_order' view_type='customer' pk=instance.pk %}" class="btn btn-soft-success edit-icon">
+                        <i class="las la-print"></i> Customer
+                     </a>
+                    </li>
+                    <!-- <li class="col">
+                        <a title="Print Order A4" href="{% url 'orders:print_sale_order_a4' pk=instance.pk %}" class="btn btn-soft-success edit-icon">
+                           <i class="las la-print"></i>
+                        </a>
+                     </li> -->
+                 </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="tab-content  col-md-12">
+        <div class="row">
+            <div class=" col-6">
+                <div class="card-header">
+                    <h5>Order Info <small></small></h5>
+                </div>
+                <div class="card-body">
+
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Order Id</div>
+                                <small class="lgi-text">{{instance.order_id}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Warehouse</div>
+                                <small class="lgi-text">{{instance.warehouse}}</small>
+                            </div>
+                        </div>
+                      <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Total Amont</div>
+                                <small class="lgi-text">{{instance.total_amt}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Payment Status </div>
+                                <small class="lgi-text">
+                                  {% if instance.payment_status == '10' %}
+                                    Pending
+                                  {% endif %}
+                                </small>
+                            </div>
+                        </div>
+
+                      {% if instance.deliver_note %}
+                      <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Delivery Note </div>
+                                <small class="lgi-text">{{instance.delivery_note}}</small>
+                            </div>
+                        </div>
+                      {% endif %}
+
+                      {% if instance.get_full_timeslot %}
+                       <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Time Slot </div>
+                                <small class="lgi-text">{{instance.get_full_timeslot}}</small>
+                            </div>
+                        </div>
+                      {% endif %}
+
+                      <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Order Status </div>
+                                <small class="lgi-text">
+                                  {{instance.get_order_status_display}}
+                                </small>
+                            </div>
+                        </div>
+
+                      <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Payment Method </div>
+                                <small class="lgi-text">{{instance.payment_method}}</small>
+                            </div>
+                        </div>
+
+                      <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Transaction Id </div>
+                                <small class="lgi-text">{{instance.transaction_id}}</small>
+                            </div>
+                        </div>
+
+                       <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Payment Order Id </div>
+                                <small class="lgi-text">{{instance.payment_order_id}}</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class=" col-6">
+
+                <div class="card-header">
+                    <h5>Customer Info <small></small></h5>
+                </div>
+    
+                <div class="card-body">
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Customer Name</div>
+                                <small class="lgi-text">{{instance.billing_name}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Address</div>
+                                <small class="lgi-text">{{instance.get_full_address}}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-header">
+                    <div class="row align-items-center justify-content-between">
+                        <h5>Delivery Agent Info <small></small></h5>
+    
+                        {% if instance.delivery_agent %}
+                        <a href="#" data-toggle="modal" class="btn btn-sm btn-outline-primary" data-target="#AgentModal">Change</a>
+                        {% else %}
+                        <a href="#" data-toggle="modal" class="btn btn-sm btn-outline-primary" data-target="#AgentModal">Assign</a>
+                        {% endif %}
+                    </div>
+                </div>
+    
+                <div class="card-body">
+                    {% if instance.delivery_agent %}
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Delivery Agent</div>
+                                <a href="{% url 'delivery_agent:delivery_agent' instance.delivery_agent_id %}" class="text-primary lgi-text">{{instance.delivery_agent.name}}</a>
+                            </div>
+                        </div>
+    
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Assigned Time</div>
+                                <small class="lgi-text">{{instance.assigned_time|default:'-'}}</small>
+                            </div>
+                        </div>
+    
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Accepted</div>
+    
+                                {% if instance.delivery_agent_is_accept %}
+                                <small class="p-0 ml-1 badge badge-success btn-icon-circle-sm" style="width: 20px; height: 20px;"><i class="fas fa-check"></i></small>
+                                {% elif instance.delivery_agent_is_accept == False %}
+                                <small class="p-0 ml-1 badge badge-danger btn-icon-circle-sm" style="width: 20px; height: 20px;"><i class="fas fa-time"></i></small>
+                                {% else %}
+                                <small class="p-0 ml-1 badge badge-secondary btn-icon-circle-sm" style="width: 20px; height: 20px;"><i class="fas fa-minus"></i></small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                  {% endif %}
+                </div>
+    
+            </div>
+            <div class=" col-12">
+            <div class="card-header d-flex justify-content-between">
+                <h5>Order Items</h5>
+
+            </div>
+            {% if instance.get_order_items %}
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="data-table-basic" class="table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th class="p-l-10">Name</th>
+                                {% if has_vendor %}<th class="p-l-10">Vendor</th>{% endif %}
+                                <th class="p-l-10">Qty</th>
+                                <th class="p-l-10">Price</th>
+                                <th class="p-l-10">Batch</th>
+                                <th class="p-l-10">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in instance.get_order_items %}
+                            <tr>
+                                <td>{{i.product_variant}}</td>
+                                {% if has_vendor %}<td>{{i.product_variant.product.vendor|default:"-"}}</td>{% endif %}
+                                <td>{{i.qty}}</td>
+                               <td>{{i.price}}</td>
+                               <td>{{i.batch}}</td>
+                               <td>
+                                    {% if i.product_variant.product.vendor %} 
+                                        {{i.get_status_display}}
+                                    {% else %}
+                                        {% if i.status == 10 %}
+                                            <a href="{% url 'vendors:update_order_status' status='30' pk=i.pk %}" data-text="Are you sure you want to approve this category?" data-reason="no" data-title="Are you sure?" class="action-button reload btn mr-2 btn-sm btn-outline-primary" >Packed</a>
+                                        {% elif i.status == 30 %}
+                                        <small class="lgi-text text-success">Ready for Pickup </small>
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+            {% endif %}
+
+            
+
+        </div>
+        </div>
+
+      <div class="row">
+       
+       
+    </div>
+</div>
+
+
+<!-- customer modal start -->
+<div class="modal fade" id="AgentModal" tabindex="-1" role="dialog"
+    aria-labelledby="AgentModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="AgentModalTitle">Assign To Delivery Agent</h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="address-form ajax reset form " method="post"
+                            action="{% url 'sales:customer_from_create' %}">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+
+                                {% if agent_form %}
+                                <div class="form-group">
+                                    <label for="{{ agent_form.delivery_agent.id_for_label }}">
+                                        {{ agent_form.delivery_agent.label }}
+
+                                        {% if agent_form.delivery_agent.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ agent_form.delivery_agent }}
+                                </div>
+                                {% else %}
+                                <label for="id_delivery_agents">Delivery Agent</label>
+                                <select class="delivery_agents" name="delivery_agents" id="id_delivery_agents" >
+                                    <option value="">Select Delivery Agent</option>
+                                    {% for i in delivery_agents %}
+                                    <option {% if i.pk|safe == instance.delivery_agent_id|safe %}selected {% endif %}value="{{i.pk}}">{{i.name}}</option>
+                                    {% endfor %}
+                                </select>
+                                {% endif %}
+
+                            </div>
+
+                            <div class="text-right">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                <button type="submit" data-order="{{instance.pk}}" data-url="{% url 'orders:assign_agent' %}" class="btn btn-soft-primary btn-sm assign-delivery-agent">Submit</button>
+                            </div>
+                        </form>
+                        <!-- <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<!-- customer modal end -->
+
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+<style>
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        padding: 9px 0 0 9px;
+    }
+</style>
+<script>
+$(document).ready(function() {
+    $('.delivery_agents').select2();
+});
+
+</script>
+    <script src="{% static 'js/delivery_agent.js' %}"> </script>
+{{ form.media }}
+{% endblock %}

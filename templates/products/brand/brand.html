@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+   <!-- Page Header -->
+   <div class="page-header">
+      <div class="row">
+         <div class="col-sm-6">
+            <h3 class="page-title">{{title|title}}</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+               <li class="breadcrumb-item active">{{title|title}}</li>
+            </ul>
+         </div>
+         <div class="col-auto float-right ml-auto">
+            <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.name}}</h3>
+
+            <ul class="personal-info row">
+               <li class="col">
+                  <a title="Create new brand" href="{% url 'products:create_brand' %}" class=" text-white edit-icon">
+                     <i style="color: black" class="las la-plus"></i>
+                  </a>
+               </li>
+
+               {% if instance.creator == request.user %}
+
+               <li class="col">
+                  <a title="Edit Brand" href="{% url 'products:edit_brand' pk=instance.pk %}" class="edit-icon">
+                     <i class="las la-pen"></i>
+                  </a>
+               </li>
+               <li class="col">
+                  <a title="Delete Brand" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                     data-title="Are you sure?" href="{% url 'products:delete_brand' pk=instance.pk %}"
+                     class="action-button redirect delete-icon edit-icon">
+                     <i class="las la-trash-alt"></i>
+                  </a>
+               </li>
+               {% endif %}
+            </ul>
+         </div>
+      </div>
+   </div>
+   <!-- /Page Header -->
+
+
+   <div class="tab-content">
+      <!-- Profile Info Tab -->
+      <div id="emp_profile" class="pro-overview tab-pane fade show active">
+         <div class="row">
+            <div class=" col-6">
+               <div class="card-header">
+                  <h5>Basic Info <small></small></h5>
+               </div>
+               <div class="card-body">
+
+
+
+                  <div class="list-group lg-alt c-overflow">
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Name</div>
+                           <small class="lgi-text">{{instance.name}}</small>
+                        </div>
+                     </div>
+
+
+                     <div class="list-group-item media ">
+                        <div class="media-body">
+                           <div class="lgi-heading">Malayalam Name</div>
+                           <small class="lgi-text">{{instance.malayalam_name}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Updater </div>
+                           <small class="lgi-text">{{instance.updater}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Creator </div>
+                           <small class="lgi-text">{{instance.creator}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Date Created </div>
+                           <small class="lgi-text">{{instance.date_added|date:"d/m/Y h:i A"}}</small>
+                        </div>
+                     </div>
+
+                     <div class="list-group-item media">
+                        <div class="media-body">
+                           <div class="lgi-heading">Date Updated </div>
+                           <small class="lgi-text">{{instance.date_updated|date:"d/m/Y h:i A"}}</small>
+                        </div>
+                     </div>
+
+                  </div>
+
+               </div>
+
+            </div>
+
+         </div>
+      </div>
+      <!-- /Profile Info Tab -->
+
+
+   </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

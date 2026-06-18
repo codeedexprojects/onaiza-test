@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="content container-fluid">
+
+       <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <form class="ajax reset {% if redirect %}redirect{% endif %}" method="post" action="{{url}}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body card-padding">
+                                            <div class="row">
+
+                                                <div class="form-group fg-line col-sm-4">
+                                                    <label for="{{ form.voucher_date.id_for_label }}">
+                                                        <label for="id_date">{{form.voucher_date.label}}</label>
+                                                        {% if form.voucher_date.field.required %}
+                                                        <small class="star">*</small>
+                                                        {% endif %}
+                                                        {% if form.voucher_date.help_text %}
+                                                        <span data-original-title="Field Info" title=""
+                                                            data-content="{{ form.voucher_date.help_text }}"
+                                                            data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                        {% endif %}
+                                                    </label>
+                                                    {{ form.voucher_date }}
+                                                    {% if form.voucher_date.errors %}
+                                                    <label class="error">{{ form.voucher_date.errors.as_text }}</label>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="form-group fg-line col-sm-4">
+                                                    <label for="{{ form.voucher_number.id_for_label }}">
+                                                        <label for="id_voucher_number">{{form.voucher_number.label}}</label>
+                                                        {% if form.voucher_number.field.required %}
+                                                        <small class="star">*</small>
+                                                        {% endif %}
+                                                        {% if form.voucher_number.help_text %}
+                                                        <span data-original-title="Field Info" title=""
+                                                            data-content="{{ form.voucher_number.help_text }}"
+                                                            data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                        {% endif %}
+                                                    </label>
+                                                    {{ form.voucher_number }}
+                                                    {% if form.voucher_number.errors %}
+                                                    <label class="error">{{ form.voucher_number.errors.as_text }}</label>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="form-group fg-line col-sm-4">
+                                                    <label for="{{ form.title.id_for_label }}">
+                                                        <label for="id_title">{{form.title.label}}</label>
+                                                        {% if form.title.field.required %}
+                                                        <small class="star">*</small>
+                                                        {% endif %}
+                                                        {% if form.title.help_text %}
+                                                        <span data-original-title="Field Info" title=""
+                                                            data-content="{{ form.title.help_text }}" data-placement="left"
+                                                            data-toggle="popover" data-trigger="hover"
+                                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                        {% endif %}
+                                                    </label>
+                                                    {{ form.title }}
+                                                    {% if form.title.errors %}
+                                                    <label class="error">{{ form.title.errors.as_text }}</label>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="form-group fg-line col-sm-4">
+                                                    <label for="{{ form.description.id_for_label }}">
+                                                        <label for="id_description">{{form.description.label}}</label>
+                                                        {% if form.description.field.required %}
+                                                        <small class="star">*</small>
+                                                        {% endif %}
+                                                        {% if form.description.help_text %}
+                                                        <span data-original-description="Field Info" description=""
+                                                            data-content="{{ form.description.help_text }}"
+                                                            data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                                        {% endif %}
+                                                    </label>
+                                                    {{ form.description }}
+                                                    {% if form.description.errors %}
+                                                    <label class="error">{{ form.description.errors.as_text }}</label>
+                                                    {% endif %}
+                                                </div>
+
+
+                                                <div class="form-group fg-line col-sm-4">
+                                                    <label for="id_credit_total">
+                                                        Credit
+                                                    </label>
+                                                    <input type="text" id="id_credit_total" disabled class="form-control">
+                                                </div>
+
+                                                <div class="form-group fg-line col-sm-4">
+                                                    <label for="id_debit_total">
+                                                        Debit
+                                                    </label>
+                                                    <input type="text" id="id_debit_total" disabled class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card journal_voucher">
+                                        <div
+                                            class="table-responsive card-body add_item_container journal_voucher_item_formset">
+                                            <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-column-id="qty">Account Head</th>
+                                                        <th>Sub-Ledger</th>
+                                                        <th data-column-id="qty">Types</th>
+                                                        <th data-column-id="qty">Amount </th>
+                                                        <th class="one"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for item in journal_voucher_item_formset.forms %}
+                                                    <tr class="form_set_row">
+                                                        <td class="account_head">
+                                                            {{ item.id }}
+                                                            <span class="account_head">
+                                                                {{ item.account_head }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="hidden sub_ledger" data-sub_ledger_id={{item.sub_ledger.value}}>
+                                                                {{item.sub_ledger}}
+                                                            </span>
+                                                        </td>
+                                                        <td class="warehouse">
+                                                            <span class="warehouse">
+                                                                {{ item.warehouse }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="amount_type">
+                                                            <span class="">
+                                                                {{ item.amount_type }}
+                                                            </span>
+                                                        </td>
+                                                        <td class="amount">
+                                                            <span class="amount">
+                                                                {{ item.amount }}
+                                                            </span>
+                                                        </td>
+
+                                                        <td class="one">
+                                                            {% if item.instance.pk %}{{ item.DELETE }}{%endif%}
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            {{ journal_voucher_item_formset.management_form }}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+<!-- /Page Wrapper -->
+{% endblock %}
+
+{% block static %}
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+
+        $('.journal_voucher_item_formset table tr.form_set_row').formset({
+            prefix: '{{ journal_voucher_item_formset.prefix }}',
+            formCssClass: 'dynamic-formset1',
+            'added': function (row) {
+                row.find('td.amount_type select').select2();
+                row.find('td.amount_type select~button').hide()
+
+            }
+        });
+        $(document).on('change', '.amount_type select', function () {
+            var $this = $(this);
+            var parent = $this.parents('tr.form_set_row');
+            var amount_type = parent.find('.purchase_quantity select').val();
+        });
+
+        $('.journal_voucher_item_formset table tr.form_set_row').each(function () {
+            $(this).find('td.amount_type select').select2();
+            $(this).find('td.amount_type select~button').hide();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+
+        calculate();
+        $('.account_head select').each(function () {
+            $(this).change()
+        })
+    });
+
+    function calculate() {
+        var credit_total = 0
+        var debit_total = 0
+
+        $('.journal_voucher_item_formset table tr.form_set_row').each(function () {
+            $this = $(this);
+
+            var amount_type = $this.find('.amount_type select').val()
+            var amount = parseFloat($this.find('.amount input').val());
+
+            if (!amount) {
+                amount = 0;
+            }
+            if (amount_type == 10) {
+                credit_total += amount
+            } else if (amount_type == 20) {
+                debit_total += amount
+            }
+
+        });
+
+        $('#id_credit_total').val(credit_total);
+        $('#id_debit_total').val(debit_total);
+    }
+
+    function showSubLedger($this) {
+        var url = '';
+        let account_head = $this.find('option:selected').text();
+
+        if (account_head == "Sundry Debtor") {
+            $('.sub_ledger').show();
+
+            url = "{% url 'customers:get_customers' %}";
+        }
+        else if (account_head == "Sundry Creditor (Vendor)") {
+            $('.sub_ledger').show();
+
+            url = "{% url 'vendors:get_vendors' %}";
+        }
+        else if (account_head == "Sundry Creditor (Delivery Agent)") {
+            $('.sub_ledger').show();
+            url = "{% url 'vendors:get_vendors' %}";
+        }
+
+        getSubLedgerData(url, $this)
+    }
+
+    function getSubLedgerData(url, $this) {
+        let $parent = $this.parents('tr.form_set_row');
+        if (url != '') {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == "true") {
+                        var model = data['model']
+                        var instances = data['instances']
+                        var sub_ledger = `<option value=''>----------</option>`;
+                        var sub_ledger_id = $parent.find('.sub_ledger').attr('data-sub_ledger_id')
+
+                        for (i = 0; i < instances.length; i++) {
+                            if (sub_ledger_id == instances[i]['pk']) {
+                                sub_ledger += `<option selected value='${instances[i]['pk']}'>${instances[i]['name']} </option>`
+                            }
+                            else {
+                                sub_ledger += `<option value='${instances[i]['pk']}'>${instances[i]['name']} </option>`
+                            }
+                        }
+                        console.log(sub_ledger_id,"iui");
+                        $parent.find('.sub_ledger select').attr('data-model', model).html(sub_ledger).selectpicker('refresh');
+                        $parent.find('.sub_ledger select').trigger('change');
+                    }
+                },
+                error: function (data) { }
+            });
+        } else {
+            $parent.find('.sub_ledger select').attr('data-model', '').html('').selectpicker('refresh');
+        }
+
+    }
+
+
+    $(document).on('change keyup', 'td.amount_type select, td.amount input', function () {
+        calculate();
+    });
+
+    $(document).on('change', '.account_head select', function () {
+
+
+        showSubLedger($(this))
+    });
+</script>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+{{ form.media }}
+{{ journal_voucher_item_formset.media }}
+{% endblock %}

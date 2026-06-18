@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Wrapper -->
+<div class="">
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+
+                <div class="col-auto col-sm-4 float-right ml-auto">
+                    <form method="get" action="">
+                        <div class="modal-body">
+                            <div class="d-flex align-items-center">
+                                <input name="q" type="text" placeholder="Search" value="{{ filter_params.query }}" class="form-control" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-auto float-right ml-auto">
+                    <a title="Filter" data-toggle="modal" data-target="#modal_aside_right" href="javascript:void(0)"
+                        class="btn add-btn">Filter
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="table-responsive">
+
+                        <table id="data-table-basic"
+                            class="table table-striped table-vmiddle cash_day_book table2excel">
+                            <thead>
+                                <tr>
+                                    <th style="width:20px;"></th>
+                                    <th>Warehouse</th>
+                                    <th>Product</th>
+                                    <th>Barcode</th>
+                                    <th>Batch number</th>
+                                    <th>Stock</th>
+                                    <th>Cost</th>
+                                    <th>MRP</th>
+                                    <th>Expiry Date</th>
+                                    <th>Total Cost</th>
+                                    <th>Total MRP</th>
+                                    <!-- <th>Action</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% load el_pagination_tags %}
+                                {% paginate 24 instances %}
+                                {% for instance in instances %}
+                                {% if instance.product_variant %}
+                                <tr>
+                                {% else %}
+                                <tr class="text-info">
+                                {% endif %}
+                                    <td style="width:20px;"></td>
+                                    <td>{{instance.warehouse}}</td>
+                                    {% if instance.product_variant %}
+                                        <td>{{instance.product_variant}} </td>
+                                        <td>{{instance.product_variant.product_code}}</td>
+                                    {% else %}
+                                        <td>{{instance.product.name}} - {{instance.product.unit_type}} {% if instance.product.brand %}- {{instance.product.brand}}{% endif %}</td>
+                                        <td>{{instance.product.product_code}}</td>
+                                    {% endif %}
+                                    <td> {{instance.batch_number}}</td>
+                                    <td> {{instance.stock}}</td>
+                                    <td> {{instance.cost}}</td>
+                                    <td> {{instance.mrp}}</td>
+                                    <td> {{instance.expire_date|date:'d/m/Y'}}</td>
+                                    <td> {{instance.total_cost}}</td>
+                                    <td> {{instance.total_mrp}}</td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                            <tfoot>
+                                <tr class="tot text-center" style="font-weight: bold;">
+                                    <td colspan="8">Total</td>
+                                    <td>{{ totals.total_cost }}</td>
+                                    <td>{{ totals.total_mrp }}</td>
+                                    <td>{{ totals.total_price }}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        {% if is_excel_export %}
+                        <div class="export_button">
+                            <button class="export_to_excel exportToExcel- " title="Export to XLS"><i class="la la-download"></i></button>
+                        </div>
+                        {% endif %}
+
+                        {% get_pages %}
+                        <div class="clearfix"></div>
+                        <div class="row pagi m-t-5">
+                            <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                            <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                                <div class="m-t-10">
+                                    Showing {{title}}
+                                    <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                    class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                    class="total_count">{{ pages.total_count }}</span> </div>
+                                </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-aside" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Filter</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form method="get" action="">
+              <div class="modal-body">
+                  <div class="form-group fg-line">
+                      <label class="bmd-label-floating">Search</label>
+                      <input name="q" type="text" value="{{ filter_params.query }}" class="form-control" />
+                  </div>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group fg-line">
+                      <label class="bmd-label-floating">Category</label>
+                      <!-- <input name="category" type="text" class="form-control" /> -->
+                      <select class="selectpicker form-control" data-live-search="true" data-size="5" name="category">
+                          <option value="">-----All-----</option>
+                          {% for category in categories %}
+                          <option {% if filter_params.category|safe == category.pk|safe %}selected {% endif %}value="{{category.pk}}">{{ category.name }}</option>
+                          {% endfor%}
+                      </select>
+                  </div>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group fg-line">
+                      <label class="bmd-label-floating">Subcategory</label>
+                      <select class="selectpicker form-control" data-live-search="true" data-size="5" name="sub_category">
+                          <option value="">-----All-----</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group fg-line">
+                      <label class="bmd-label-floating">Brand</label>
+                      <select class="selectpicker form-control" data-live-search="true" data-size="5" name="brand">
+                          <option value="">-----All-----</option>
+                          {% for brand in brands %}
+                          <option {% if filter_params.brand|safe == brand.pk|safe %}selected {% endif %}value="{{brand.pk}}">{{ brand.name }}</option>
+                          {% endfor%}
+                      </select>
+                  </div>
+              </div>
+
+              {% if is_admin %}
+              <div class="modal-body">
+                  <div class="form-group fg-line">
+                      <label class="bmd-label-floating">Warehouse</label>
+                      <select class="selectpicker form-control" data-live-search="true" data-size="5" name="warehouse">
+                          <option value="">-----All-----</option>
+                          {% for i in warehouse %}
+                          <option {% if filter_params.warehouse|safe == i.pk|safe %}selected {% endif %}value="{{i.pk}}">{{ i.name }}</option>
+                          {% endfor%}
+                      </select>
+                  </div>
+              </div>
+              {% endif %}
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+              </div>
+          </form>
+
+      </div>
+  </div> <!-- modal-bialog .// -->
+</div> <!-- modal.// -->
+<!-- /Page Wrapper -->
+{{ form.media }}
+{% endblock %}
+
+{% block static %}
+<script>
+    $("[name='category']").on('change', function () {
+        var $this = $(this);
+        get_sub_categories($this);
+    });
+
+    function get_sub_categories(element) {
+        var id_category = element.val();
+        var selected = "{{ filter_params.sub_category }}";
+        var url = "{% url 'products:get_category_details' %}";
+
+        if (id_category != "" || id_category != null || id_category != undefined) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id_category: id_category,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    var subcategory = data['subcategory']
+
+                    if (status == "true") {
+                        console.log()
+                        var subcategory = data['subcategory']
+                        var i, maxlength = subcategory.length;
+
+                        if (selected.length > 10){
+                            var options = '<option value="">-----All----</option>'
+                        }else{
+                            var options = '<option selected value="">-----All----</option>'
+                        }
+
+                        for (i = 0; i < maxlength; i++) {
+                            options += `<option value="${subcategory[i]['id']}">${subcategory[i]['name']}</<option>`
+                        }
+                    }
+
+                    else {
+                        var message = data['message']
+                        var options = `<option value="">${message}</option>`
+                    }
+                    $("[name='sub_category']").html(options)
+                    $(`[name='sub_category'] option[value="${selected}"]`).attr('selected','')
+                    $("[name='sub_category']").selectpicker('refresh');
+                },
+                error: function (data) {
+
+                }
+            });
+        }
+    }
+</script>
+
+{% endblock %}

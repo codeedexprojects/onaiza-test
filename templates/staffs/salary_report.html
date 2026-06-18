@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+{% load main_template_tags %}
+<section id="content">
+    <div class="container card p-10">
+
+        <div class="action-header palette-theme {{current_theme}} bg clearfix">
+            <div class="ah-label hidden-xs palette-White text">{{title}}</div>
+
+            <div class="ah-search">
+                <form method="get" action="{% url 'staffs:staffs' %}">
+                    <input name="q" type="text" placeholder="Start typing..." class="ahs-input">
+
+                    <i class="ah-search-close zmdi zmdi-long-arrow-left" data-ma-action="ah-search-close"></i>
+                    <input type="submit" class="hidden" />
+                </form>
+            </div>
+
+            <ul class="ah-actions actions a-alt">
+                <!-- <li>
+                    <a title="Delete Selected Staff" class="action-button reload remove selected-items-button"
+                        data-id="" href="{% url 'staffs:delete_selected_staffs' %}">
+                        <i class="zmdi zmdi-delete hide del"></i>
+                    </a>
+                </li>
+                <li>
+                    <a title="Select All" class="check_all" href="">
+                        <i class="zmdi zmdi-select-all hide"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a href="{% url 'staffs:staffs' %}" title="View all staffs" class="ah-search-trigger" data-ma-action="ah-search-open">
+                        <i class="zmdi zmdi-accounts"></i>
+                    </a>
+                </li>
+                <!-- <li>
+                    <a title="Export to excel" class="export_to_excel">
+                        <i class="zmdi zmdi-collection-text"></i>
+                    </a>
+                </li> -->
+                <li>
+                    <a title="Export to excel" class="exportToExcel">
+                        <i class="zmdi zmdi-collection-text"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="card">
+            <div class="card-body card-padding">
+                <div class="row m-b-20">
+                    <form action="" method="get">
+                        <div class="col-sm-11">
+                            <div class="col-sm-3">
+                                <label for="id_date">Date</label>
+                                <input type="text" class="form-control date-picker" value="{{filter_date}}" id="id_date" name="date" />
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="m-t-20">
+                                    <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+
+            {% if instances %}
+            <div class="table-responsive">
+                <table id="data-table-basic" class="table table2excel table-striped table-vmiddle">
+                    <thead>
+                        <tr>
+                            <th style="width:20px;">Sl.No</th>
+                            <!-- <th data-column-id="id" data-type="numeric">ID</th> -->
+                            <th>Staff</th>
+                            <th>Bank details</th>
+                            <th>Leave Count</th>
+                            <th>Half Day Leave Count</th>
+                            <th>Casual Leave Count</th>
+                            <th>Commission</th>
+                            <th>Incentives</th>
+                            <th>Gross Salary</th>
+                            <th>Advance</th>
+                            <th>Net Salary</th>
+                            <th>Date of Payment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% comment %}
+                        {% load el_pagination_tags %}
+                        {% paginate 21 instances %}
+                        {% endcomment %}
+
+                        {% for instance in instances %}
+                        <tr class="check_items_row">
+                            <td style="width:20px;">{{ forloop.counter }}</td>
+                            <!-- <td><a href="{% url 'staffs:staff_about' pk=instance.pk %}">{{instance.auto_id}}</a></td> -->
+                            <td>{{ instance.staff.name }}</td>
+                            <td>{{ instance.staff.get_bank_details }}</td>
+                            <td>{{ instance.leave_count|floatformat:0|default:'0' }}</td>
+                            <td>{{ instance.half_leave_count|floatformat:0|default:"0" }}</td>
+                            <td>{{ instance.staff.pk|get_casual_leave_count:instance.date }}</td>
+                            <td>{{ instance.commission|default:0 }}</td>
+                            <td>{{ instance.incentives|default:0 }}</td>
+                            <td>{{ instance.salary|default:0 }}</td>
+                            <td>{{ instance.advance|default:0 }}</td>
+                            <td>{{ instance.salary|default:0 }}</td>
+                            <td>{{ instance.date|date:'m/d/Y' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            {% comment %}
+            <!--pagination -->
+            <div class="bootgrid-footer container-fluid" id="data-table-selection-footer">
+                {% get_pages %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="pagination">
+                            {% show_pages %}
+                        </div>
+                    </div>
+                    <div class="col-sm-6 infoBar">
+                        <div class="infos">
+                            Showing {{title}} <span class="current_page_index">{{ pages.current_start_index }}</span> -
+                            <span class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--pagination-->
+            {% endcomment %}
+
+            {% else %}
+                {% include 'includes/not_found.html' %}
+            {% endif %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block filter_box %}
+{% endblock %}
+
+{% block static %}
+{% load static %}
+{% endblock %}

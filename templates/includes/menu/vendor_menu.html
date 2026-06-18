@@ -1,0 +1,66 @@
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="grid" class="align-self-center menu-icon"></i>
+        <span>Inventory</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:vendor_categories' %}"><i class="ti-control-record"></i>Categories</a>
+            <a href="{% url 'vendors:vendor_create_category' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:vendor_sub_categories' %}"><i class="ti-control-record"></i>Sub Categories</a>
+            <a href="{% url 'vendors:vendor_create_sub_category' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:vendor_brands' %}"><i class="ti-control-record"></i>Brands</a>
+            <a href="{% url 'vendors:vendor_create_brand' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <!-- <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:vendor_view_hsn_code' %}"><i class="ti-control-record"></i>Hsn Code</a>
+            <a href="{% url 'vendors:vendor_create_hsn_code' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li> -->
+
+    </ul>
+</li>
+
+<li class="d-flex nav-item">
+    <a class="nav-link" href="{% url 'vendors:vendor_products' %}">
+        <i class="fas fa-archive"></i>
+        My Products
+    </a>
+    <a href="{% url 'vendors:vendor_create_product' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+</li>
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="shopping-cart" class="align-self-center menu-icon"></i>
+        <span>Orders</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:received_orders' status='pending' %}"><i class="ti-control-record"></i>Pending Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:received_orders' status='shipped' %}"><i class="ti-control-record"></i>Shipped Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:received_orders' status='delivered' %}"><i class="ti-control-record"></i>Delivered Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:received_orders' status='cancelled' %}"><i class="ti-control-record"></i>Cancelled Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:received_orders' status='all' %}"><i class="ti-control-record"></i>All Orders</a>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'vendors:bookings' %}"><i class="ti-control-record"></i>Bookings</a>
+        </li>
+    </ul>
+</li>

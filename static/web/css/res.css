@@ -1,0 +1,276 @@
+@media all and (max-width: 1500px){
+    .OverLay {
+        width: 40%;
+    }
+}
+@media all and (max-width: 1280px){
+    .OverLay {
+        width: 45%;
+    }
+    .side-popup-close {
+        margin-right: 15px;
+        font-size: 26px;
+    }
+    .mycart-name {
+        font-size: 18px;
+    }
+    #EditProfile .ContactDetails-Row label {
+        font-size: 15px;
+    }
+    #EditProfile .main-container-side form .updateButton {
+        padding: 10px 0;
+        font-size: 17px;
+    }
+    #single-product .container-s {
+        flex-direction: column;
+    }
+    #single-product .left-box {
+        width: 100%;
+        justify-content: center;
+    }
+    #single-product .left-box .slide-card {
+        width: 35%;
+    }
+    #single-product .left-box .slide-cards {
+        width: 12%;
+        margin-right: 10px;
+    }
+    #single-product .right-box{
+        width: 100%;
+    }
+    #review-list .card .right-box {
+        margin-top:0;
+    }
+    #single-product{
+        padding:60px 0;
+    }
+    #review-list {
+        padding-bottom: 60px;
+    }
+    #review-list h5 {
+        font-size: 16px;
+    }
+    #review-list .tab {
+        margin: 0 0 20px;
+    }
+    #review-list .load button {
+        font-size: 16px;
+    }
+    #review-list .card .right-box .top-c h4 {
+        font-size: 16px;
+    }
+    #review-list .card .bottom-c {
+        margin-top: 10px;
+    }
+    #review-list .reviews .cards .card {
+        padding: 20px 0;
+    }
+    #review-list .tab h6 {
+        font-size: 17px;
+    }
+    #review-list .describtion .detail p {
+        margin-top: 10px;
+    }
+    #review-list .describtion .detail {
+        margin-bottom: 20px;
+    }
+    #review-list p{
+        font-size: 14px;
+    }
+    #single-product .right-box .bottom .quantity input {
+        width: 22px;
+        height: 22px;
+        font-size: 14px;
+    }
+    #single-product .right-box .bottom .quantity h5 {
+        font-size: 16px;
+    }
+}
+@media all and (max-width: 980px){
+    .OverLay {
+        width: 52%;
+    }
+    #single-product {
+        padding: 50px 0;
+    }
+    #review-list {
+        padding-bottom: 50px;
+    }
+    #single-product .right-box {
+        width: 100%;
+        margin-top: 30px;
+    }
+    #single-product .right-box .top {
+        margin-bottom: 10px;
+    }
+    #single-product .right-box .content h4 {
+        font-size: 20px;
+    }
+    #single-product .right-box .content h5 {
+        font-size: 18px;
+        margin: 4px 0;
+    }
+    #single-product .right-box .content .nb p {
+        margin: 10px 0;
+    }
+    div.bottom {
+        padding-top: 10px;
+    }
+    #single-product .right-box .bottom .apply button span {
+        margin-right: 9px;
+        font-size: 16px;
+    }
+    #single-product .right-box .bottom .apply button {
+        padding: 10px 20px;
+        border-radius: 7px;
+    }
+    #review-list .tab h6 {
+        font-size: 16px;
+    }
+    #review-list .tab {
+        margin: 0 0 15px;
+    }
+    #review-list .describtion .detail {
+        margin-bottom: 15px;
+    }
+    #review-list .describtion .contemt .general {
+        margin-top: 10px;
+    }
+    body {
+        /* font-size: 15px; */
+    }
+    #review-list .reviews .cards .card {
+        padding: 15px 0;
+    }
+    #review-list .card .date span {
+        font-size: 15px;
+    }
+    #review-list .card .date .review-c {
+        margin-left: 15px;
+    }
+    #review-list .load {
+        margin-top: 40px;
+    }
+    #review-list .load button {
+        font-size: 15px;
+    }
+    #review-list .load button {
+        padding: 10px 18px;
+        font-size: 17px;
+    }
+    #review-list h5 {
+        font-size: 15px;
+    }
+    #single-product .left-box .slide-card {
+        width: 50%;
+    }
+    #single-product .left-box .slide-cards {
+        width: 15%;
+    }
+}
+@media all and (max-width: 768px){
+    .OverLay {
+        width: 58%;
+    }
+    #EditProfile .UserProfileImage-Center .profileImageArea {
+        width: 35%;
+    }
+    #EditProfile .UserProfileImage-Center a.editPrf {
+        width: 25px;
+        height: 25px;
+        padding: 8px;
+    }
+    #EditProfile form .lastInput {
+        margin-bottom: 20px;
+    }
+    #single-product .left-box .slide-card {
+        width: 60%;
+    }
+    #single-product .left-box .slide-cards {
+        width: 19%;
+    }
+    #single-product .right-box .top {
+        flex-direction: row;
+    }
+    #single-product .right-box .content .nb p {
+        margin: 5px 0;
+    }
+    #single-product .right-box .bottom .quantity h5 {
+        font-size: 15px;
+        margin-right: 10px;
+    }
+}
+@media all and (max-width: 640px){
+    .OverLay {
+        width: 70%;
+        padding: 20px;
+    }
+    #EditProfile .main-container-side form .updateButton {
+        padding: 9px 0;
+        font-size: 16px;
+    }
+    .side-popup-close {
+        margin-right: 12px;
+        font-size: 24px;
+    }
+    #single-product .left-box .slide-card {
+        width: 75%;
+    }
+    #single-product .left-box .slide-cards {
+        width: 25%;
+    }
+    #single-product .right-box {
+        margin-top: 20px;
+    }
+    #single-product .right-box .content h4 {
+        font-size: 18px;
+        margin: 2px 0;
+    }
+    #single-product .right-box .top {
+        margin-bottom: 5px;
+    }        
+}
+@media all and (max-width: 500px){
+    .OverLay {
+        width: 80%;
+    }
+}
+@media all and (max-width: 480px){
+    .OverLay {
+        width: 83%;
+    }
+    #review-list .describtion .contemt .general p {
+        width: 200px;
+    }
+    #single-product .right-box .content h4 {
+        font-size: 16px;
+    }    
+    #single-product .right-box .content h5 {
+        font-size: 16px;
+    }
+    #review-list .tab h6 {
+        font-size: 15px;
+    }
+    #single-product .left-box {
+        flex-direction: column-reverse;
+    }
+    #single-product .left-box .slide-cards {
+        width: 100%;
+        margin: 10px 0 0;
+    }
+    #single-product .left-box .slide-card {
+        width: 100%;
+    }
+    #single-product .left-box .slide-cards .image:nth-child(n+2) {
+        margin: 0 5px 0 0;
+    }
+}
+@media all and (max-width: 420px){
+    .OverLay {
+        width: 87%;
+    }
+    .orderIdandDateRow .leftside .orderid {
+        padding: 3px 5px 5px;
+    }
+}
+

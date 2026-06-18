@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+	<meta name="robots" content="" />
+	<title></title>
+
+	{% load static %}
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}" />
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+	<!-- Fontawesome CSS -->
+	<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
+
+	<!-- Lineawesome CSS -->
+	<link rel="stylesheet" href="{% static 'css/line-awesome.min.css' %}" />
+
+	<!-- Datatable CSS -->
+	<link rel="stylesheet" href="{% static 'css/dataTables.bootstrap4.min.css' %}" />
+
+	<!-- Select2 CSS -->
+	<link rel="stylesheet" href="{% static 'css/select2.min.css' %}" />
+
+	<!-- Datetimepicker CSS -->
+	<link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.min.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/sweetalert2.min.css' %}" type="text/css" />
+
+	<!-- Main CSS -->
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css" />
+	<link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}" type="text/css" />
+	<link rel="stylesheet" href="{% static 'css/owl.theme.min.css' %}" type="text/css" />
+	<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+	<style>
+		input::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
+		input[type="number"] {
+			-moz-appearance: textfield;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Header -->
+	<div class="header">
+		<!-- Logo -->
+		<div class="wrapper">
+			<div class="header-left">
+				<a href="{% url 'app' %}" class="logo">
+					<img src="{% static 'img/logo.png' %}" height="40" alt="" />
+				</a>
+			</div>
+		</div>
+		<!-- /Logo -->
+
+		<div class="wrap">
+			<div class="search shadow-sm bg-white rounded">
+				<form class="searchform" action="search.html">
+					<input type="text" class="searchTerm" placeholder="Search for groceries, breads, drinks etc..." />
+					<button type="submit" class="searchButton">
+						<img src="{% static 'img/search.svg' %}" />
+					</button>
+				</form>
+			</div>
+		</div>
+
+		<!-- Header Menu -->
+		<div class="wrapper">
+			<ul class="nav user-menu usermnu">
+				<!-- Notifications -->
+				<li class="nav-item dropdown ml-4">
+					<a href="{% url 'web:product_wishlists' %}" class="nav-link" >
+						<img src="{% static 'img/heart.svg' %}" />
+					</a>
+				</li>
+				<!-- /Notifications -->
+
+				<!-- Message Notifications -->
+				<li class="nav-item ml-4">
+					<a href="{% url 'web:product_carts' %}" class="dropdown-toggle nav-link">
+						<img style="width: 55%;" src="{% static 'img/cart.svg' %}" />
+						<span style="color: #000; opacity: 0.6;">({{cart_count}})</span>
+					</a>
+				</li>
+
+				<li class="ml-4 butlog">
+					{% if request.user.is_authenticated %}
+					<a class="btn btn-primary account-btn butsub" href="{% url 'users:logout' %}">Logout</a>
+					{% else %}
+					<a class="btn btn-primary account-btn butsub" href="{% url 'users:login' %}">Log in</a>
+					{% endif %}
+				</li>
+			</ul>
+		</div>
+		<!-- /Header Menu -->
+
+		<div class="wrapper">
+			<div class="respo">
+				<div class="search shadow-sm bg-white rounded">
+					<form class="searchform" action="search.html">
+						<input type="text" class="searchTerm"
+							placeholder="Search for groceries, breads, drinks etc..." />
+						<button type="submit" class="searchButton">
+							<img src="{% static 'img/search.svg' %}" />
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /Header -->
+	{% block content %} {% endblock %}
+
+	<footer>
+		<div class="top row">
+			<div class="col col-md-2">
+				<h3 class="mb-3">ABOUT</h3>
+				<ul>
+					<li>
+						<a href="">Contact Us</a>
+					</li>
+					<li>
+						<a href="">About Us</a>
+					</li>
+					<li>
+						<a href="">Careers</a>
+					</li>
+					<li>
+						<a href="">News</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col col-md-2">
+				<h3 class="mb-3">HELP</h3>
+				<ul>
+					<li>
+						<a href="">Payments</a>
+					</li>
+					<li>
+						<a href="">Shipping</a>
+					</li>
+					<li>
+						<a href="">Cancellation</a>
+					</li>
+					<li>
+						<a href="">FAQ</a>
+					</li>
+					<li>
+						<a href="">Report Products</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col col-md-2">
+				<h3 class="mb-3">POLICY</h3>
+				<ul>
+					<li>
+						<a href="">Return Policy</a>
+					</li>
+					<li>
+						<a href="">Terms of Use</a>
+					</li>
+					<li>
+						<a href="">Security</a>
+					</li>
+					<li>
+						<a href="">Privacy</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col col-md-3 col-sm-2">
+				<h3 class="mb-3">SOCIAL</h3>
+				<ul class="iconss mb-4">
+					<li>
+						<img src="{% static 'img/facebook.svg' %}" />
+					</li>
+					<li>
+						<img src="{% static 'img/instagram.svg' %}" />
+					</li>
+					<li>
+						<img src="{% static 'img/twitter.svg' %}" />
+					</li>
+				</ul>
+				<h3 class="mb-3">PAYMENTS</h3>
+				<ul>
+					<li class="paymnt">
+						<img src="{% static 'img/visa.png' %}" />
+					</li>
+				</ul>
+			</div>
+			<div class="col col-md-3 col-sm-2 footimg">
+				<img src="{% static 'img/logo.png' %}" />
+				<img src="{% static 'img/google-play.svg' %}" />
+			</div>
+		</div>
+		<div class="bottom">
+			<p class="text-center py-2 m-0 text-muted">
+				&copy; {% now 'Y' %} 4anonline
+			</p>
+		</div>
+	</footer>
+
+	<script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+
+	<!-- Bootstrap Core JS -->
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/select2.min.js' %}" type="text/javascript"></script>
+	<!-- Custom JS -->
+	<script src="{% static 'js/app.js' %}"></script>
+	<script src="{% static 'js/sweetalert2.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/actions.js' %}"></script>
+	<script>
+		$(document).ready(function () {
+			$(".inpeye").click(function (e) {
+				e.preventDefault();
+				var target = $(this).data("target-id");
+				var input = document.getElementById(target);
+				if (input.type === "password") {
+					input.type = "text";
+				} else {
+					input.type = "password";
+				}
+			});
+		});
+	</script>
+	<style>
+		.error {
+			color: red;
+		}
+
+		.user-menu.nav>li>a.btn,
+		a.btn {
+			appearance: button;
+			-webkit-writing-mode: horizontal-tb !important;
+			text-rendering: auto;
+			letter-spacing: normal;
+			word-spacing: normal;
+			text-transform: none;
+			text-indent: 0px;
+			text-shadow: none;
+			display: inline-block;
+			text-align: center;
+			align-items: flex-start;
+			box-sizing: border-box;
+			color: #fff;
+			font-size: 1rem;
+			line-height: 1.5;
+			padding: .375rem .75rem;
+			height: unset;
+			text-align: center;
+		}
+	</style>
+</body>
+
+</html>
+
+<script type="text/javascript">
+
+	$(document).ready(function () {
+
+		$('.addcart').click(function (e) {
+			e.preventDefault();
+			$this = $(this)
+			add_to_cart($this)
+
+		});
+		// $("button").click(function(){
+		//     location.reload(true);
+		// });
+	});
+
+	function add_to_cart($selector) {
+		id = $selector.data('id')
+		console.log(id)
+
+		if (id != undefined || id != null || id != "") {
+			var url = "{% url 'web:add_cart' %}";
+			$.ajax({
+				type: "GET",
+				url: url,
+				dataType: 'json',
+				data: {
+					id: id,
+				},
+				success: function (data) {
+					console.log(data)
+					var status = data['status'];
+					if (status == 'true') {
+						location.reload();
+						// Swal.fire({
+
+						//   }).then(function(){
+						//       location.reload();
+						//       }
+						//    );
+					}else if(status == "different-location"){
+						let message = data['message'];
+						$("#snackbar").html(message);
+						snackBarFunction("Hellooooooo");
+					}
+
+				},
+				error: function (data) {
+				}
+			});
+		}
+	}
+</script>

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+   <!-- Page Header -->
+   <div class="page-header">
+      <div class="row">
+         <div class="col-sm-6">
+            <h3 class="page-title">{{title|title}}</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+               <li class="breadcrumb-item active">{{title|title}}</li>
+            </ul>
+         </div>
+         <div class="col-auto float-right ml-auto">
+            <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.name}}</h3>
+
+            <ul class="personal-info row">
+               <li class="col">
+                  <a title="Create new StockTracker" href="{% url 'general:create_stock_transfer' %}"
+                     class=" text-white edit-icon">
+                     <i style="color: black" class="las la-plus"></i>
+                  </a>
+               </li>
+
+
+               <li class="col">
+                  <a title="Edit StockTracker" href="{% url 'general:edit_stock_transfer' pk=instance.pk %}"
+                     class="edit-icon">
+                     <i class="las la-pen"></i>
+                  </a>
+               </li>
+               <li class="col">
+                  <a title="Delete StockTracker" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                     data-title="Are you sure?" href="{% url 'general:delete_stock_transfer' pk=instance.pk %}"
+                     class="action-button redirect delete-icon edit-icon">
+                     <i class="las la-trash-alt"></i>
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <!-- /Page Header -->
+
+
+   <div class="tab-content">
+      <!-- Profile Info Tab -->
+      <div id="emp_profile" class="pro-overview tab-pane fade show active">
+         <div class="row">
+            <div class="col-sm-6">
+               <div class="card">
+                  <div class="card-header">
+                     <h2>Basic Info <small></small></h2>
+                  </div>
+
+                  <div class="card-body">
+                     <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Warehouse</div>
+                              <small class="lgi-text">{{instance.warehouse}}</small>
+                           </div>
+                        </div>
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Date</div>
+                              <small class="lgi-text">{{instance.date|date:'d-m-Y'}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">To Warehouse</div>
+                              <small class="lgi-text">{{instance.to_warehouse|default:'-'}}</small>
+                           </div>
+                        </div>
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Updater </div>
+                              <small class="lgi-text">{{instance.updater}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Creator </div>
+                              <small class="lgi-text">{{instance.creator}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Date Created </div>
+                              <small class="lgi-text">{{instance.date_added|date:"d/m/Y h:i A"}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Date Updated </div>
+                              <small class="lgi-text">{{instance.date_updated|date:"d/m/Y h:i A"}}</small>
+                           </div>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+
+
+         </div>
+
+      </div>
+      <!-- /Profile Info Tab -->
+
+
+   </div>
+   <div class="card">
+      <div class="card-header">
+         <h2>Items</h2>
+
+      </div>
+      {% if stock_transfers %}
+      <div class="card-body">
+         <div class="table-responsive">
+            <table id="data-table-basic" class="table table-striped table-vmiddle">
+               <thead>
+                  <tr>
+                     <th class="p-l-10">Product</th>
+                     <th>Batch</th>
+                     <th>Quantity</th>
+                     <th>Cost</th>
+                     <th>MRP</th>
+                     <th>Retail Price</th>
+                     <th>whole Sale Price</th>
+                     <th>Expiry Date</th>
+                     <th>Manufacturing Date</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for i in stock_transfers %}
+                  <tr>
+                     <td>{{i.product_variant}}</td>
+                     <td>{{i.batch}}</td>
+                     <td>{{i.quantity}}</td>
+                     <th>{{i.cost}}</th>
+                     <th>{{i.mrp}}</th>
+                     <td>{{i.retail_price}}</td>
+                     <td>{{i.whole_sale_price}}</td>
+                     <th>{{i.expire_date}}</th>
+                     <th>{{i.manufacturing_date}}</th>
+
+
+
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+
+      </div>
+      {% endif %}
+   </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

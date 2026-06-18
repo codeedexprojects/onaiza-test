@@ -1,0 +1,258 @@
+
+<li>
+    <a href="javascript: void(0);"> <i data-feather="grid"
+            class="align-self-center menu-icon"></i><span>Products</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'products:products' %}"><i
+                    class="ti-control-record"></i>Products</a>
+            <a href="{% url 'products:create' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'products:categories' %}"><i
+                    class="ti-control-record"></i>Categories</a>
+            <a href="{% url 'products:create_category' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'products:brands' %}"><i
+                    class="ti-control-record"></i>Brands</a>
+            <a href="{% url 'products:create_brand' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'products:unit_measurements' %}"><i
+                    class="ti-control-record"></i>UnitOfMeasurement</a>
+            <a href="{% url 'products:create_unit_measurement' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'products:units' %}"><i
+                    class="ti-control-record"></i>Unit</a>
+            <a href="{% url 'products:create_unit' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'general:damaged_products' %}"><i class="ti-control-record"></i>Damaged Products</a>
+            <a href="{% url 'general:create_damaged_product' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'products:hsn_codes_all' %}"><i class="ti-control-record"></i>Hsn Code</a>
+            <a href="{% url 'products:create_hsn_codes' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'general:stock_transfers' %}"><i class="ti-control-record"></i>Stock Transfer</a>
+            <a href="{% url 'general:create_stock_transfer' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="user-plus" class="align-self-center menu-icon"></i>
+        <span>Staffs</span><span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'staffs:staffs' %}"><i class="ti-control-record"></i>Staffs</a>
+            <a href="{% url 'staffs:create_staff' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+            <div class="clearfix"></div>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'staffs:designations' %}"><i class="ti-control-record"></i>Staff Designation</a>
+            <a href="{% url 'staffs:create_designation' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+            <div class="clearfix"></div>
+        </li>
+        <li class="nav-item d-flex">
+            <a class="nav-link" href="{% url 'staffs:staff_attendances' %}"><i class="ti-control-record"></i>Attendances</a>
+            <a href="{% url 'staffs:create_staff_attendance' %}" class="ml-auto"><span class="la la-plus-circle"></span></a><div class="clearfix"></div>
+        </li>
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'staffs:allowances' %}"><i class="ti-control-record"></i>Salary Allowances</a>
+            <a href="{% url 'staffs:create_salary_allowance' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+<li>
+    <a href="javascript: void(0);"> <i data-feather="users"
+            class="align-self-center menu-icon"></i><span>Suppliers</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'suppliers:suppliers' %}"><i
+                    class="ti-control-record"></i>Suppliers</a>
+            <a href="{% url 'suppliers:create_supplier' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+<li>
+    <a href="javascript: void(0);"> <i data-feather="users"
+            class="align-self-center menu-icon"></i><span>Vendors</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'vendors:vendors' %}"><i
+                    class="ti-control-record"></i>Vendors</a>
+            <a href="{% url 'vendors:create_vendor' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+<li>
+    <a href="javascript: void(0);"> <i data-feather="users"
+            class="align-self-center menu-icon"></i><span>Customers</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'customers:customers' %}"><i
+                    class="ti-control-record"></i>Customers</a>
+            <a href="{% url 'customers:create' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+<li>
+    <a href="javascript: void(0);"> <i data-feather="sidebar"
+            class="align-self-center menu-icon"></i><span>Purchase</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'purchases:purchases' %}"><i
+                    class="ti-control-record"></i>Purchase</a>
+            <a href="{% url 'purchases:create_new_purchase' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'purchases:purchase_returns' %}"><i
+                    class="ti-control-record"></i>Purchase Return</a>
+            <a href="{% url 'purchases:create_purchase_return' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+<li>
+<li>
+    <a href="javascript: void(0);"> <i data-feather="sidebar"
+            class="align-self-center menu-icon"></i><span>Sales</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'sales:sales' %}"><i
+                    class="ti-control-record"></i>Sales</a>
+            <a href="{% url 'sales:create' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'sales:sale_returns' %}"><i
+                    class="ti-control-record"></i>Sales Return</a>
+            <a href="{% url 'sales:create_sale_return' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+<li>
+    <a href="javascript: void(0);"> <i class="dripicons-briefcase"
+            class="align-self-center menu-icon"></i><span>Finance</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'finance:financial_years' %}"><i
+                    class="ti-control-record"></i>Financial year</a>
+            <a href="{% url 'finance:create_financial_year' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);"> <i data-feather="home"
+            class="align-self-center menu-icon"></i><span>Web</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href=""><i
+                    class="ti-control-record"></i>Feautured Category</a>
+        </li>
+
+    </ul>
+</li>
+
+<li>
+    <a href="javascript: void(0);"> <i class="dripicons-briefcase"
+            class="align-self-center menu-icon"></i><span>Offers</span><span class="menu-arrow"><i
+                class="mdi mdi-chevron-right"></i></span></a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item"><a class="nav-link" href="{% url 'offers:offers' %}"><i
+                    class="ti-control-record"></i>Offers</a>
+            <a href="{% url 'offers:create_offer' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+                <li class="d-flex nav-item"><a class="nav-link" href="{% url 'offers:offers' %}"><i
+                    class="ti-control-record"></i>Dealofdays</a>
+            <a href="{% url 'offers:create_offer' %}" class="ml-auto"><span class="la la-plus-circle"></span></a>
+        </li>
+
+    </ul>
+</li>
+
+
+<li>
+    <a href="javascript: void(0);">
+        <i data-feather="shopping-cart" class="align-self-center menu-icon"></i>
+        <span>Orders</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'warehouses:our_orders' %}"><i class="ti-control-record"></i>Orders</a>
+        </li>
+         <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'orders:returns' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>Return Orders</a>
+        </li>
+    </ul>
+</li>
+
+
+<li>
+    <a href="javascript: void(0);">
+        <i class="dripicons-stack" class="align-self-center menu-icon"></i>
+        <span>Reports</span>
+        <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+    </a>
+    <ul class="nav-second-level" aria-expanded="false">
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:sales_report' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>Sales Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:purchase_report' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>Purchase Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:batch_stock_report' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>Stock Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:daily_report' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>Daily Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:purchase_report' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>Profit Report</a>
+        </li>
+
+        <li class="d-flex nav-item">
+            <a class="nav-link" href="{% url 'reports:trial_balance' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>Trial Balance</a>
+        </li>
+        <li class=" nav-item">
+            <a href="javascript: void(0);">
+                    <i class="dripicons-stack" class="align-self-center menu-icon"></i>
+                    <span>GST Reports</span>
+                    <span class="menu-arrow"><i class="mdi mdi-chevron-right"></i></span>
+            </a>
+            <ul class="nav-second-level" aria-expanded="false">
+                <li class="d-flex nav-item">
+                    <a class="nav-link" href="{% url 'reports:gstr1_report' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>GSTR-1 Report</a>
+                </li>
+                <li class="d-flex nav-item">
+                    <a class="nav-link" href="{% url 'reports:gstr2_report' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>GSTR-2 Report</a>
+                </li>
+                 <li class="d-flex nav-item">
+                    <a class="nav-link" href="{% url 'reports:gstr3_report' %}?user_role=warehouse_manager"><i class="ti-control-record"></i>GSTR-3 Report</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</li>

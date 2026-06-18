@@ -1,0 +1,176 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load web_template_tags %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="main-container">
+  {% if shop_instances %}
+
+  <section class="boxitems slideritem shop-main" id="Category">
+    <section class="main-shop" id="shops">
+      <section class="wrapper">
+        <h2>{{title}}</h2>
+        <div class="top">
+          <h1>{% trans "Shops" %}</h1>
+        </div>
+        <div class="category" class="">
+          <div class="cards" id="slick-slider-shop">
+
+            {% for i in shop_instances %}
+            <div class="item">
+              <div class="image-box">
+                {% if i.image %}
+                <img src="{{i.image.thumbnail.200x200}}"/>
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}"/>
+                {% endif %}
+              </div>
+              <div class="box">
+                <div class="name">
+                  <h1>{{i.name}} </h1>
+                  <span class="rating">
+                    <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}"/>
+                    <h4>{{i.current_rating|floatformat:"1"}}</h4>
+                  </span>
+                </div>
+                <div class="bottom-box">
+                  <div class="location">
+                    <div class="location-img">
+                      <img alt="" src="{% static 'web/images/icons/Icon material-location-on.svg' %}">
+                    </div>
+                    <h2>{{i.location.name}}</h2>
+                  </div>
+                  <a class="button" href="">{% trans "Shop Now" %} </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    </section>
+  </section>
+  {% endif %}
+
+  <section class="bottomCards">
+    <div class="wrapper">
+      <div class="SectionTitle">
+        <h1>{% trans "Products" %}</h1>
+      </div>
+      <div class="cards">
+        <div class="FPProductsCards boxitems">
+          {% load el_pagination_tags %}
+          {% paginate 22 instances %}
+          {% for i in instances %}
+          <div class="item">
+                            <span class="wishlist" id="{{ i.product_variant.pk }}">
+                              <button class="{% if not auth_status %}proceed_to_login {% endif %}" data-id="add-to-wishlist" data-pk="{{ i.product_variant.pk }}"
+                                      data-toggle="tooltip"
+                                      href="{% url 'web:add_to_wishlist' %}"
+                                      id="wish-empty"
+                                      style="cursor: pointer;" title="Wish List" type="button">
+                                <img
+                                        data-path="{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %}"
+                                        data-path-empty="{% static 'web/images/icons/wish-list-empty.svg' %}"
+                                        src="{% if i.product_variant.pk in wishlist_items %}{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %} {% else %} {% static 'web/images/icons/wish-list-empty.svg' %}{% endif %}"/>
+
+                              </button>
+                          </span>
+            <div class="item-img">
+              <a href="{% url 'web:product' pk=i.product_variant.pk %}">
+                {% if i.product_variant.image %}
+                <img src="{{i.product_variant.image.thumbnail.200x200}}"/>
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:200px;"/>
+                {% endif %}
+              </a>
+            </div>
+            <a href="{% url 'web:product' pk=i.product_variant.pk %}">
+              <h1>{{i.product_variant.title}}</h1>
+            </a>
+            <div class=item-bottom>
+              <div class="box">
+                <div style="display: flex">
+                  <h2 class="text-decoration-underline" style="margin-right: 10px;">{{i.mrp}}</h2>
+                  <h2 ><span class="rupees-symbol">₹ </span>{{i.retail_price}}</h2>
+               </div>
+                <span class="rating">
+                                        <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}"/>
+                                        <h4>{{i.current_rating|floatformat:"1"}}</h4>
+                                    </span>
+              </div>
+              <div class="cart">
+                <a href="">
+                  <img src="{% static 'web/images/icons/add-to-cart-2.svg' %}"/>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="pagination">
+        {% get_pages %}
+        <a aria-label="Previous" class="slick-prev slick-arrow" href="{{ pages.previous.path }}" role="presentation"
+           style="display: inline-block;" type="button"><img
+                alt="" src="{% static 'web/images/icons/Icon ionic-ios-arrow-back.svg' %}"></a>
+        <ul class="slick-dots" role="tablist">
+          {% show_pages %}
+        </ul>
+
+        <a aria-label="Next" class="slick-next slick-arrow" href="{{ pages.next.path }}" role="presentation"
+           style="display: inline-block;" type="button"><img
+                alt="" src="{% static 'web/images/icons/Icon ionic-ios-arrow-Right.svg' %}"></a>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="middleSpotLight banner-middle">
+    <div class="wrapper">
+      <div class="MidleSpotlightLeft">
+        <img alt="image" src="{% static 'web/images/breadbasket-baking-png.png' %}">
+      </div>
+      <div class="MidleSpotlightCenter">
+        <Span>Bakery</Span>&nbsp;items upto
+        <span>15%</span>&nbsp;off
+        <a href="#">
+          <button type="button">
+            {% trans "Shop Now" %}
+          </button>
+        </a>
+      </div>
+    </div>
+
+
+  </section>
+
+
+</div>
+
+<script>
+        function slide(direction){
+        var container = document.getElementById('HorizondelScrollingCard');
+        scrollCompleted = 0;
+        var slideVar = setInterval(function(){
+            if(direction == 'left'){
+                container.scrollLeft -= 10;
+            } else {
+                container.scrollLeft += 10;
+            }
+            scrollCompleted += 10;
+                if(scrollCompleted >= 100){
+                    window.clearInterval(slideVar);
+                }
+            }, 50);
+        }
+
+
+
+
+</script>
+
+{% endblock content %}

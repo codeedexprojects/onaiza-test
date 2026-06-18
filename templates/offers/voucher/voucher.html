@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+   <!-- Page Header -->
+   <div class="page-header">
+      <div class="row">
+         <div class="col-sm-6">
+            <h3 class="page-title">{{title|title}}</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+               <li class="breadcrumb-item active">{{title|title}}</li>
+            </ul>
+         </div>
+         <div class="col-auto float-right ml-auto">
+            <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.start_time}}</h3>
+
+            <ul class="personal-info row">
+               <li class="col">
+                  <a title="Create new brand" href="{% url 'offers:create_voucher' %}" class=" text-white edit-icon">
+                     <i style="color: black" class="las la-plus"></i>
+                  </a>
+               </li>
+
+
+               <li class="col">
+                  <a title="Edit Brand" href="{% url 'offers:edit_voucher' pk=instance.pk %}" class="edit-icon">
+                     <i class="las la-pen"></i>
+                  </a>
+               </li>
+               <li class="col">
+                  <a title="Delete Brand" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                     data-title="Are you sure?" href="{% url 'offers:delete_voucher' pk=instance.pk %}"
+                     class="action-button redirect delete-icon edit-icon">
+                     <i class="las la-trash-alt"></i>
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <!-- /Page Header -->
+
+
+   <div class="tab-content">
+      <!-- Profile Info Tab -->
+      <div id="emp_profile" class="pro-overview tab-pane fade show active">
+         <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Basic Info <small></small></h2>
+                    </div>
+     
+                    <div class="card-body">
+                        <div class="list-group lg-alt c-overflow">
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Code</div>
+                                    <small class="lgi-text">{{instance.voucher_code}}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Title</div>
+                                    <small class="lgi-text">{{instance.title}}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                             <div class="media-body">
+                                 <div class="lgi-heading">Description</div>
+                                 <small class="lgi-text">{{instance.description}}</small>
+                             </div>
+                         </div>
+
+                          {% if is_exclusive %}
+                          <div class="list-group-item media">
+                             <div class="media-body">
+                                 <div class="lgi-heading">Customer Name</div>
+                                 <small class="lgi-text">{{instance.customer.name}}</small>
+                             </div>
+                         </div>
+                          {% endif %}
+                          <div class="list-group-item media">
+                             <div class="media-body">
+                                 <div class="lgi-heading">start Time</div>
+                                 <small class="lgi-text">{{instance.start_time}}</small>
+                             </div>
+                         </div>
+
+                          <div class="list-group-item media">
+                             <div class="media-body">
+                                 <div class="lgi-heading">End Time</div>
+                                 <small class="lgi-text">{{instance.end_time}}</small>
+                             </div>
+                         </div>
+
+                          <div class="list-group-item media">
+                             <div class="media-body">
+                                 <div class="lgi-heading">Percentage</div>
+                                 <small class="lgi-text">{{instance.percentage}}</small>
+                             </div>
+                         </div>
+
+                          <div class="list-group-item media">
+                             <div class="media-body">
+                                 <div class="lgi-heading">Upto limit</div>
+                                 <small class="lgi-text">{{instance.upto_limit}}</small>
+                             </div>
+                         </div>
+
+                          <div class="list-group-item media">
+                             <div class="media-body">
+                                 <div class="lgi-heading">Minimum Order Amount</div>
+                                 <small class="lgi-text">{{instance.minimum_order_amount}}</small>
+                             </div>
+                         </div>
+
+                          <div class="list-group-item media">
+                             <div class="media-body">
+                                 <div class="lgi-heading">Percentage</div>
+                                 <small class="lgi-text">{{instance.percentage}}%</small>
+                             </div>
+                         </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+           
+        </div>
+     
+      </div>
+      <!-- /Profile Info Tab -->
+
+
+   </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

@@ -1,0 +1,1648 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" class="ajax reset redirect">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.date.id_for_label }}">
+                                        {{ form.date.label }}
+
+                                        {% if form.date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {% if is_edit %}
+                                    <input type="text" name="date" value="{{ instance.date|date:'d/m/Y' }}"
+                                        class="required form-control date-picker-dd" placeholder="Date" required
+                                        id="id_date">
+                                    {% else %}
+                                    {{ form.date }}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="d-flex justify-content-between">
+                                        <label for="{{ form.supplier.id_for_label }}">
+                                            {{ form.supplier.label }}
+                                            <small class="star text-danger">*</small>
+                                        </label>
+                                        <p data-toggle="modal" style="margin-bottom:0; cursor: pointer;"
+                                            data-target="#exampleModalScrollable">Create new Supplier</p>
+                                    </div>
+                                    {{ form.supplier }}
+                                </div>
+                                <input id="supplier_state" type="hidden" name="" />
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="{{ form.warehouse.id_for_label }}">
+                                        {{ form.warehouse.label }}
+
+                                        {% if form.warehouse.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.warehouse }}
+                                </div>
+
+                                <!-- <p id="modal_button"><a href="##">Create new Supplier</a> </p> -->
+                            </div>
+                        </div>
+                        <div class="card sale-item-card">
+                            <div class="table-responsive card-body add_item_container purchase_order_item_formset">
+                                <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px;">Sl.No</th>
+                                            <th style="min-width: 140px;" data-column-id="barcode">Product code</th>
+                                            <th data-column-id="product">Product Variant</th>
+                                            <th class="px-0">New Batch</th>
+                                            <th class="px-0" style="min-width: 100px;">Batch</th>
+                                            <th data-column-id="qty">Available stock</th>
+                                            <th data-column-id="qty" style="display: none;">HSN</th>
+                                            <th data-column-id="qty">QTY</th>
+                                            <!-- <th data-column-id="category">Cost</th> -->
+                                            <!-- <th style="min-width: 100px;" data-column-id="category">Price</th> -->
+                                            <th style="min-width: 100px;" data-column-id="category">Mrp</th>
+                                            <th style="min-width: 110px;">Retail Price</th>
+                                            <th style="min-width: 110px;">Whole Sale Price</th>
+                                            <th data-column-id="category">Expiry Date</th>
+                                            <th data-column-id="category">Manufacturing Date</th>
+                                            <th data-column-id="category">Rate</th>
+                                            <th data-column-id="category">Net Rate</th>
+                                            <th data-column-id="category">Discount(%)</th>
+                                            <th style="min-width: 100px;" data-column-id="category">Discount Amount
+                                            </th>
+                                            <th style="min-width: 100px;" data-column-id="tax_amount">Taxable Amount
+                                            </th>
+                                            <th data-column-id="cgst_p">CGST(%)</th>
+                                            <th data-column-id="cgst">CGST</th>
+                                            <th data-column-id="sgst_p">SGST(%)</th>
+                                            <th data-column-id="sgst">SGST</th>
+                                            <th data-column-id="igst_p">IGST(%)</th>
+                                            <th data-column-id="igst">IGST</th>
+                                            <th style="min-width: 100px;" data-column-id="subcategory">Total Amount
+                                            </th>
+                                            <th class="one"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for item in purchase_order_item_formset.forms %}
+                                        <tr class="form_set_row coloured-row">
+                                            <td class="rowIndex">
+                                                <input type="text" class="form-control" disabled
+                                                    value="{{ forloop.counter }}">
+                                            </td>
+                                            <td>
+                                                <span class="purchase_item_barcode p-relative">
+                                                    <input type="text" name="barcode" class="check_empty form-control">
+                                                </span>
+                                            </td>
+
+                                            <td class="check_empty">
+                                                {{ item.id }}
+                                                <span class="product_variant"
+                                                    data-value="{{ item.product_variant.value }}">
+                                                    {{ item.product_variant }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="add-new-batch">
+                                                    {{ item.add_new_batch }}
+                                                </span>
+                                            </td>
+                                            <!-- <td>
+                                                <span class="add-new-batch">
+                                                    {{ item.batch }}
+                                                </span>
+                                            </td> -->
+                                            <td class="batch ">
+                                                <span class="product_batch batch_number"
+                                                    data-value="{{ item.batch_number.value }}">
+                                                    {{ item.batch_number }}
+                                                </span>
+                                                <span class="product_batch current_batch"
+                                                    data-value="{{ item.batch.value }}">
+                                                    {{ item.batch }}
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="current_stock check_empty p-relative">
+                                                    <input type="text" class="form-control" disabled style="width:2.5cm"
+                                                        value="" />
+                                                </span>
+                                            </td>
+                                            <td class="" style="display: none;">
+                                                <span class="product_hsn" data-value="{{ item.hsn.value }}">
+                                                    {{ item.hsn }}
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="purchase_quantity order_request_qty"
+                                                    data-value="{{ item.quantity.value }}">
+                                                    {{ item.quantity }}
+                                                </span>
+                                            </td>
+                                            <!-- <td class="price">{{item.price}}</td> -->
+                                            <td class="">
+                                                <span class="product_mrp order_request_qty"
+                                                    data-value="{{ item.mrp.value }}">
+                                                    {{item.mrp}}
+                                                </span>
+                                            </td>
+                                            <td class="image">
+                                                <span class="retail_price" data-value="{{ item.retail_price.value }}">
+                                                    {{ item.retail_price }}
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="whole_sale_price"
+                                                    data-value="{{ item.whole_sale_price.value }}">
+                                                    {{ item.whole_sale_price }}
+                                                </span>
+                                            </td>
+                                            <td class="expire_date" data-value="{{ item.expire_date.value }}">
+                                                {{item.expire_date}}</td>
+                                            <td class="manufacturing_date"
+                                                data-value="{{ item.manufacturing_date.value }}">
+                                                {{item.manufacturing_date}}</td>
+                                            <td class="">
+                                                <span class="purchase_amount_price purchase_amount"
+                                                    data-value="{{ item.amount.value }}">
+                                                    {{ item.amount }}
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="net_rate" data-value="{{ item.net_rate.value }}">
+                                                    {{ item.net_rate }}
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="discount_amound" data-value="{{ item.discount.value }}">
+                                                    {{ item.discount }}
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="discount_amound_new">
+                                                    <input type="text" class="form-control" value="" />
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="total_tax_amount" data-value="{{ item.tax_amount.value }}">
+                                                    {{ item.tax_amount }}
+                                                </span>
+                                            </td>
+
+                                            <td class="" style="display: none;">
+                                                <span class="tax" style="display: block;"
+                                                    data-value="{{ item.tax.value }}">
+                                                    {{ item.tax }}
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="cgst">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="cgst_amount" data-value="{{ item.cgst_amount.value }}">
+                                                    {{ item.cgst_amount }}
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="sgst">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="sgst_amount" data-value="{{ item.sgst_amount.value }}">
+                                                    {{ item.sgst_amount }}
+                                                </span>
+                                            </td>
+                                            <td class="igst">
+                                                <span class="igst">
+                                                    <input type="text" class="form-control" disabled value="" />
+                                                </span>
+                                            </td>
+                                            <td class="">
+                                                <span class="igst_amount" data-value="{{ item.igst_amount.value }}">
+                                                    {{ item.igst_amount }}
+                                                </span>
+                                            </td>
+
+                                            <td class="purchase_item_total">
+                                                <!-- {{item.total}} -->
+                                                {% if is_edit %}
+                                                <span class="purchase_item_total check_empty p-relative">
+                                                    {{item.total}}
+                                                </span>
+                                                {% else %}
+                                                <span class="purchase_item_total check_empty p-relative">
+                                                    {{item.total}}
+                                                </span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="one">{% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {{ purchase_order_item_formset.management_form }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.product_total.id_for_label }}">
+                                    {{ form.product_total.label }}
+
+                                    {% if form.product_total.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.product_total }}
+                            </div>
+
+                            <div class="form-group col-md-3 fg-line" id="round_off">
+                                <label for="{{ form.round_off.id_for_label }}">
+                                    {{ form.round_off.label }}
+                                    {% if form.round_off.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                    {% if form.round_off.help_text %}
+                                    <span data-original-title="Field Info" title=""
+                                        data-content="{{ form.round_off.help_text }}" data-placement="left"
+                                        data-toggle="popover" data-trigger="hover"
+                                        class="help-text-icon zmdi zmdi-info-outline">
+                                        {% endif %}
+                                </label>
+                                {{ form.round_off }}
+                                {% if form.round_off.errors %}
+                                <label class="error">{{ form.round_off.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.discount.id_for_label }}">
+                                    {{ form.discount.label }}
+
+                                    {% if form.discount.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.discount }}
+                            </div>
+
+                            <div class="form-group col-md-3">
+                                <label>Discount Amount</label>
+                                <input type="text" name='discount_amount' class='form-control' id="id_discount_amount"
+                                    value=0 />
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label>Total</label>
+                                {{form.subtotal}}
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.paid.id_for_label }}">
+                                    {{ form.paid.label }}
+
+                                    {% if form.paid.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.paid }}
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.balance.id_for_label }}">
+                                    {{ form.balance.label }}
+
+                                    {% if form.balance.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                <input type="hidden" value="{{ order_pk }}" name="order_pk">
+                                {{form.balance}}
+                            </div>
+                            <div class="form-group fg-line col-sm-3" id="add_gst"
+                                style="margin-top: 15px; display: none;">
+                                <label for="{{ form.add_gst.id_for_label }}">
+                                    {{ form.add_gst.label }}
+                                    {% if form.add_gst.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                    {% if form.add_gst.help_text %}
+                                    <span data-original-title="Field Info" title=""
+                                        data-content="{{ form.add_gst.help_text }}" data-placement="left"
+                                        data-toggle="popover" data-trigger="hover"
+                                        class="help-text-icon zmdi zmdi-info-outline">
+                                        {% endif %}
+                                </label>
+                                {{ form.add_gst }}
+                                {% if form.add_gst.errors %}
+                                <label class="error">{{ form.add_gst.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- supplier modal start -->
+<div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Create Supplier
+                </h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="address-form ajax reset form" method="post"
+                            action="{% url 'suppliers:supplier_from_create' %}">
+                            {% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.name.id_for_label }}">
+                                        {{ supplier_form.name.label }}
+
+                                        {% if supplier_form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.name }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.address.id_for_label }}">
+                                        {{ supplier_form.address.label }}
+
+                                        {% if supplier_form.address.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.address }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.phone.id_for_label }}">
+                                        {{ supplier_form.phone.label }}
+
+                                        {% if supplier_form.phone.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.phone }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.email.id_for_label }}">
+                                        {{ supplier_form.email.label }}
+
+                                        {% if supplier_form.email.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.email }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.state.id_for_label }}">
+                                        {{ supplier_form.state.label }}
+
+                                        {% if supplier_form.state.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.state }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.district.id_for_label }}">
+                                        {{ supplier_form.district.label }}
+
+                                        {% if supplier_form.district.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.district }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.country.id_for_label }}">
+                                        {{ supplier_form.country.label }}
+
+                                        {% if supplier_form.country.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.country }}
+                                </div>
+
+                                <!-- == -->
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.gst_number.id_for_label }}">
+                                        {{ supplier_form.gst_number.label }}
+
+                                        {% if supplier_form.gst_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.gst_number }}
+                                </div>
+
+                                <!-- == -->
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.credit_limit.id_for_label }}">
+                                        {{ supplier_form.credit_limit.label }}
+
+                                        {% if supplier_form.state.credit_limit.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.credit_limit }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.debit_limit.id_for_label }}">
+                                        {{ supplier_form.debit_limit.label }}
+
+                                        {% if supplier_form.state.debit_limit.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.debit_limit }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.opening_balance.id_for_label }}">
+                                        {{ supplier_form.opening_balance.label }}
+
+                                        {% if supplier_form.state.opening_balanceeld.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.opening_balance }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ supplier_form.opening_type.id_for_label }}">
+                                        {{ supplier_form.opening_type.label }}
+
+                                        {% if supplier_form.opening_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ supplier_form.opening_type }}
+                                </div>
+
+                            </div>
+                            <div class="text-right">
+                                <input type="hidden" class="form-control" name='referer_url'
+                                    value="{{ referer_url }}" />
+
+
+
+                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-dismiss="modal">Close</button>
+                                <!-- <button type="submit" class="submit-button btn btn-primary">Submit</button> -->
+                            </div>
+                        </form>
+                        <!-- <div class="text-right">
+         <button type="submit" class="btn btn-primary">Submit</button>
+      </div> -->
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+            <!-- <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+            </div> -->
+            <!--end modal-footer-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>
+
+<!-- supplier modal end -->
+{% endblock %}
+{% block static %}
+{% load static %}
+<style>
+    table .select2-container--default .select2-selection--single {
+        height: 43px;
+    }
+
+    .coloured-row td.batch {
+        background-color: #f3c9c9;
+    }
+</style>
+
+<style>
+    #modal {
+        position: absolute;
+        width: 100%;
+        top: 10px;
+        left: -130px;
+        height: max-content;
+    }
+
+    #modal>div.card {
+        width: 60%;
+        padding: 30px 50px;
+        margin: 0 auto;
+    }
+
+    #modal div.card li.place-order {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+    }
+
+    #modal div.card li.place-order div.place-order-link .cancel {
+        background-color: #F69746;
+        border: 1px solid #F69746;
+        color: #fff;
+        border-radius: 5px;
+        padding: .375rem .75rem;
+    }
+
+    tr.form_set_row td input {
+        min-width: 70px;
+    }
+
+    tr.form_set_row td input[type="checkbox"] {
+        margin-top: 14px;
+    }
+</style>
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script> -->
+<script>
+    function TransferTypeChanged() {
+        $('#id_transfer_type option[value=""]').remove()
+        var transfer_type = $('#id_transfer_type').val()
+
+        $('.voucher-row .bank, .voucher-row .draft, .voucher-row .transaction, .voucher-row .cheque').hide()
+
+        if (transfer_type == 15) {
+            $('.voucher-row .bank, .voucher-row .cheque').show()
+        }
+        else if (transfer_type == 20) {
+            $('.voucher-row .bank, .voucher-row .draft').show()
+        }
+        else if (transfer_type == 25) {
+            $('.voucher-row .bank, .voucher-row .transaction').show()
+        }
+    }
+
+    $(document).ready(function () {
+        TransferTypeChanged()
+    })
+    $('#id_transfer_type').on('change', function () {
+        TransferTypeChanged()
+    })
+</script>
+<script type="text/javascript">
+    function BatchMethodChanged(row) {
+        if (row.find('.add-new-batch input').is(':checked')) {
+            row.find('.batch_number').show();
+            row.find('.current_batch').hide();
+            row.find('.current_batch select').val('');
+            row.find('.current_batch select').selectpicker('refresh');
+        } else {
+            row.find('.current_batch').show();
+            row.find('.batch_number').hide();
+        }
+    }
+
+    function RowIndexUpdate() {
+        $('table tr.form_set_row').each(function () {
+            var row = $(this);
+            row.find('.rowIndex input').val(row[0]['rowIndex']);
+        })
+    }
+
+    $('.purchase_order_item_formset table tr.form_set_row').formset({
+        prefix: '{{ purchase_order_item_formset.prefix }}',
+        formCssClass: 'dynamic-formset1',
+        'added': function (row) {
+            row.find('select.selectpicker').selectpicker();
+            row.find('.purchase_quantity input').val(0);
+            row.find('.date-picker').datepicker('destroy');
+            row.find('.datetimepicker').datetimepicker('destroy');
+            row.find('.date-picker').datepicker();
+            row.find('.datetimepicker').datetimepicker();
+
+            // {% if is_edit %}
+            row.find('.product_price select option[value=""]').attr('selected', '');
+            row.find('.product_price select option').remove();
+            row.find('.product_variant select option[value=""]').attr('selected', '');
+            row.find('.price').attr('data-value', '');
+            row.find('.product_mrp').attr('data-value', '');
+            row.find('.product_variant').attr('data-value', '');
+            row.find('.current_batch').attr('data-value', '');
+            row.find('td .discount_amound').attr('data-value', '');
+            // {% endif %}
+
+            row.find('.rowIndex input').val(row[0]['rowIndex'])
+
+            let row_batch = row.find('.current_batch select')
+            let batch_select = `<select name="${row_batch.attr('name')}" id="${row_batch.attr('id')}" class="form-control selectpicker" data-live-search=true></select>`
+            row.find('.current_batch').html(batch_select)
+            row.find('.purchase_quantity input').val(1.0);
+            row.find('td .discount_amound_new input').val(0.0);
+            row.find('td .discount_amound input').val(0.0);
+            row.find('select.selectpicker').each(function () {
+                $(this).selectpicker('refresh');
+            })
+            BatchMethodChanged(row);
+        },
+
+        'removed': function (row) {
+            RowIndexUpdate()
+            amount_calculation()
+        }
+    });
+
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+
+        $(document).on('keypress', 'tr.form_set_row .purchase_item_barcode input', function (event) {
+            if (event.which == '10' || event.which == '13') {
+                event.preventDefault();
+                $selector = $(this);
+
+                get_product_items($selector, true);
+            }
+        })
+
+        $('tr.form_set_row').each(function () {
+            BatchMethodChanged($(this))
+
+        });
+    });
+
+    $(document).on('change click', '.add-new-batch input', function () {
+        var $parent = $(this).parents('.form_set_row')
+        BatchMethodChanged($parent)
+    });
+    $(document).on('change click', '.add-new-batch input', function () {
+        var $parent = $(this).parents('.form_set_row')
+        BatchMethodChanged($parent)
+    });
+
+    function get_purchase_items(element) {
+        var url = "{% url 'purchases:get_purchase_items' %}"
+        var product_id = element.val();
+        var $parent = element.parents('tr.form_set_row');
+        if (product_id != undefined || product_id != null || product_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var price = data['price'];
+                        print("prvilage card")
+
+                        $parent.find(".purchase_amount input").val(price);
+                    }
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    }
+</script>
+
+<script>
+ function get_prifix_purchase_id(element) {
+        var url = "{% url 'purchases:get_prifix_purchase_id' %}"
+        var prifix_id = $('#id_purchase_prifix').val();
+        if (prifix_id != undefined || prifix_id != null || prifix_id != "" ) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: prifix_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var purchase_id = data['purchase_id'];
+
+                        $('#id_purchase_id').val(purchase_id)
+
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+    $(document).on('change keyup', '#id_purchase_prifix', function () {
+        $this = $(this);
+        get_prifix_purchase_id()
+    });
+    $(document).on('change keyup', '#id_supplier', function () {
+        $this = $(this);
+        get_supplier_items();
+    });
+
+    $(document).on('change keyup', '.product_price select', function () {
+        $this = $(this);
+        get_product_items($this);
+    });
+
+    $(document).on('change keyup', '.product_variant select', function () {
+        $this = $(this);
+        get_product_variant_items($this);
+    });
+
+    $(document).on('change keyup', '.current_batch select', function () {
+        $this = $(this);
+        get_batch_data($this)
+
+        var $parent = $this.parents('tr.form_set_row');
+        RateQty($parent)
+    });
+
+    function get_product_items(element, barcode = false) {
+        var url = "{% url 'sales:get_product_items' %}"
+        var product_id = element.val();
+
+        var $parent = element.parents('tr.form_set_row');
+        var warehouse = $('#id_warehouse').val()
+
+        if (product_id != undefined && product_id != null && product_id != "") {
+            var code = "no";
+            if (barcode)
+                code = "yes";
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    warehouse: warehouse,
+                    is_purchase: 'yes'
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var price = data['price'];
+                        // var mrp = data['mrp'];
+                        // var hsn = data['hsn'];
+                        var igst = data['igst'];
+                        var sgst = data['sgst'];
+                        var cgst = data['cgst'];
+                        var cess = data['cess'];
+                        var cost = data['cost'];
+                        var unit = data['unit'];
+                        var hsn = data['hsn'];
+                        var unit_type = data['unit'];
+                        var pk = data['pk'];
+                        var current_stock = data['stock'];
+                        var varience = data['varience'];
+                        var current_varient = data['current_varient'];
+                        var varient_barcode = data['varient_barcode'];
+                        var product_code = data['product_code'];
+                        var default_batch = data['default_batch'];
+                        var batch_list = data['batch_list'];
+                        var last_purchase_cost = data['last_cost'];
+                        var product_name = data['product_name'];
+                        var variant_name = data['variant_name'];
+
+                        var variant_exists = false;
+
+                        $parent.find(".product_mrp input").val(0);
+                        $parent.find(".price input").val(0).trigger('keyup');
+                        $parent.find(".expire_date input").val('');
+                        $parent.find(".manufacturing_date input").val('');
+                        $parent.find(".purchase_amount input").val(0).change();
+
+                        var i, maxlength = varience.length;
+                        if (current_varient == '') {
+                            var options = `<option value="" selected>${variant_name}</option>`
+                        } else {
+                            var options = `<option value="${current_varient}" selected="">${variant_name}</option>`
+                        }
+
+                        for (i = 0; i < maxlength; i++) {
+                            options += `<option value="${varience[i]['varience_pk']}">${varience[i]['varience_name']}</<option>`;
+                        }
+
+                        $parent.find(".product_variant select").html(options).selectpicker('refresh');
+                        $parent.find(".product_variant").find('div.filter-option-inner-inner').html(variant_name);
+
+                        // {% if is_edit %}
+                        if ($parent.find(".product_variant").attr('data-value') != '') {
+                            variant_exists = true;
+                            var selected_variant = $parent.find(".product_variant").attr('data-value');
+                            $parent.find(`.product_variant select option[value="${selected_variant}"]`).attr('selected', '')
+                            $parent.find(".product_variant select").selectpicker('refresh');
+                            $parent.find(".product_variant select").trigger('change');
+                        }
+                        // {% endif %}
+
+                        if (!variant_exists) {
+                            if (batch_list.length == 1) {
+                                var batch_list_option = ''
+                            } else {
+                                var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>'
+                            }
+
+                            for (j = 0; j < batch_list.length; j++) {
+                                item = batch_list[j]
+                                batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                            }
+
+                            $parent.find(".current_batch select").html(batch_list_option);
+                            $parent.find(".current_batch select").selectpicker('refresh');
+
+                            if ($parent.find(".current_batch").attr('data-value')) {
+                                var selected_batch = $parent.find(".current_batch").attr('data-value');
+                                $parent.find(`.current_batch select option[value="${selected_batch}"]`).attr('selected', '')
+                                $parent.find(".current_batch select").selectpicker('refresh');
+                                $parent.find(".current_batch select").trigger('change');
+                            }
+                            else if (batch_list.length == 1) {
+                                $parent.find(".current_batch select").trigger('change');
+                            }
+                        }
+                        var supplier_state = $("#supplier_state").val()
+                        if (supplier_state == "Kerala") {
+
+                            cgst = Math.round(cgst * 100) / 100;
+                            sgst = Math.round(sgst * 100) / 100;
+                            igst = Math.round(0);
+                        } else {
+                            cgst = Math.round(0);
+                            sgst = Math.round(0);
+                            igst = Math.round(igst * 100) / 100;
+                        }
+                        $parent.find(".tax input").val(igst);
+                        $parent.find(".sgst input").val(sgst);
+                        $parent.find(".cgst input").val(cgst);
+                        $parent.find(".igst input").val(igst);
+                        $parent.find(".unit_type input").val(unit);
+                        $parent.find(".product_hsn input").val(hsn);
+                        $parent.find('.discount_amound_new input').val(0)
+
+
+                        if (barcode) {
+                            $parent.find('.product_price select').html(`<option selected value=${pk}>${product_name}</option>`); //.selectpicker('refresh')
+                        } else {
+                            $parent.find('.purchase_item_barcode input').val(product_code);
+                        }
+
+                    }
+                    else {
+                        var message = data['message']
+                        var title = data['title']
+
+                        if (barcode) {
+                            element.val('');
+                        } else if (element.parent().hasClass('product_variant')) {
+                            element.html('');
+                        }
+
+                        swal(title, message, "error");
+                        // var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                        // $parent.find(".current_batch select").html(batch_list_option);
+                        // $parent.find(".current_batch select").selectpicker('refresh');
+                        // $parent.find(".current_batch select").trigger('change')
+                    }
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    }
+
+    $(document).on('change keyup', '.purchase_quantity input,.purchase_amount input', function () {
+        var $this = $(this);
+        var $parent = $this.parents('tr.form_set_row');
+
+        RateQty($parent)
+    })
+
+    $(document).on('keyup', '.discount_amound input', function () {
+        var $this = $(this);
+        var $parent = $this.parents('tr.form_set_row');
+
+        let discount_percentage = 0
+        discount_percentage = $(this).val()
+
+        setDiscountA(discount_percentage, $parent)
+        RateQty($parent)
+    });
+
+    $(document).on('keyup', '.discount_amound_new input', function () {
+        var $this = $(this);
+        var $parent = $this.parents('tr.form_set_row');
+
+        let discount_amount = 0
+        discount_amount = $(this).val()
+
+        setDiscountP(discount_amount, $parent)
+        RateQty($parent)
+    });
+
+    $(document).on('keyup', '#id_paid, #id_discount , #id_other_charge', function () {
+        amount_calculation()
+    });
+
+    $(document).on('keyup', '#id_discount_amount', function () {
+        calculate_final_discount('amount')
+        amount_calculation('amount')
+    });
+
+    $(document).on('keyup', '.purchase_item_total input', function () {
+        var $this = $(this);
+        var $parent = $this.parents('tr.form_set_row');
+        let total = 0
+
+        total = $(this).val()
+        fromTotal(total, $parent)
+    });
+
+    function fromTotal(total, $parent) {
+        let taxable_amount = 0
+        let sgst = $parent.find('.sgst input').val();
+        let cgst = $parent.find('.cgst input').val();
+        // let cess = $parent.find('.cess input').val();
+        let tax = parseFloat(sgst) + parseFloat(cgst)
+
+        var discount_rate = parseFloat($parent.find('.discount_amound_new input').val());
+        if (!discount_rate) {
+            discount_rate = 0;
+        }
+
+        taxable_amount = total / (1 + (tax / 100))
+
+        tax_amount_cgst = (taxable_amount * cgst / 100);
+        tax_amount_sgst = (taxable_amount * sgst / 100);
+
+        var supplier_state = $("#supplier_state").val()
+        if (supplier_state == "Kerala") {
+            tax_amount_cgst = Math.round(tax_amount_cgst * 100) / 100;
+            tax_amount_sgst = Math.round(tax_amount_sgst * 100) / 100;
+            tax_amount_igst = 0.00
+
+        } else {
+            tax_amount_cgst = Math.round(0);
+            tax_amount_sgst = Math.round(0);
+            tax_amount_igst = tax_amount_cgst + tax_amount_sgst
+
+        }
+        $parent.find('.cgst_amount input').val(tax_amount_cgst);
+        $parent.find('.sgst_amount input').val(tax_amount_sgst);
+        $parent.find('.igst_amount input').val(tax_amount_igst);
+
+
+        let net_rate = taxable_amount + discount_rate
+        net_rate = Math.round(net_rate * 100) / 100;
+        $parent.find('.net_rate input').val(net_rate)
+
+        setDiscountP(discount_rate, $parent)
+
+        var purchase_quantity = parseFloat($parent.find('.purchase_quantity input').val());
+
+        if (!purchase_quantity) {
+            purchase_quantity = 0
+        }
+
+        let rate = net_rate / purchase_quantity
+        rate = Math.round(rate * 100) / 100;
+        $parent.find('.purchase_amount input').val(rate);
+
+        taxable_amount = Math.round(taxable_amount * 100) / 100;
+        $parent.find('.total_tax_amount input').val(taxable_amount)
+
+        amount_calculation()
+    }
+
+    function setDiscountP(discount_amount, $parent) {
+        net_rate = parseFloat($parent.find('.net_rate input').val());
+        if (!net_rate) {
+            net_rate = 1
+        }
+
+        let percentage = (discount_amount * 100) / net_rate
+
+        percentage = Math.round(percentage * 100) / 100;
+        $parent.find('.discount_amound input').val(percentage);
+
+        return percentage
+    }
+
+    function setDiscountA(discount_percentage, $parent) {
+        net_rate = parseFloat($parent.find('.net_rate input').val());
+        if (!net_rate) {
+            net_rate = 1
+        }
+
+        let discount_amount = (net_rate * discount_percentage) / 100
+
+        discount_amount = Math.round(discount_amount * 100) / 100;
+        $parent.find('.discount_amound_new input').val(discount_amount);
+    }
+
+    function RateQty($parent) {
+        var purchase_quantity = parseFloat($parent.find('.purchase_quantity input').val());
+
+        if (!purchase_quantity) {
+            purchase_quantity = 0
+        }
+
+        var rate = 0;
+        rate = parseFloat($parent.find('.purchase_amount input').val());
+
+        if (!rate) {
+            rate = 0
+        }
+
+        let net_rate = purchase_quantity * rate;
+        net_rate = Math.round(net_rate * 100) / 100;
+        $parent.find('.net_rate input').val(net_rate)
+
+        var discount_percentage = parseFloat($parent.find('.discount_amound input').val());
+        if (!discount_percentage) {
+            discount_percentage = 0;
+        }
+        setDiscountA(discount_percentage, $parent)
+
+        var discount_rate = parseFloat($parent.find('.discount_amound_new input').val());
+        if (!discount_rate) {
+            discount_rate = 0;
+        }
+
+        // setDiscountP(discount_rate,$parent)
+
+        let taxable_amount = net_rate - discount_rate
+        taxable_amount = Math.round(taxable_amount * 100) / 100;
+        $parent.find('.total_tax_amount input').val(taxable_amount)
+
+        let sgst = $parent.find('.sgst input').val();
+        let cgst = $parent.find('.cgst input').val();
+        // let igst = $parent.find('.igst input').val();
+        let tax = parseFloat(sgst) + parseFloat(cgst)
+
+        tax_amount_cgst = (taxable_amount * cgst / 100);
+        tax_amount_sgst = (taxable_amount * sgst / 100);
+        tax_amount_igst = tax_amount_cgst + tax_amount_sgst;
+        var supplier_state = $("#supplier_state").val()
+        if (supplier_state == "Kerala") {
+            tax_amount_cgst = Math.round(tax_amount_cgst * 100) / 100;
+            tax_amount_sgst = Math.round(tax_amount_sgst * 100) / 100;
+            tax_amount_igst = Math.round(0);
+        } else {
+
+            tax_amount_cgst = Math.round(0);
+            tax_amount_sgst = Math.round(0);
+            tax_amount_igst = tax_amount_igst;
+        }
+
+        $parent.find('.cgst_amount input').val(tax_amount_cgst);
+        $parent.find('.sgst_amount input').val(tax_amount_sgst);
+        $parent.find('.igst_amount input').val(tax_amount_igst);
+
+        let total = taxable_amount + ((taxable_amount * tax) / 100)
+        total = Math.round(total * 100) / 100;
+        $parent.find('.purchase_item_total input').val(total)
+
+        amount_calculation()
+    }
+
+    function amount_calculation(type = 'percent') {
+        var all_total = 0;
+        var paid = 0;
+        var total_discount = 0, all_sub_total = 0, actual_sub_total = 0, actual_round_off = 0;
+
+        calculate_final_discount(type)
+
+        $('.form_set_row').each(function () {
+            var tot = parseFloat($(this).find('.purchase_item_total input').val());
+            if (!tot) {
+                tot = 0;
+            }
+            all_total += tot;
+
+        });
+
+        var additional_amount = parseFloat($('#id_other_charge').val());
+        if (!additional_amount) {
+            additional_amount = 0;
+        }
+
+        var all_amount = parseFloat(all_total + additional_amount);
+        all_total = Math.round(all_total * 100) / 100;
+        all_amount = Math.round(all_amount * 100) / 100;
+        // tot = Math.round(tot * 100) / 100;
+        $("#subtotal").val(all_amount);
+
+        // var discount = $('#id_discount').val()
+        // if (!discount) {
+        //     discount = 0;
+        // }
+
+        // var round_off = parseFloat($('#id_round_off').val());
+        // if (!round_off) {
+        //     round_off = 0;
+        // }
+
+        // var total_discount_rate = $('#id_discount').val()
+        // if (!total_discount_rate) {
+        //     total_discount_rate = 0;
+        // }
+
+        // total_discount = all_total * total_discount_rate / 100;
+        total_discount = $("#id_discount_amount").val();
+        if (!total_discount) {
+            total_discount = 0;
+        }
+
+        var paid = $('#id_paid').val()
+        if (!paid) {
+            paid = 0;
+        }
+        var actual_amount = parseFloat(all_amount - total_discount);
+        var all_amount_sub_total = parseFloat(Math.round(actual_amount) - paid);
+        var all_sub_total = parseFloat(all_amount_sub_total);
+        if (all_sub_total < 0) {
+            all_sub_total = 0;
+        }
+        actual_amount = Math.round(actual_amount * 100) / 100;
+        all_sub_total = Math.round(all_sub_total * 100) / 100;
+
+        let round_off = 0
+        round_off = Math.round(actual_amount) - actual_amount
+        actual_sub_total = actual_amount + round_off;
+        actual_round_off = Math.round(round_off * 100) / 100;
+
+        // });
+
+        $('#id_round_off').val(actual_round_off)
+        $("#id_product_total").val(all_total);
+        $("#subtotal").val(actual_sub_total);
+
+        var paid_amount = $('#id_paid').val();
+        if (!paid_amount) {
+            paid_amount = 0
+        }
+        $("#balance").val(actual_sub_total - paid_amount);
+    }
+
+    function calculate_final_discount(type = 'percent') {
+        var discount_percent = 0, discount_amount = 0, total_amount = 0;
+
+        $('.form_set_row').each(function () {
+            var tot = parseFloat($(this).find('.purchase_item_total input').val());
+            if (!tot) {
+                tot = 0;
+            }
+            total_amount += tot;
+        });
+
+        if (type == 'amount') {
+            discount_amount = $('#id_discount_amount').val();
+            if (!discount_amount)
+                discount_amount = 0
+
+            discount_percent = (discount_amount * 100) / total_amount
+            discount_percent = Math.round(discount_percent * 100) / 100;
+        }
+
+        else if (type == 'percent') {
+            discount_percent = $('#id_discount').val();
+            if (!discount_percent)
+                discount_percent = 0
+
+            discount_amount = (total_amount * discount_percent) / 100
+            discount_amount = Math.round(discount_amount * 100) / 100;
+        }
+
+        $('#id_discount_amount').val(discount_amount);
+        $('#id_discount').val(discount_percent);
+    }
+
+    function get_product_variant_items(element, barcode = false) {
+
+        var url = "{% url 'sales:get_product_variant_items' %}"
+        var $parent = element.parents('tr.form_set_row');
+        var warehouse = $('#id_warehouse').val()
+        var product_id = element.val();
+        if (product_id == "") {
+            product_id = $parent.find('.product_price select').val();
+        }
+
+        var code = "no";
+        if (barcode) {
+            code = "yes";
+        }
+
+        var is_ok = true;
+        if (warehouse == undefined || warehouse == null || warehouse == "") {
+            is_ok = false;
+        }
+        if (product_id == undefined || product_id == null || product_id == "") {
+            is_ok = false
+        }
+        console.log(is_ok)
+        if (is_ok) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    is_purchase: 'yes',
+                    warehouse: warehouse,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var price = data['price'];
+                        // var mrp = data['mrp'];
+                        // var hsn = data['hsn'];
+                        var igst = data['igst'];
+                        var sgst = data['sgst'];
+                        var cgst = data['cgst'];
+                        // var cess = data['cess'];
+                        var cost = data['cost'];
+                        var unit = data['unit'];
+                        var hsn = data['hsn'];
+                        var current_stock = data['stock'];
+                        var batch_list = data['batch_list'];
+                        var product_code = data['product_code'];
+                        var default_batch = data['default_batch'];
+                        var last_purchase_cost = data['last_cost'];
+
+                        var supplier_state = $("#supplier_state").val()
+                        if (supplier_state == "Kerala") {
+                            cgst = Math.round(cgst * 100) / 100;
+                            sgst = Math.round(sgst * 100) / 100;
+                            igst = Math.round(0);
+                        } else {
+
+                            cgst_amount = Math.round(cgst * 100) / 100;
+                            sgst_amount = Math.round(sgst * 100) / 100;
+                            igst = Math.round(cgst_amount + sgst_amount);
+                            cgst = Math.round(0);
+                            sgst = Math.round(0);
+
+                        }
+
+                        $parent.find(".tax input").val(igst);
+                        $parent.find(".sgst input").val(sgst);
+                        $parent.find(".cgst input").val(cgst);
+                        $parent.find(".igst input").val(igst);
+                        $parent.find(".unit_type input").val(unit);
+                        $parent.find(".product_hsn input").val(hsn);
+                        $parent.find('.discount_amound_new input').val(0)
+                        // $parent.find(".price input").val(price);
+                        // $parent.find(".product_mrp input").val(default_batch['mrp']);
+                        // $parent.find(".purchase_amount input").val(last_purchase_cost);
+
+                        $parent.find(".product_mrp input").val(0);
+                        $parent.find(".price input").val(0).trigger('keyup');
+                        $parent.find(".expire_date input").val('');
+                        $parent.find(".manufacturing_date input").val('');
+                        $parent.find(".purchase_amount input").val(0).change();
+
+                        if (batch_list.length == 1) {
+                            var batch_list_option = ''
+                        } else {
+                            var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>'
+                        }
+
+                        for (j = 0; j < batch_list.length; j++) {
+                            item = batch_list[j]
+                            batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                        }
+
+                        $parent.find(".current_batch select").html(batch_list_option);
+                        $parent.find(".current_batch select").selectpicker('refresh');
+
+
+                        if ($parent.find(".current_batch").attr('data-value')) {
+                            var selected_batch = $parent.find(".current_batch").attr('data-value');
+                            $parent.find(`.current_batch select option[value="${selected_batch}"]`).attr('selected', '')
+                            $parent.find(".current_batch select").selectpicker('refresh');
+                            $parent.find(".current_batch select").trigger('change');
+                        }
+                        else if (batch_list.length == 1) {
+                            $parent.find(".current_batch select").trigger('change');
+                        }
+
+                        if (barcode) {
+                            $parent.find('.product_variant select').val(pk).selectpicker('refresh');
+
+                        } else {
+                            $parent.find('.purchase_item_barcode input').val(product_code);
+                        }
+                    } else {
+                        var message = data['message']
+                        var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                        $parent.find(".batch select").html(batch_list_option);
+                        $parent.find(".batch select").selectpicker('refresh');
+                        $parent.find(".batch select").trigger('change')
+                    }
+                },
+                error: function (data) { }
+            })
+        }
+        else {
+            if (warehouse == undefined || warehouse == null || warehouse == "") {
+                let title = "Warehouse not selected..!";
+                let message = "Please Select a Warehouse";
+                if (barcode) {
+                    element.val('');
+                } else if (element.parent().hasClass('product_variant')) {
+                    element.html('');
+                }
+                swal(title, message, "error");
+            }
+        }
+    }
+
+    function get_batch_data($this) {
+        var $parent = $this.parents('tr.form_set_row');
+        var batch_id = $this.val();
+        var url = "{% url 'general:get_batch_data' %}"
+
+        if (batch_id != undefined && batch_id != null && batch_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: batch_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var mrp = data['mrp'];
+                        var cost = data['cost'];
+                        var price = data['price'];
+                        var current_stock = data['stock'];
+                        var expire_date = data['expire_date'];
+                        var manufacturing_date = data['manufacturing_date'];
+                        var last_purchase_cost = data['last_cost'];
+                        var retail_price = data['retail_price'];
+                        var whole_sale_price = data['whole_sale_price'];
+
+                        //{% if is_edit %}
+                        if ($parent.find(".product_mrp").attr('data-value')) {
+                            var old_mrp = parseFloat($parent.find(".product_mrp").attr('data-value'));
+                            if (old_mrp > 0) {
+                                mrp = old_mrp
+                                // $parent.find(".product_mrp input").val(old_mrp).change();
+                            }
+                            $parent.find(".product_mrp").attr('data-value', '')
+                        }
+
+                        if ($parent.find(".retail_price").attr('data-value')) {
+                            var old_retail_price = parseFloat($parent.find(".retail_price").attr('data-value'));
+                            if (old_retail_price > 0) {
+                                retail_price = old_retail_price
+                                // $parent.find(".price input").val(old_price).change();
+                            }
+                            $parent.find(".retail_price").attr('data-value', '')
+                        }
+                        console.log($parent.find(".whole_sale_price").attr('data-value'), 'whole_sale_price')
+                        if ($parent.find(".whole_sale_price").attr('data-value')) {
+                            var old_whole_sale_price = parseFloat($parent.find(".whole_sale_price").attr('data-value'));
+                            if (old_whole_sale_price > 0) {
+                                whole_sale_price = old_whole_sale_price
+                                // $parent.find(".price input").val(old_price).change();
+                            }
+                            $parent.find(".whole_sale_price").attr('data-value', '')
+                        }
+                        if ($parent.find(".purchase_amount").attr('data-value')) {
+                            var old_purchase_amount = parseFloat($parent.find(".purchase_amount").attr('data-value'));
+                            if (old_purchase_amount > 0) {
+                                last_purchase_cost = old_purchase_amount;
+                                // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                            }
+                            $parent.find(".purchase_amount").attr('data-value', '')
+                        }
+                        if ($parent.find(".expire_date").attr('data-value')) {
+                            var old_expire_date = parseFloat($parent.find(".expire_date").attr('data-value'));
+                            if (old_expire_date > 0) {
+                                expire_date = old_expire_date;
+                                // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                            }
+                            $parent.find(".expire_date").attr('data-value', '')
+                        }
+                        if ($parent.find(".manufacturing_date").attr('data-value')) {
+                            var old_manufacturing_date = parseFloat($parent.find(".manufacturing_date").attr('data-value'));
+                            if (old_manufacturing_date > 0) {
+                                manufacturing_date = old_manufacturing_date;
+                                // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                            }
+                            $parent.find(".manufacturing_date").attr('data-value', '')
+                        }
+                        // {% endif %}
+                        // $parent.find(".whole_sale_price input").attr('value', whole_sale_price);
+                        $parent.find(".whole_sale_price input").val(whole_sale_price).trigger('keyup');
+                        $parent.find(".retail_price input").val(retail_price).trigger('keyup');
+                        $parent.find(".product_mrp input").val(mrp);
+                        $parent.find(".price input").val(price).trigger('keyup');
+                        // $parent.find(".purchase_amount_price input").val(cost);
+                        $parent.find(".expire_date input").val(expire_date);
+                        $parent.find(".manufacturing_date input").val(manufacturing_date);
+                        $parent.find(".purchase_amount input").val(last_purchase_cost).change();
+
+                        // change batch background colour and add new row
+                        let $last_parent = $('.purchase_order_item_formset table tbody tr:nth-last-child(2)');
+                        test_name1 = $parent.find('.batch select').attr('name');
+                        test_name2 = $last_parent.find('.batch select').attr('name');
+
+                        $parent.removeClass('coloured-row');
+                        $parent.find(".current_stock input").val(current_stock);
+
+                        if (test_name1 === test_name2) {
+                            $('.purchase_order_item_formset .icon_add_item').click();
+                        }
+                        $parent.next().find('.purchase_item_barcode input').focus()
+                        // end of add new row and batch background colour
+
+                    }
+
+                },
+                error: function (data) {
+                }
+            })
+        }
+        else {
+            $parent.addClass('coloured-row');
+
+            $parent.find(".product_mrp input").val(0);
+            $parent.find(".price input").val(0).trigger('keyup');
+            $parent.find(".expire_date input").val('');
+            $parent.find(".manufacturing_date input").val('');
+            $parent.find(".purchase_amount input").val(0).change();
+        }
+
+    }
+
+    function get_supplier_items() {
+        var id_supplier = $('#id_supplier').val();
+        var url = "{% url 'suppliers:get_supplier_data' %}"
+
+        if (id_supplier != undefined && id_supplier != null && id_supplier != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: id_supplier,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var state = data['state'];
+                        $("#supplier_state").val(state)
+
+                    }
+
+                },
+                error: function (data) {
+                }
+            })
+        }
+        else {
+            console.log("Error")
+        }
+
+    }
+
+    $(document).ready(function () {
+        $('#toggle_btn').click();
+
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+
+
+
+        $(document).on('keypress', 'tr.form_set_row .purchase_item_barcode input', function (event) {
+            if (event.which == '10' || event.which == '13') {
+                event.preventDefault();
+                $selector = $(this);
+
+                get_product_variant_items($selector, true);
+            }
+        })
+
+
+        $('tr.form_set_row').each(function () {
+            BatchMethodChanged($(this))
+
+        });
+
+        // {% if is_edit %}
+        console.log("variantttttt")
+        $('.product_variant select').each(function () {
+            console.log("HALO",$(this).val())
+            get_product_variant_items($(this));
+        })
+        // {% endif %}
+
+        $(document).ready(function () {
+
+            $('input[type=text]').focus(function () {
+                $(this).select();
+            });
+
+            $('.purchase_quantity input').each(function () {
+                let value = $(this).val()
+                // if (value <= 0) {
+                //     $(this).val(1)
+                // }
+                // else {
+                value = $(this).val(value)
+                // }
+            })
+
+            $(document).on('click', '.edit-address', function (e) {
+                e.preventDefault();
+                id = $(this).attr('data-value');
+                getAddress(id);
+            });
+        });
+
+    });
+
+</script>
+{{ form.media }}
+<!-- {{ purchase_order_item_formset.media }} -->
+
+
+{% endblock %}

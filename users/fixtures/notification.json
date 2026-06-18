@@ -1,0 +1,26 @@
+[
+    {
+        "model": "users.NotificationSubject",
+        "pk": 1,
+        "fields": {
+            "name": "Product Low stock",
+            "code": "product_low_stock"
+        }
+    },
+    {
+        "model": "users.NotificationSubject",
+        "pk": 2,
+        "fields": {
+            "name": "Batch expiry date reached",
+            "code": "batch_expiry_date_reached"
+        }
+    },
+    {
+        "model": "users.NotificationSubject",
+        "pk": 3,
+        "fields": {
+            "name": "Ticket status updated",
+            "code": "ticket_status_updated"
+        }
+    }
+]

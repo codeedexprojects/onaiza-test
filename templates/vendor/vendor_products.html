@@ -1,0 +1,85 @@
+<table class="table table-striped custom-table mb-0 datatable-">
+    <thead>
+    <tr>
+        <th style="width: 30px;">Sl.No</th>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Category - Sub-category</th>
+        <th>Brand</th>
+        <th>image</th>
+
+        {% if not is_vendor %}
+        <th>Created User</th>
+        {% endif %}
+        <th>Status</th>
+        <th class="text-right">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% load el_pagination_tags %}
+    {% paginate 20 instances %}
+    {% for instance in instances %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{ instance.product_code }}</td>
+        <td>{{ instance }}</td>
+        <td>{{ instance.product.category.name }} - {{ instance.product.subcategory.name|default:'' }}</td>
+        <td>{{ instance.product.brand|default:'-' }}</td>
+        <td>
+            {% if instance.image %}
+            <img style="width:75px" src="{{ instance.image.url }}" />
+            {% endif %}
+        </td>
+
+        {% if not is_vendor %}
+        <td>
+            {% if instance.vendor_created %}{{instance.creator.vendor}}
+            {% else %}{{instance.creator}}
+            {% endif %}
+        </td>
+        {% endif %}
+        <td>
+            <span class="badge badge-{{ instance.is_admin_approved|yesno:'success,danger,primary' }}">
+                {{ instance.is_admin_approved|yesno:"Approved,Rejected,Pending" }}
+            </span>
+        </td>
+        <td class="text-right">
+
+            <a href="{% url 'products:edit_variant' pk=instance.pk %}">
+                <i class="las la-pen text-warning font-18"></i>
+            </a>
+            <a href="{% url 'products:product' pk=instance.product_id %}">
+                <i class="las la-eye text-info font-18"></i>
+            </a>
+
+            {% if current_role != 'vendor_user' %}
+            <a data-id="{{ instance.pk }}" class="approve-btn" data-toggle="modal" data-target="#exampleModalScrollable"
+                href="{% url 'vendors:approve_vendor_product' pk=instance.pk %}" data-reason="no" data-value="{{ instance.commission_percentage|default:'0.0'}}">
+                <i class="fas fa-check btn btn-sm btn-success bold"></i>
+            </a>
+            <a data-id="{{ instance.pk }}" class="action-button remove"
+                href="{% url 'vendors:decline_vendor_product' pk=instance.pk %}"
+                data-text="{{ confirm_delete_message }}" data-title="Are you sure?">
+                <i class="fas fa-times btn btn-sm btn-danger bold"></i>
+            </a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% get_pages %}
+<div class="clearfix"></div>
+<div class="row pagi my-3">
+    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+        <div class="m-t-10">
+            Showing {{title}}
+            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                class="total_count">{{ pages.total_count }}</span>
+        </div>
+    </div>
+</div>
+

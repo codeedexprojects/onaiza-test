@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+   <!-- Page Header -->
+   <div class="page-header">
+      <div class="row">
+         <div class="col-sm-6">
+            <h3 class="page-title">{{title|title}}</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+               <li class="breadcrumb-item active">{{title|title}}</li>
+            </ul>
+         </div>
+         <div class="col-auto float-right ml-auto">
+            <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.name}}</h3>
+
+            <ul class="personal-info row">
+               <li class="col">
+                  <a title="Create new Offer" href="{% url 'offers:create_offer' %}" class=" text-white edit-icon">
+                     <i style="color: black" class="las la-plus"></i>
+                  </a>
+               </li>
+
+               <li class="col">
+                  <a title="Edit Offer" href="{% url 'offers:edit_offer' pk=instance.pk %}" class="edit-icon">
+                     <i class="las la-pen"></i>
+                  </a>
+               </li>
+               <li class="col">
+                  <a title="Delete Offer" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                     data-title="Are you sure?" href="{% url 'offers:delete_offer' pk=instance.pk %}"
+                     class="action-button redirect delete-icon edit-icon">
+                     <i class="las la-trash-alt"></i>
+                  </a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
+   <!-- /Page Header -->
+
+
+   <div class="tab-content">
+      <!-- Profile Info Tab -->
+      <div id="emp_profile" class="pro-overview tab-pane fade show active">
+         <div class="row">
+            <div class="col-sm-6">
+               <div class="card">
+                  <div class="card-header">
+                     <h2>Basic Info <small></small></h2>
+                  </div>
+
+                  <div class="card-body">
+                     <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Warehouse</div>
+                              <small class="lgi-text">{{instance.warehouse}}</small>
+                           </div>
+                        </div>
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Start Time</div>
+                              <small class="lgi-text">{{instance.start_time|date:'d-m-Y'}}</small>
+                           </div>
+                        </div>
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">End Time</div>
+                              <small class="lgi-text">{{instance.end_time|date:'d-m-Y'}}</small>
+                           </div>
+                        </div>
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Product</div>
+                              <small class="lgi-text">{{instance.product_variant.title|default:'-'}}</small>
+                           </div>
+                        </div>
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Offer Percentage</div>
+                              <small class="lgi-text">{{instance.offer_percentage|default:'-'}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Category</div>
+                              <small class="lgi-text">{{instance.category|default:'-'}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Sub Category</div>
+                              <small class="lgi-text">{{instance.subcategory|default:'-'}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Offer Type</div>
+                              <small class="lgi-text">{{instance.offer_type|default:'-'}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                           <div class="media-body">
+                              <div class="lgi-heading">Image</div>
+                              <small class="lgi-text">
+                                 <img src="{{instance.image.thumbnail.400x400}}" alt="">
+                              </small>
+                           </div>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+
+
+         </div>
+
+      </div>
+      <!-- /Profile Info Tab -->
+
+
+   </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

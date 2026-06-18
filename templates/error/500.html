@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% load static %}
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                vertical-align: baseline;
+                background: transparent;
+                font-weight: normal;
+                text-decoration: none;
+                outline: none;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                /* font-family: "Inter"; */
+                font-size: 18px;
+                overflow-x: hidden;
+                min-width: 320px;
+                letter-spacing: 0.05em;
+                scroll-behavior: smooth;
+                position: relative;
+            }
+            p {
+                line-height: 1.6;
+                line-height: 140%;
+            }
+
+            a {
+                cursor: pointer;
+                letter-spacing: 0.05em;
+            }
+            button {
+                cursor: pointer;
+            }
+
+            .error-page {
+                /* width: 100vw; */
+                height: 100vh;
+                background: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .error-page .container {
+                width: 567px;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+            }
+            .error-page .container .top .img-box{
+                display: flex;
+                justify-content: center;
+                width: 70%;
+                margin:0 auto;
+            }
+            .error-page .container .top .image {
+                display: block;
+                width: 100%;
+            }
+            .error-page .container .middle {
+                margin-top: 1.5em;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .error-page .container .middle h3 {
+                font-size: 2rem;
+                font-weight: 600;
+                color: #262F5F;
+                text-align: center;
+                margin-bottom: .5em;
+            }
+            .error-page .container .middle p {
+                font-size: 1.2rem;
+                font-weight: 400;
+                text-align: center;
+                line-height: 1.4em;
+                color: #b8b8b8;
+                width: 90%;
+                margin: 0 auto;
+            }
+            .error-page .container .bottom {
+                display: flex;
+                justify-content: center;
+            }
+            .error-page .container .bottom .button {
+                padding: .8em 1.6em;
+                background: #262F5F;
+                display: inline-block;
+                font-size: 1.2rem;
+                font-weight: 500;
+                color:#fff;
+                margin-top: 1em;
+                border-radius: 8px;
+            }
+
+            .description{
+                width: 90%;
+                margin: 0 auto;
+                line-height: 1.5;
+                margin-top: 1%;
+            }
+            @media only screen and (max-width: 980px){
+                .error-page .container{
+                    /* width: 70%; */
+                    margin: 0 auto;
+                }
+                .error-page .container .top .img-box{
+                    /* width: 80%; */
+                    margin: 0 auto;
+                }
+                .error-page .container .middle p{
+                    width: 80%;
+                }
+                .error-page .container .bottom .button{
+                    margin-top: 1.6em;
+                }
+            }
+
+            @media only screen and (max-width: 640px){
+                .error-page .container{
+                    width: 90%;
+                }
+                .error-page .container .top .img-box{
+                    width: 60%;
+                }
+                .error-page .container .middle p{
+                    font-size: 1.1rem;
+                    width: 75%;
+                }
+            }
+
+            @media only screen and (max-width: 480px){
+                .error-page .container{
+                    width: 95%;
+                }
+                .error-page .container .top .img-box{
+                    width: 70%;
+                }
+                .error-page .container .middle p{
+                    width: 80%;
+                }
+                /* .error-page .container .top{
+                    width: 95%;
+
+                } */
+                .error-page .container .bottom .button{
+                    padding: .7em 1em;
+                }
+            }
+
+            @media only screen and (max-width: 440px){
+                .error-page .container .middle p{
+                    width: 75%;
+                }
+                .error-page .container .middle h3{
+                    font-size: 28px;
+                }
+            }
+            @media only screen and (max-width: 360px){
+                .error-page .container .middle p{
+                    width: 85%;
+                }
+
+            }
+        </style>
+        <title>Error-500</title>
+    </head>
+    <body>
+        <section id="error-500" class="error-page">
+            <div class="container">
+                <div class="top">
+                    <div class="img-box">
+                        <img class="image" src="{% static 'errors/assets/images/500.svg' %}" alt="image" />
+                    </div>
+                </div>
+                <div class="middle">
+                    <h3 class="server">{{title}}</h3>
+                    {% if is_user %}
+                    <p>hey {{request.user}}, We are sorry, you have not authorised to view this page. The possible reasons are</p>
+                    <ul class="description">
+                        <li>Your authenticated role has no superuser privileges</li>
+                        <li>Logined as customer and accessing this page on same browser tab</li>
+                    </ul>
+                    {% else %}
+                    <p>We’re sorry, the page you requested could not be found Please go back to the home page</p>
+                    {% endif %}
+                </div>
+                <div class="bottom">
+                    {% if auth_status %}
+                    <a href="{% url 'web:index' %}" class="button">Go Back</a>
+                    {% else %}
+                    <a href="#" onclick="history.back()" class="button">Go Back</a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

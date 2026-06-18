@@ -1,0 +1,53 @@
+<table class="table table-striped custom-table mb-0 datatable-">
+    <thead>
+    <tr>
+        <th style="width: 30px;">Sl.No</th>
+        <th style="width: 30px;">ID</th>
+        <th>Unit of measurememt</th>
+
+        <th class="text-right">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% load el_pagination_tags %}
+    {% paginate 20 instances %}
+    {% for instance in instances %}
+    <tr>
+        <td>{{forloop.counter}}</td>
+        <td>{{instance.auto_id}}</td>
+        <td>{{instance.unit_of_measurement}}</td>
+
+        <td class="text-right">
+            {% if request.user.is_superuser %}
+            <a data-id="{{ instance.pk }}" class="action-button remove"
+            href="{% url 'vendors:decline_vendor_item' item_type='uom' pk=instance.pk %}"
+            data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+            class="las la-trash-alt text-danger font-18"></i></a>
+
+
+            <a data-id="{{ instance.pk }}" class="action-button remove" data-reason="no"
+            href="{% url 'vendors:approve_vendor_item' item_type='uom' pk=instance.pk %}"
+            data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+            class="las la-check text-white bg-success font-18"></i></a>
+
+            {% endif %}
+        </td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% get_pages %}
+<div class="clearfix"></div>
+<div class="row pagi my-3">
+    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+        <div class="m-t-10">
+            Showing {{title}}
+            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                class="total_count">{{ pages.total_count }}</span>
+        </div>
+    </div>
+</div>

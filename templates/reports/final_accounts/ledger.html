@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Wrapper -->
+<div class="">
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body card-padding">
+                        <form action="" method="get">
+                            <div class="row m-b-20" style="align-items: center;">
+
+                                {% if is_admin %}
+                                <div class="col-md-4">
+                                    <label for='id_warehouse'> Warehouse </label>
+
+                                    <select name="warehouse" id="id_warehouse" data-live-search='true' class="form-control selectpicker">
+                                    {% if request.user.is_superuser %}
+                                    <option value="">------------All-------------</option>
+                                    {% endif %}
+                                    {% for i in warehouse_instances %}
+                                        {% if i.pk|stringformat:"s" == filter_data.warehouse %}
+                                        <option selected value="{{i.pk}}">{{i}}</option>
+                                        {% else %}
+                                        <option value="{{i.pk}}">{{i}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                                {% endif %}
+
+                                <div class="col-md-4">
+                                    <label for='id_account_head'> Account Head </label>
+
+                                    <select name="account_head" id="id_account_head" data-live-search='true' class="form-control selectpicker">
+                                    {% for head in account_heads %}
+                                        {% if head.pk|stringformat:"s" == filter_data.account_head %}
+                                        <option selected value="{{head.pk}}">{{head}}</option>
+                                        {% else %}
+                                        <option value="{{head.pk}}">{{head}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="id_from_date">From Date</label>
+                                    <input type="text" class="form-control date-picker-dd" value="{{filter_data.from_date}}" id="id_from_date" name="from_date" />
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="id_to_date">To Date</label>
+                                    <input type="text" class="form-control date-picker-dd" value="{{filter_data.to_date}}" id="id_to_date" name="to_date" />
+                                </div>
+
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card p-20">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <h4 style="text-align: center;">{{title}}</h4>
+                                <table class="table table-bordered table2excel">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-weight: bold">Particulars</th>
+                                            <th style="font-weight: bold">Reference</th>
+                                            <th style="font-weight: bold">Date</th>
+                                            <th style="font-weight: bold">Debit</th>
+                                            <th style="font-weight: bold">Credit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" class="total">Opening Balance</td>
+
+                                            {% if open_debit %}
+                                            <td class="debit">{{ opening_balance }}</td>
+                                            <td class=""></td>
+                                            {% else %}
+                                            <td class=""></td>
+                                            <td class="credit">{{ opening_balance }}</td>
+                                            {% endif %}
+                                        </tr>
+
+                                        {% for instance in instances %}
+                                        <tr>
+                                            <td>{{instance.title}}</td>
+                                            <td><a class="text-primary" href="{{ instance.reverse_url }}">{{instance.voucher_number}}</a></td>
+                                            <td>{{instance.voucher_date}}</td>
+
+                                            {% if instance.amount_type == 20 %}
+                                            <td class="debit">{{instance.amount}}</td>
+                                            <td>0</td>
+                                            {% else %}
+                                            <td>0</td>
+                                            <td class="credit">{{instance.amount}}</td>
+                                            {% endif %}
+
+                                        </tr>
+                                        {% endfor %}
+
+                                        <tr class="total_row">
+                                            <td colspan="3" class="total">Total</td>
+
+                                            <td class="total_debit"></td>
+                                            <td class="total_credit"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="3">Closing Balance</td>
+
+                                            {% if close_debit %}
+                                            <td class="closing-debit">{{ closing_balance }}</td>
+                                            <td class=""></td>
+                                            {% else %}
+                                            <td class=""></td>
+                                            <td class="closing-credit">{{ closing_balance }}</td>
+                                            {% endif %}
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                {% if is_excel_export %}
+                                <div class="export_button">
+                                    <button class="exportToExcel" title="Export to XLS"><i class="la la-download"></i></button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Wrapper -->
+{{ form.media }}
+{% endblock %}
+
+{% block static %}
+<script>
+    var total_debit = 0;
+    var total_credit = 0;
+    $(".debit").each(function () {
+        total_debit += parseFloat($(this).html());
+    });
+    $(".credit").each(function () {
+        total_credit += parseFloat($(this).html());
+    });
+
+    $(".total_debit").html(Math.round(total_debit * 100) / 100);
+    $(".total_credit").html(Math.round(total_credit * 100) / 100);
+</script>
+
+{% endblock %}

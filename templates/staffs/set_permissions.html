@@ -1,0 +1,503 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">Create</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+                        <a href="forms-advanced.html#" class="btn btn-sm btn-outline-primary" id="Dash_Date">
+                            <span class="day-name" id="Day_Name">Today:</span>&nbsp;
+                            <span class="" id="Select_date">Jan 11</span>
+                            <i data-feather="calendar" class="align-self-center icon-xs ml-1"></i>
+                        </a>
+                        <a href="forms-advanced.html#" class="btn btn-sm btn-outline-primary">
+                            <i data-feather="download" class="align-self-center icon-xs"></i>
+                        </a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form class="ajax redirect" enctype="multipart/form-data" method="post" action="{{url}}">
+                        {% csrf_token %}
+
+                        <h3>Permissions</h3>
+                        <div class="card-body card card-padding">
+                            <div class="row permissions">
+
+                                {% if staffs_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="staffs_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="staffs_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage staffs</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in staffs_permissions %}
+                                        <div class="col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if customers_permissions %}
+                                    <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                        <input class="custom-control-input list1" id="customers_permissions" type="checkbox">
+                                        <label class="ts-helper" for="ts1">&nbsp;</label>
+                                        <label for="customers_permissions" class="custom-control-label ts-label mb-3">
+                                            <strong>Manage customers</strong>
+                                        </label>
+
+                                        <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                            {% for perm in customers_permissions %}
+                                            <div class=" col-3 mb-2">
+                                                {% if is_edit %}
+                                                {% if perm.pk in array_p %}
+                                                <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                    value="{{perm.pk}}" />
+                                                {% else %}
+                                                <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                    name="permission" value="{{perm.pk}}" />
+                                                {% endif %}
+                                                {% else %}
+                                                <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                    value="{{perm.pk}}" />
+                                                {% endif %}
+                                                <label class="ts-helper" for="ts1">&nbsp;</label>
+                                                <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                    <span>{{perm.name}}</span>
+                                                </label>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if vendors_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="vendors_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="vendors_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage Vendor</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in vendors_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if supplier_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="supplier_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="supplier_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage Supplier</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in supplier_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+
+
+                                {% if warehouse_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="warehouse_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="warehouse_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage Warehouse</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in warehouse_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if offers_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="offers_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="offers_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage Offers</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in offers_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% if purchase_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="purchase_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="purchase_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage Purchase</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in purchase_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if products_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="products_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="products_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage Products</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in products_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if sales_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="sales_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="sales_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage Sales</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in sales_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if finance_permissions %}
+                                <div class="custom-control custom-switch switch-primary check_all_box col-12">
+                                    <input class="custom-control-input list1" id="finance_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="finance_permissions" class="custom-control-label ts-label mb-3">
+                                        <strong>Manage Finance</strong>
+                                    </label>
+
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in finance_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" class="custom-control-input" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="custom-control-input ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input class="custom-control-input" type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="custom-control-label ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+
+                                <!-- {% if account_permissions %}
+                                <div class=" check_all_box">
+                                    <input class="list1" id="franchisee_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="franchisee_permissions" class="ts-label mb-3">
+                                        <span>Manage Accounting</span>
+                                    </label>
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in account_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %} -->
+                                <!--
+                                {% if report_permissions %}
+                                <div class=" check_all_box">
+                                    <input class="list1" id="franchisee_permissions" type="checkbox">
+                                    <label class="ts-helper" for="ts1">&nbsp;</label>
+                                    <label for="franchisee_permissions" class="ts-label mb-3">
+                                        <span>Manage Reports</span>
+                                    </label>
+                                    <div class="d-flex flex-wrap list5 mb-4" style="padding-left: 45px;">
+                                        {% for perm in report_permissions %}
+                                        <div class=" col-3 mb-2">
+                                            {% if is_edit %}
+                                            {% if perm.pk in array_p %}
+                                            <input type="checkbox" checked id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" class="ok"
+                                                name="permission" value="{{perm.pk}}" />
+                                            {% endif %}
+                                            {% else %}
+                                            <input type="checkbox" id="permission-{{perm.pk}}" name="permission"
+                                                value="{{perm.pk}}" />
+                                            {% endif %}
+                                            <label class="ts-helper" for="ts1">&nbsp;</label>
+                                            <label for="permission-{{perm.pk}}" class="ts-label mb-3">
+                                                <span>{{perm.name}}</span>
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %} -->
+
+                            </div>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{{ form.media }}
+{% endblock %}
+{% block static %}
+{% load static %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".phone_alert").hide()
+    });
+
+    $(document).on('change keyup', '#id_phone', function () {
+        var $this = $(this);
+        var amount_to_pay = $('#id_phone').val();
+        if (amount_to_pay.length < 10) {
+            $(".phone_alert").show()
+        }
+        else {
+            $(".phone_alert").hide()
+        }
+        return true;
+
+    });
+</script>
+{% if is_edit %}
+<script>
+    $(document).ready(function () {
+        $('div.check_all_box').each(function () {
+            inputs = $(this).find('input[type="checkbox"]')
+            inputs_len = inputs.length;
+            i = 0;
+            inputs.each(function () {
+                value = $(this).attr('checked');
+                if (value) {
+                    i += 1;
+                }
+            });
+            if (inputs_len - 1 == i) {
+                $(this).find('input.list1').click();
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

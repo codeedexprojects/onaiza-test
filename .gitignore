@@ -1,0 +1,38 @@
+.DS_Store
+
+._*
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+*/__pycache__/
+*/*/__pycache__/
+
+migrations/*.py
+*/migrations/*.py
+*/*/migrations/*.py
+
+!migrations/__init__.py
+!*/migrations/__init__.py
+!*/*/migrations/__init__.py
+
+db.sqlite3
+db.sqlite3-journal
+media/
+media.zip
+staticfiles/
+settings.ini
+onaiza.sh
+
+# Environments
+.env
+.venv
+env/
+venv/
+.vscode
+
+# IDE / tooling
+.claude/
+.idea/
+*.swp

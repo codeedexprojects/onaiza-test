@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+
+<section id="content">
+                <div class="container">
+                    <div class="c-header">
+                        <h2>Malinda Hollaway <small>Web/UI Developer, Edinburgh, Scotland</small></h2>
+                    </div>
+
+                    <div class="card" id="profile-main">
+                        <div class="pm-overview c-overflow mCustomScrollbar _mCS_4 mCS-autoHide" style="overflow: visible;"><div id="mCSB_4" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical_horizontal mCSB_outside" tabindex="0"><div id="mCSB_4_container" class="mCSB_container mCS_x_hidden mCS_no_scrollbar_x" style="position: relative; top: 0px; left: 0px; width: 100%;" dir="ltr">
+                            <div class="pmo-pic">
+                                <div class="p-relative">
+                                    {% if staff_data.photo %}
+                                        <a href="">
+                                            <img class="img-responsive mCS_img_loaded" src="{{staff_data.photo.crop.260x260}}" alt="Photo">
+                                        </a>
+                                        
+                                    {% else %}
+                                        {% if staff_data.gender == 'male' %}
+                                            <a href="">
+                                                <img class="img-responsive mCS_img_loaded" src="../../static/img/blank-male.jpg" alt="Photo">
+                                            </a>
+                                        {% elif staff_data.gender == 'female' %}
+                                            <a href="">
+                                                <img class="img-responsive mCS_img_loaded" src="../../static/img/blank-female.png" alt="Photo">
+                                            </a>
+                                        {% else %}
+                                            <a href="">
+                                                <img class="img-responsive mCS_img_loaded" src="../../static/img/photo-other.png" alt="Photo">
+                                            </a>
+                                        {% endif %}
+
+
+                                    {% endif %}
+
+                                    <!-- <div class="dropdown pmop-message">
+                                        <a data-toggle="dropdown" href="" class="btn palette-White bg btn-float z-depth-1 waves-effect waves-circle waves-float">
+                                            <i class="zmdi zmdi-comment-text-alt"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu">
+                                            <textarea placeholder="Write something..."></textarea>
+
+                                            <button class="btn bgm-green btn-float waves-effect waves-circle waves-float"><i class="zmdi zmdi-mail-send"></i></button>
+                                        </div>
+                                    </div>
+ -->
+                                    <a href="" class="pmop-edit">
+                                        <i class="zmdi zmdi-camera"></i> <span class="hidden-xs">Update Profile Picture</span>
+                                    </a>
+                                </div>
+
+
+                                <div class="pmo-stat p-b-15">
+                                    <h4 class="m-0 c-white">{{staff_data.user}}</h4>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="pmo-block pmo-contact hidden-xs">
+                                <h2>Contact</h2>
+
+                                <ul>
+                                    <li><i class="zmdi zmdi-phone"></i>{{staff_data.phone}}</li>
+                                    <li><i class="zmdi zmdi-email"></i>{{staff_data.email}}</li>
+                                    <li>
+                                        <i class="zmdi zmdi-pin"></i>
+                                        <address class="m-b-0 ng-binding">
+                                            {{staff_data.address}}
+                                        </address>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <!-- <div class="pmo-block pmo-items hidden-xs">
+                                <h2>Connections</h2>
+
+                                <div class="pmob-body">
+                                    <div class="row">
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/1.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/2.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/3.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/4.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/5.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/6.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/7.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/8.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/1.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/2.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/3.jpg" alt="">
+                                        </a>
+                                        <a href="" class="col-xs-2">
+                                            <img class="img-circle mCS_img_loaded" src="img/profile-pics/4.jpg" alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                        <div class="my-buttons" style="display: flex;justify-content: center;">
+                            <a href="{% url 'staffs:view_staff' pk=staff_data.pk %}" class="m-r-10 btn btn-info">view</a>
+                            <a href="{% url 'staffs:edit_staff' pk=staff_data.pk %}" class="m-r-10 btn btn-warning">Edit</a>
+                            <a href="{% url 'staffs:edit_staff' pk=staff_data.pk %}" class="btn btn-danger">Delete</a>
+                        </div>
+
+                        </div></div><div id="mCSB_4_scrollbar_vertical" class="mCSB_scrollTools mCSB_4_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical" style="display: block;"><div class="mCSB_draggerContainer"><div id="mCSB_4_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 50px; display: block; height: 617px; max-height: 713px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar" style="line-height: 50px;"></div></div><div class="mCSB_draggerRail"></div></div></div><div id="mCSB_4_scrollbar_horizontal" class="mCSB_scrollTools mCSB_4_scrollbar mCS-minimal-dark mCSB_scrollTools_horizontal" style="display: none;"><div class="mCSB_draggerContainer"><div id="mCSB_4_dragger_horizontal" class="mCSB_dragger" style="position: absolute; min-width: 50px; width: 0px; left: 0px;" oncontextmenu="return false;"><div class="mCSB_dragger_bar"></div></div><div class="mCSB_draggerRail"></div></div></div></div>
+
+                        <div class="pm-body clearfix">
+                            <ul class="tab-nav tn-justified">
+                                <li class="waves-effect"><a href="{% url 'staffs:staff_about' pk=staff_data.pk %}">About</a> </li>
+                                <li class="waves-effect"><a href="{% url 'staffs:staff_todo' pk=staff_data.pk %}">Todo</a></li>
+                                <li class="waves-effect"><a href="{% url 'staffs:staff_assigned_lead' pk=staff_data.pk %}">Assigned Leads</a></li>
+                                <li class="waves-effect"><a href="{% url 'staffs:staff_attendance_single' pk=staff_data.pk %}">Attendance</a></li>
+                                <li class="active waves-effect"><a href="{% url 'staffs:staff_salary' pk=staff_data.pk %}">Salary</a></li>
+                                <li class="waves-effect"><a href="{% url 'staffs:staff_permissions' pk=staff_data.pk %}">Permissions</a></li>
+                            </ul>
+
+                            <div class="pmb-block">
+                                <div class="pmbb-view">
+                                    {% if instances %}
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h2>Staff Attendance</h2>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <style>
+                                                        table{
+                                                            border-top:1px solid #000 !important;
+                                                        }
+                                                        table tr{
+                                                            border-top:1px solid #000 !important;
+                                                        }
+                                                        table td{
+                                                            border-top:1px solid #000 !important;
+                                                        }
+                                                        table th{
+                                                            border-top:1px solid #000 !important;
+                                                        }
+                                                    </style>
+                                                    <table id="" class="table " border="1" >
+                                                        
+                                                        <tbody>
+                                                                <tr>
+                                                                    <th rowspan="2" style="padding-left: 30px;vertical-align: middle;">Staff</th>
+                                                                    <th rowspan="2" style="text-align: center;vertical-align: middle">Date</th>
+                                                                    <th rowspan="2" style="text-align: center;vertical-align: middle">Basic Salary</th>
+                                                                    <th colspan="2" style="text-align: center;vertical-align: middle"> Leave </th>
+                                                                    <th rowspan="2" style="text-align: right;vertical-align: middle">Salary Paid</th>
+                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    
+                                                                    <th style="text-align: center;width: 10em;">Full day</th>
+                                                                    <th style="text-align: center;width:10em;">Half Day</th>
+                                                                </tr>
+                                                                
+                                                                {% for instance in instances %}
+                                                                    <tr>
+                                                                        <td>{{ instance.staff }}</td>
+                                                                        <td style="text-align: center;">{{ instance.date }}</td>
+                                                                        <td style="text-align: center;"> {{ instance.staff_data.salary }}</td>
+                                                                        <td style="text-align: center;width: 10em;">{{ instance.leave_count|floatformat:"0"}}</td>
+                                                                        <td style="text-align: center;width:10em;">{{ instance.half_leave_count|floatformat:"0" }}</td>
+                                                                        <td style="text-align: right;">{{ instance.salary }}</td>
+                                                                    </tr>
+                                                                {% endfor %}
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        {% include 'includes/not_found.html' %}
+                                    {% endif %} 
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+{% endblock%}

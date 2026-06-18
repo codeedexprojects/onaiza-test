@@ -1,0 +1,282 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">{{title|title}}</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'app' %}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">{{title|title}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form method="get" action="">
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label> Customer </label>
+                    <select
+                      name="customer"
+                      id="id_customer"
+                      data-live-search='true'
+                      class="form-control selectpicker"
+                    >
+                      <option value="">-------------------------</option>
+                      {% for i in customers %} {% if i.pk == data.customer %}
+                      <option selected value="{{i.pk}}">{{i}}</option>
+                      {% else %}
+                      <option value="{{i.pk}}">{{i}}</option>
+                      {% endif %} {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label> From Date </label>
+                    <input
+                      type="text"
+                      value="{{data.from_date}}"
+                      name="from_date"
+                      id="from_date"
+                      class="form-control date-picker-dd"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label> To Date </label>
+                    <input
+                      type="text"
+                      value="{{data.to_date}}"
+                      name="to_date"
+                      id="to_date"
+                      class="form-control date-picker-dd"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="">Payment Type</label>
+                    <select name="payment_method" class="form-control selectpicker" id="id_payment_method">
+                      <option value="">------All------</option>
+                      <option {% if data.payment_method == 'cash' %}selected{% endif %} value="cash">Cash</option>
+                      <option {% if data.payment_method == 'cheque' %}selected{% endif %} value="cheque">Cheque</option>
+                      <option {% if data.payment_method == 'draft' %}selected{% endif %} value="draft">Draft</option>
+                      <option {% if data.payment_method == 'bank transfer' %}selected{% endif %} value="bank transfer">Bank Transfer</option>
+                      <option {% if data.payment_method == 'credit' %}selected{% endif %} value="credit">Credit</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="text-right">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row report">
+      {% comment %} <div class="col-auto float-right ml-auto">
+        <a href="{% url 'sales:print_sale_report/?customer=c172cb1b-2d7d-47d6-94ac-3e2175eff2ce&from_date=10%2F02%2F2020&to_date=10%2F06%2F2020' %}" class="btn add-btn"
+          > Print</a
+        >
+      </div> {% endcomment %}
+      <div class="col-auto float-right ml-auto">
+        <a href="{% url 'sales:print_sale_report' %}{{ filter_url }}" id="" class="btn add-btn"
+          > Print</a
+        >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-striped custom-table mb-0 datatable-">
+            <thead>
+              <tr>
+                <th style="width: 30px">ID</th>
+                <th>Invoice Id</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Sale Taxable</th>
+                <th>Cess</th>
+                <th>GST</th>
+                <th>Discount</th>
+                <th>Total</th>
+                <th>Paid</th>
+                <th>Payment Method</th>
+                <th class="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% load el_pagination_tags %}
+              {% paginate 20 instances %}
+              {% for instance in instances %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ instance.sale_id }}</td>
+                <td>{{ instance.sale_date|date:"d/m/y" }}</td>
+                <td>{{ instance.customer }}</td>
+                <td class="amount sale_taxable">{{ instance.sale_taxable_amount }}</td>
+                <td class="amount cess_amount">{{ instance.cess_amount }}</td>
+                <td class="amount total_tax">{{ instance.total_tax }}</td>
+                <td class="amount discount">{{ instance.discount }}</td>
+                <td class="amount total">{{ instance.total }}</td>
+                <td class="amount paid">{{ instance.paid }}</td>
+                <td class="amount paid">{{ instance.payment_method|title }}</td>
+                <td class="text-right">
+                  <div class="dropdown dropdown-action">
+                    <a
+                      href="#"
+                      class="action-icon dropdown-toggle"
+                      data-toggle="dropdown"
+                      aria-expanded="false"
+                      ><i class="material-icons">more_vert</i></a
+                    >
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a
+                        class="dropdown-item"
+                        href="{% url 'sales:sale' pk=instance.pk %}"
+                        ><i class="fa fa-eye m-r-5"></i> View</a
+                      >
+                      <!-- <a
+                        class="dropdown-item"
+                        href="{% url 'sales:edit' pk=instance.pk %}"
+                        ><i class="fa fa-pencil m-r-5"></i> Edit</a
+                      >
+                      <a
+                        data-id="{{ instance.pk }}"
+                        class="action-button remove btn btn-light btn-rnd btn--icon dropdown-item"
+                        href="{% url 'sales:delete' pk=instance.pk %}"
+                        data-text="{{ confirm_delete_message }}"
+                        data-title="Are you sure?"
+                        ><i class="fa fa-trash-o m-r-5"></i> Delete</a
+                      > -->
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" style="text-align: center">Total</td>
+                <td class="final sale_taxable">{{ total_instance.sale_taxable_amount }}</td>
+                <td class="final cess_amount">{{ total_instance.cess_total }}</td>
+                <td class="final gst">{{ total_instance.gst_amount_total }}</td>
+                <td class="final discount">{{ total_instance.discount_total }}</td>
+                <td class="final total">{{ total_instance.all_total }}</td>
+                <td class="final paid">{{ total_instance.paid_total }}</td>
+                <td class=""></td>
+                <td class="text-right"></td>
+              </tr>
+            </tfoot>
+          </table>
+
+          {% get_pages %}
+          <div class="clearfix"></div>
+          <div class="row pagi m-t-5">
+              <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+              <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                  <div class="m-t-10">
+                      Showing {{title}}
+                      <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                      class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                      class="total_count">{{ pages.total_count }}</span> </div>
+                  </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>
+<!-- /Page Wrapper -->
+{% endblock content %} {% block static %}
+<script>
+  $(document).ready(function(){
+      var paid = 0;
+      var cess = 0;
+      var gst = 0;
+      var discount = 0;
+      var total = 0;
+      $(".amount.paid").each(function(){
+        paid += parseFloat($(this).html());
+      });
+      $(".amount.cess_amount").each(function(){
+        cess += parseFloat($(this).html());
+      });
+      $(".amount.total_tax").each(function(){
+        gst += parseFloat($(this).html());
+      });
+      $(".amount.discount").each(function(){
+        discount += parseFloat($(this).html());
+      });
+      $(".amount.total").each(function(){
+        total += parseFloat($(this).html());
+      });
+      // $(".final.paid").html(Math.round(paid*100)/100);
+      // $(".final.cess_amount").html(Math.round(cess*100)/100);
+      // $(".final.gst").html(Math.round(gst*100)/100);
+      // $(".final.discount").html(Math.round(discount*100)/100);
+      // $(".final.total").html(Math.round(total*100)/100);
+  });
+      $(document).on("click",'div.report #print_sale_report',function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      $this = $(this);
+      $this.prop('disabled', true);
+
+      var url = $(this).attr("href");
+      var isReload = $this.hasClass("reload");
+      let customer = $('#id_customer').val();
+      let from_date = $('#from_date').val();
+      let to_date = $('#to_date').val();
+      console.log(customer,from_date,to_date,url,"FTM==========")
+      $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "json",
+        data: {
+          customer: customer,
+          from_date: from_date,
+          to_date: to_date
+        },
+
+        success: function (data) {
+          if (status = 'true'){
+              $this.prop('disabled', false);
+
+              if (redirect_url){
+                  window.location.href = redirect_url
+              }
+          }
+        },
+
+        error: function (data) {
+          var title = "An error occurred";
+          var message = "An error occurred. Please try again later.";
+        }
+      });
+    });
+</script>
+{% endblock %}

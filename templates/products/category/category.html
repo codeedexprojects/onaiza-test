@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.name}}</h3>
+
+                <ul class="personal-info row">
+                    <li class="col">
+                        <a title="Create new product category" href="{% url 'products:create_category' %}"
+                            class=" text-white edit-icon">
+                            <i style="color: black" class="las la-plus"></i>
+                        </a>
+                    </li>
+
+                    <li class="col">
+                        <a title="Edit Category" href="{% url 'products:edit_category' pk=instance.pk %}"
+                            class="edit-icon">
+                            <i class="las la-pen"></i>
+                        </a>
+                    </li>
+
+                    <li class="col">
+                        <a title="Delete Category" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                            data-title="Are you sure?" href="{% url 'products:delete_category' pk=instance.pk %}"
+                            class="action-button redirect delete-icon edit-icon">
+                            <i class="las la-trash-alt text-danger font-18"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="tab-content  col-md-12">
+        <!-- Profile Info Tab -->
+        <div class="row">
+            <!-- <div id="c-grid" class="clearfix" data-columns="2"> -->
+            <div class=" col-6">
+                <div class="card-header">
+                    <h5>Basic Info <small></small></h5>
+                </div>
+                <div class="card-body">
+
+
+
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Name</div>
+                                <small class="lgi-text">{{instance.name}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">മലയാളം പേര് </div>
+                                <small class="lgi-text">{{instance.malayalam_name}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Featured</div>
+                                <small class="lgi-text">{{ instance.is_featured|yesno|title }}</small>
+                            </div>
+                        </div>
+
+                        {% if instance.image %}
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Image</div>
+                                <img src="{{instance.image.thumbnail.250x250}}" alt="Photo">
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Updater </div>
+                                <small class="lgi-text">{{instance.updater}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Creator </div>
+                                <small class="lgi-text">{{instance.creator}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Date Created </div>
+                                <small class="lgi-text">{{instance.date_added|date:"d/m/Y h:i A"}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Date Updated </div>
+                                <small class="lgi-text">{{instance.date_updated|date:"d/m/Y h:i A"}}</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class=" col-6">
+                <div class="card-header d-flex justify-content-between">
+                    <h5>Subcategories</h5>
+                    <button data-url="{% url 'products:create_subcategory' %}" id="id_create_subcategory" type="button"
+                        class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                        data-target="#exampleModalScrollable">
+                        <i class="fas fa-plus mr-2"></i>Add Sub Category
+                    </button>
+                </div>
+                {% if instances %}
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped table-vmiddle">
+                            <thead>
+                                <tr>
+                                    <th class="p-l-10">Name</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in instances %}
+                                <tr>
+                                    <td>{{i.name}} | {{i.malayalam_name}}</td>
+                                    <td style="text-align:right;">
+                                        <button id="id_edit_subcategory"
+                                            data-url="{% url 'products:edit_subcategory' pk=i.pk %}" data-id="{{i.id}}"
+                                            type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                                            data-target="#exampleModalScrollable">
+                                            <i class="las la-pen"></i>
+                                        </button>
+
+                                        <a data-id="{{ i.pk }}" class="action-button remove"
+                                            href="{% url 'products:delete_sub_category' pk=i.pk %}"
+                                            data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                                class="las la-trash-alt text-danger font-18"></i></a>
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                {% endif %}
+
+                <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Subcategory Form</h6>
+                                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                                </button>
+                            </div>
+                            <!--end modal-header-->
+                            <div class="modal-body">
+                                <div class="card col-md-12">
+                                    <div class="card-body">
+                                        <form id="variant_from" action="{{url}}" method="post" class="ajax reload reset"
+                                            enctype="multipart/form-data" action="{{ url }}">
+                                            {% csrf_token %}
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="{{ form.name.id_for_label }}">
+                                                        {{ form.name.label }}
+
+                                                        {% if form.name.field.required %}
+                                                        <small class="star text-danger">*</small>
+                                                        {% endif %}
+                                                    </label>
+                                                    {{ form.name }}
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="{{ form.malayalam_name.id_for_label }}">
+                                                        {{ form.malayalam_name.label }}
+
+                                                        {% if form.malayalam_name.field.required %}
+                                                        <small class="star text-danger">*</small>
+                                                        {% endif %}
+                                                    </label>
+                                                    {{ form.malayalam_name }}
+                                                </div>
+
+                                                <div style="display:none" class="form-group">
+                                                    <label for="{{ form.category.id_for_label }}">
+                                                        {{ form.category.label }}
+
+                                                        {% if form.category.field.required %}
+                                                        <small class="star text-danger">*</small>
+                                                        {% endif %}
+                                                    </label>
+                                                    {{ form.category }}
+                                                </div>
+
+                                            </div>
+                                            <!-- <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end modal-body-->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                    data-dismiss="modal">Close</button>
+                                <!-- <button type="button" class="btn btn-primary btn-sm">Save changes</button> -->
+                            </div>
+                            </form>
+                            <!--end modal-footer-->
+                        </div>
+                        <!--end modal-content-->
+                    </div>
+                    <!--end modal-dialog-->
+                </div>
+                <!--end modal-->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+
+<script type="text/javascript">
+    $(document).on('change click', '#id_create_subcategory', function () {
+        var url = $(this).attr('data-url')
+
+        $("#variant_from").attr("action", url)
+        $("#id_name").val("")
+    });
+
+    $(document).on('change click', '#id_edit_subcategory', function () {
+        var variant_id = $(this).attr('data-id')
+        var url = $(this).attr('data-url')
+
+        $("#variant_from").attr("action", url)
+        get_subcategory(variant_id)
+    });
+
+    function get_subcategory(id) {
+        var url = "{% url 'products:get_subcategory' %}"
+
+        if (id != undefined && id != null && id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var name = data['name'];
+                        var unit = data['unit'];
+                        var unit_pk = data['unit_pk'];
+
+                        $("#id_name").val(name)
+
+                        // $(`#id_stock_location select option[value="${selected_variant}"]`).attr('selected', '')
+                        // $('#id_category').html(`<option selected value=${stock_location_pk}>${stock_location}</option>`);
+
+
+                        // $("#id_stock_location").selectpicker('refresh');
+                        // $parent.find(".product_variant select").trigger('change');
+                    }
+
+                },
+                error: function (data) {
+                }
+            })
+        }
+        else {
+            console.log("Error")
+        }
+
+    }
+</script>
+
+
+{{ form.media }}
+{% endblock %}

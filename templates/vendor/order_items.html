@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load stock %}
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="page-title">{{title|title}}</h4>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Orders</li>
+                </ol>
+            </div>
+            <div class="col-auto col-sm-2 float-right ml-auto">
+                <form method="get" action="{% url 'products:products' %}">
+                    <li class="list-inline-item">
+                        <div class="input-group">
+
+                            <input name="q" type="text" placeholder="Search" value="{{ filter_data.q }}"
+                                class="form-control" />
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn-soft-primary btn-sm"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+                    </li>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable- table2excel">
+                    <thead>
+                        <tr>
+                           <th>ID</th>
+                           <th>Product</th>
+                           <th>Order Date</th>
+                           <th>Pickup Status</th>
+                           <th>Status</th>
+                           <th>Quantity</th>
+                           <th>Price</th>
+                           <th>Total</th>
+                           <th class="text-center">Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 21 instances %}
+                        {% for i in instances %}
+                        <tr>
+                           <td>
+                              <a class="text-primary" href="{% url 'orders:order' i.order_id %}">{{i.order.order_id}}</a>
+                           </td>
+                           <td>{{i.product_variant.product}}</td>
+                           <td>{{ i.order.date_added }}</td>
+                           <td>{{ i.order.get_order_status_display }}</td>
+                           <td>{{ i.get_status_display }}</td>
+                           <td>{{ i.qty }}</td>
+                           <td>{{ i.price|default:"0.00" }}</td>
+                           <td>{{ i.total|default:"0.00" }}</td>
+                           <td  class="text-center">
+                                <a href="{% url 'vendors:received_order' pk=i.pk %}" role="button" class="btn btn-sm btn-outline-primary"><i class="icon fa fa-eye"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+    {% endblock %}
+
+    {% block static %}
+
+    {% endblock %}

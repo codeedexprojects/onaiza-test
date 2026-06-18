@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="" />
+	<meta name="robots" content="" />
+	<title></title>
+
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/bootstrap/css/bootstrap.min.css' %}" media="screen" />
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/css/owl.carousel.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/theme/default/stylesheet/stylesheet.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/owl.carousel.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/owl.theme.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/swiper.min.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/opencart.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/css/owl.theme.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/magnific/magnific-popup.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/theme/default/stylesheet/inspirenewsletter.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/inspirequickview.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'js/jquery/blog/lightbox.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert2.min.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" rel="stylesheet" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+
+
+<nav id="top" class="hidden-xs">
+<div class="container">
+  <div class="paddbg">
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 headadd hidden-xs">
+      Welcome To World's largest Super Market
+    </div>
+     <div id="top-links" class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+        <li class="dropdown xsac u-acc"><a href="index.php%3Froute=account%252Faccount.html" title="My Account" class="dropdown-toggle" data-toggle="dropdown">
+          {% if request.user.is_authenticated %}
+          <i class="fa fa-user-o hidden-md hidden-sm hidden-lg"></i><span class="hidden-xs">My Account <i class="fa fa-angle-down hidden-xs"></i></span></a>
+
+
+          <ul class="dropdown-menu dropdown-menu-right acdrop">
+
+            <li><a href="{% url 'web:my_orders' %}"> <i class="fa fa-address-book-o"></i> My Orders</a></li>
+            <li><a href="{% url 'web:product_carts' %}"> <i class="fa fa-address-book-o"></i> My Cart</a></li>
+            <li><a href="{% url 'web:product_wishlists' %}"> <i class="fa fa-address-book-o"></i> My Wishlist</a></li>
+
+
+<!--             <li><a href="#"> <i class="fa fa-address-book-o"></i> My Wishlist</a></li>
+ -->
+
+            <li><a href="{% url 'web:logout' %}"> <i class="fa fa-sign-in"></i> Logout</a></li>
+
+                      </ul>
+          {% else %}
+
+
+              <div style="display: flex;">
+                       <a style="color: #fff;" href="{% url 'web:register' %}"> <i class="fa fa-address-book-o"></i> Register</a>
+            <a style="color: #fff;" href="{% url 'web:login' %}"> <i class="fa fa-sign-in"></i> Login</a>
+              </div>
+
+                      {% endif %}
+        </li>
+
+
+
+
+
+
+
+    </div>
+
+
+  </div>
+</div>
+</div>
+</nav>
+<header>
+  <div class="head-bottom container">
+    <div class="head-po">
+      <div class="head-middle">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-xs-12 col-sm-3 xslogo">
+        <div id="logo" style="width: 44%;"><a href="{% url 'web:index' %}"><img src="{% static 'web/image/catalog/loogo.jpg' %}" title="Your Store" alt="Your Store" class="img-responsive" /></a></div>
+        </div>
+         <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12 rpart text-center">
+          <li id="search" class="header-btns desktop-search inline-block">
+
+
+    <!-- category Search Start  -->
+  <div class="insp-search">
+        <div class="insp-search-loader" style="display: none;"><div class="loaders"></div></div><!-- Add Loader -->
+        <div class="insp-search-result"><!-- category search results --></div>
+    </div>
+    <!-- category Search End  -->
+</li>
+        </div>
+
+        {% if request.user.is_authenticated %}
+        <div class="col-lg-9 col-md-9 col-sm-4 text-right head-b-right">
+          <div class="d-inline-block hidden-sm hidden0md hidden-lg xs-ac"></div>
+
+
+      <!--
+          <li class="hwishc d-inline-block hidden-xs"><a href="{% url 'web:product_wishlists' %}" id="wishlist-total" title="Wish List (0)"><img src="{% static 'img/catalog/svg-file/hwish.svg' %}" alt="wishlist" class="svg" /></a></li> -->
+
+
+          <div id="cart">
+
+            <a href="{% url 'web:product_carts' %}">
+
+
+  <button type="button" ><span class="cartr"><img src="{% static 'img/catalog/svg-file/hcart.svg' %}" alt="cart" class="svg" /><span id="cart-total" class="text-left"><h6 class="count-tot icon4">{{cart_count}}</h6></span></span></button></a>
+  <ul class="dropdown-menu pull-right">
+        <li>
+          {% if cart_count == 0 %}
+          <p class="text-center">Your shopping cart is empty!</p>
+          {% endif %}
+
+    </li>
+      </ul>
+</div>
+
+        </div>
+
+
+        {% endif %}
+
+
+      </div>
+    </div>
+
+    <div class="head-bg">
+        <div class="row">
+          <div class="col-xs-12 head-menu-p">
+            <div class="deskmenu hsticky">
+<div class="hidden-xs allcate">
+<div class="cate-menu" id="all-menu">
+
+</div>
+</div>
+
+
+
+  </div>
+</div>
+</header>
+
+
+	{% block content %} {% endblock %}
+
+	<footer>
+<div class="foot-top" style="background:none !important;">
+
+</div>
+<div class="container">
+
+
+
+
+
+  <div class="">
+    <div class="row footmr">
+
+
+
+
+    <div class="middle-footer">
+      <div class="col-sm-3">
+        <div class="xs-fab">
+          <aside id="column-left1">
+    <div>  <div>  <h5 class=""><span>Contact us</span>
+   <button type="button" class="btn btn-primary toggle collapsed" data-toggle="collapse" data-target="#contact"></button>
+</h5>
+<div id="contact" class="collapse footer-collapse footcontact">
+<ul class="list-unstyled f-left">
+  <li><i class="fa fa-map-marker"></i>Address Line 1 </li>
+  <li><i class="fa fa-envelope"></i>Company email</li>
+  <li><i class="fa fa-phone"></i>456-456-4512</li>
+  <li><i class="fa fa-paper-plane"></i>Kerala, India</li>
+</ul>
+ <div class="footsocial">
+  <ul class="socials list-inline">
+  	<li class="facebook"><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
+  	<li class="twitter"><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+  	<li class="instagram"><a href="#" target="_blank"><i class="fa fa-instagram"></i></a></li>
+  </ul>
+</div>
+</div></div></div>
+
+
+
+
+
+  </aside>
+
+        </div>
+      </div>
+      <div class="col-sm-3">
+          <h5>Extras
+            <button type="button" class="btn btn-primary toggle collapsed" data-toggle="collapse" data-target="#extra"></button>
+          </h5>
+          <div id="extra" class="collapse footer-collapse">
+          <ul class="list-unstyled">
+            <li><a href="#">Brands</a></li>
+           <!--  <li><a href="index.php%3Froute=account%252Fvoucher.html">Gift Certificates</a></li>
+            <li><a href="index.php%3Froute=affiliate%252Flogin.html">Affiliate</a></li>
+            <li><a href="index.php%3Froute=product%252Fspecial.html">Specials</a></li>
+            <li><a href="index.php%3Froute=information%252Fsitemap.html">Site Map</a></li> -->
+          </ul>
+        </div>
+      </div>
+      <div class="col-sm-3">
+                <h5>Information
+          <button type="button" class="btn btn-primary toggle collapsed" data-toggle="collapse" data-target="#info"></button>
+        </h5>
+        <div id="info" class="collapse footer-collapse">
+        <ul class="list-unstyled">
+                   <li><a href="#">About Us</a></li>
+                    <li><a href="#">Delivery Information</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms &amp; Conditions</a></li>
+                    <li><a href="#">Contact Us</a></li>
+        </ul>
+        </div>
+              </div>
+      <div class="col-sm-3">
+        <h5>My Account
+          <button type="button" class="btn btn-primary toggle collapsed" data-toggle="collapse" data-target="#account"></button>
+        </h5>
+        <div id="account" class="collapse footer-collapse">
+        <ul class="list-unstyled lastb">
+          <li><a href="#">My Account</a></li>
+          <li><a href="{% url 'web:my_orders' %}">Order History</a></li>
+          <li><a href="{% url 'web:product_carts' %}">Cart</a></li>
+        </ul>
+        </div>
+      </div>
+          </div>
+
+     <!--   -->
+    </div>
+    <div>  <div class="foot-bottom">
+  <div class="row footmr">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 f-social">
+        <div class="foot-app">
+        <div class="title-footer hidden-md hidden-sm hidden-xs">Download Our App</div>
+        <ul class="list-unstyled inline-block">
+      <!--     <li><a title="AppStore" href="index.html#"><img class="img-responsive" src="{% static 'img/catalog/app1.png'  %}" alt="App Store"></a></li> -->
+          <li><a title="PlayStore" href="#"><img class="img-responsive" src="{% static 'img/catalog/app2.png'  %}" alt="Play Store"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-right ">
+      <div class="text-right">
+          <a href="#"><img class="img-responsive center-block" src="{% static 'img/catalog/payment.png' %}" alt="imgpayment"></a>
+      </div>
+    </div>
+</div>
+</div></div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+</div>
+
+<div class="foot-power text-center">
+    <div class="container">
+          <div class="row">
+            <div class="copy col-xs-12 col-sm-12">Powered By <a href="#">Super Market</a> &copy; 2020</div>
+          </div>
+    </div>
+</div>
+<a href="{% url 'web:index' %}" id="scroll" title="Scroll to Top" style="display: block;">
+   <i class="fa fa-angle-up"></i>
+</a>
+</footer>
+
+</body>
+
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<!-- sweet-alert js -->
+<script type="text/javascript" src="{% static 'js/jquery/bootstrap/js/bootstrap.min.js' %}" ></script>
+<script type="text/javascript" src="{% static 'js/jquery/inspire/product-slider-zoom/jquery.elevatezoom.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="{% static 'js/jquery/countdown/jquery.plugin.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery/countdown/jquery.countdown.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery/blog/lightbox-2.6.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery/inspire/custom.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery/swiper/js/owl.carousel.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery/swiper/js/swiper.jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery/magnific/jquery.magnific-popup.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery/inspirequickview.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery/inspirenewsletter.js' %}"></script>
+
+
+</html>

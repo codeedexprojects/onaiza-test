@@ -1,0 +1,584 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load web_template_tags %}
+
+{% block content %}
+
+<style>
+  li{
+    list-style: none !important;
+  }
+
+  .amt, .amt1{
+
+    width:100%;
+  }
+
+  .address-active{
+    border: 1px solid red;
+    border-radius: 20px;
+  }
+
+.red{
+  color: red;
+  display: none;
+}
+
+</style>
+
+<!-- edit-address -->
+<div class="OverLay" id="EditAddress">
+  <div class="main-container-side">
+
+    <div class="proRate-name-div">
+      <span class="side-popup-close" onclick="AddNewAddressOff()">×</span>
+      <span class="mycart-name">{% trans "Edit Address" %}</span>
+    </div>
+
+    <form action="" class="ajax reload" method="post">
+    </form>
+  </div>
+</div>
+<!-- header end -->
+
+<!-- add-new-address -->
+<div class="OverLay" id="AddNewAddress">
+  <div class="main-container-side">
+
+    <div class="proRate-name-div">
+      <span class="side-popup-close" onclick="AddNewAddressOff()">×</span>
+      <span class="mycart-name">{% trans "Add New Address" %}</span>
+    </div>
+    <form action="{{url}}" class="ajax redirect" method="post">
+      {% csrf_token %}
+      <div class="AddressMainContainer">
+        <div class="title-Row">{% trans "Contact Details" %}</div>
+
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.name.label}}</Label>
+          {{address_form.name}}
+        </div>
+
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.phone.label}}</Label>
+          {{address_form.phone}}
+        </div>
+
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.email.label}}</Label>
+          {{address_form.email}}
+        </div>
+
+        <div class="title-Row Details">{% trans "Address Details" %}</div>
+
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.pincode.label}}</Label>
+          {{address_form.pincode}}
+        </div>
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.house_name.label}}</Label>
+          {{address_form.house_name}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.street.label}}</Label>
+          {{address_form.street}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.city.label}}</Label>
+          {{address_form.city}}
+        </div>
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.landmark.label}}</Label>
+          {{address_form.landmark}}
+        </div>
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.state.label}}</Label>
+          {{address_form.state}}
+        </div>
+        <div class="title-Row">
+          {% trans "Save Address As" %}
+        </div>
+        <div class="ContactDetails-Row saveAddressAs">
+          <div class="homeSection">
+            <input class="input-hidden" id="home" name="homeoroffice" value="home" type="radio"/>
+            <label for="home"><img alt="home" src="{% static 'web/images/icons/home.svg' %}"/>{% trans "Home" %}</label>
+          </div>
+          <div class="officeSection">
+            <input class="input-hidden" id="office" name="homeoroffice" value="office" type="radio"/>
+            <label for="office">
+              <img alt="office" src="{% static 'web/images/icons/office.svg' %}"/>{% trans "Office" %}
+            </label>
+          </div>
+        </div>
+        <div class="commonCheckBox">
+          <label class="container">
+            <input name="default" type="checkbox">
+            <span class="checkmark"><span class="zmdi zmdi-check"></span></span>
+            {% trans "Use this as my default address" %}
+          </label>
+        </div>
+        <div class="buttonAreaSub">
+          <button type="submit">{% trans "Save" %}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- header end -->
+
+<section id="payment">
+  <section class="wrapper">
+    <section class="heading">
+      <ul>
+        <li class="active tab1">1 - {% trans "Address" %}</li>
+        <li class="tab3">2 - {% trans "Delivery Time" %}</li>
+        <li class="tab2">3 - {% trans "Payment" %}</li>
+      </ul>
+    </section>
+
+
+    <div class="tab-click">
+      <section class="content">
+        <section class="left">
+          <div class="head-pay">
+            <h3>{% trans "Payment Method" %}</h3>
+          </div>
+          <div class="tabs">
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method1">UPI</label>
+                <input class="hided" id="method1" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="upi" placeholder="UPI/VPI ID (eg: 8888999966@upi)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method2">{% trans "Credit card" %}</label>
+                <input class="hided" id="method2" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="creditCard" placeholder="(Card No.)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method3">{% trans "Debit Card" %}</label>
+                <input class="hided" id="method3" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="debitCard" placeholder="(Card No.)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method4">{% trans "Google Pay" %}</label>
+                <input class="hided" id="method4" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="gpay" placeholder="Google Pay (eg: 808646464)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method5">{% trans "Apple Pay" %}</label>
+                <input class="hided" id="method5" name="tabsA" type="radio">
+              </div>
+              <section class="hidedInput" id="content1">
+                <input id="" name="apay" placeholder="Apple Pay: 8888999966@upi)" type="text">
+              </section>
+            </div>
+
+            <div class="item">
+              <div class="container">
+                <div class="roundBotton">
+                  <span class="orangeRound"></span>
+                </div>
+                <label for="method6">{% trans "Cash On Delivery" %}</label>
+                <input class="hided" id="method6" name="cod" type="radio">
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <section class="right-box">
+          <div class="head-pay">
+            <h3>{% trans "Items" %}</h3>
+          </div>
+
+          {% for i in cart %}
+          <li class="cart-items mt-3 {{ i.product_variant.pk }}">
+            <div class="pro-card">
+              <div class="img-box">
+                {% if i.product_variant.image %}
+                <img src="{{ i.product_variant.image.thumbnail.600x600 }}">
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:70px;"/>
+                {% endif %}
+              </div>
+              <div class="pay-content">
+                <div class="nameArea-Left" data-pk="{{ i.product_variant.pk }}"
+                     href="{% url 'web:decrement_cart' %}"></div>
+                <h6 class="main-heading">{{ i.product_variant }}
+
+                  <img alt="Delete" src="{% static 'web/images/icons/delete-icon.svg' %}"/>
+                </h6>
+                <small>{{i.product_variant.product.category}}</small>
+                <div class="QuantitybuttonAreaMain-row">
+                  <div class="QuantitybuttonAreaSub-row">
+                    <h6><span class="rupees-symbol">₹ &nbsp;</span>{% get_product_price i.product_variant.pk pincode_session %}</h6>
+                    <div class="Quantity-button {{i.pk}}">
+                      <input class="cursor QuantityButton minus-checkout" href="{% url 'web:decrement_cart' %}"
+                             id="minus"
+                             type="button"
+                             value="-"
+                      >
+                      <input class="input-text qty text" disabled id="theInput" min="0" size="1"
+                             step="1" title="Qty" type="text"
+                             value="{% get_cart_count i.product_variant.pk request.user %}">
+                      <input class="plus-checkout QuantityButton {{i.pk}}plus" data-pk="{{ i.product_variant.pk }}"
+                             href="{% url 'web:increment_cart' %}" id="plus"
+                             type="button" value="+"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+          <div class="cart-list">
+            <div class="head-pay">
+              <h3>{% trans "Order Details" %}</h3>
+            </div>
+            <div class="contents">
+              <div class="list-content">
+                <h3>{% trans "Item Price" %}</h3>
+                <h6>{{cart_amt}}</h6>
+              </div>
+              <div class="list-content">
+                <h3>{% trans "Delivery Charge" %}</h3>
+                <h6>50</h6>
+              </div>
+              <div class="list-content">
+                <h3>{% trans "Tax" %}</h3>
+                <h6>5.8</h6>
+              </div>
+              <div class="list-content">
+                <h3>{% trans "Gift Voucher" %}</h3>
+                {% if coupon_session_amt %}
+                <h6 class="coupon-amt">- {{coupon_session_amt}}</h6>
+              {% else %}
+                <h6 class="coupon-amt">0</h6>
+              {% endif %}
+              </div>
+              <div class="list-content">
+                <h3>{% trans "Wallet Amount" %}</h3>
+                <h6>{{wallet_applied_amt}}</h6>
+              </div>
+              <div class="list-content amt">
+                <h6 class="bolder">Total</h6>
+                <h6 class="bolder total-td"><span class="rupees-symbol">₹</span>{{cart_grand_total}}</h6>
+              </div>
+            </div>
+            <button data-redirect="{% url 'web:order_confirmed' %}" data-url="{% url 'web:place_order' %}" id="checkout"
+                    type="submit"> {% trans "Proceed" %}
+            </button>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <div class="" id="checkOutproduct">
+      <div class="content">
+        <div class="container-side">
+          <div class="checkOutContainer">
+            <h4>{% trans "Delivery date setting" %}</h4>
+            <div class="dateSection">
+              <label for="datepicker">
+                <p>{% trans "Date" %}</p>
+                <input autocomplete="off" id="datepicker" placeholder="Date" type="text" data-url="{% url 'web:get_time_slots' %}"/><span
+                      class="zmdi zmdi-calendar-note" ></span>
+              </label>
+            </div>
+            <h4>{% trans "Choose a time slot" %}</h4>
+            <input type="hidden" id="timeslot" />
+            <div class="timeSelect">
+<!--              {% if time_slots %}-->
+
+<!--                {% for i in time_slots %}-->
+
+<!--                    <div class="timeInput" data-time-pk="{{i.pk}}">-->
+<!--                      <h6>{{i.start_time}} - {{i.end_time}}</h6>-->
+<!--                      <input name="fav_language" type="radio" value="">-->
+<!--                    </div>-->
+
+<!--                {% endfor %}-->
+
+<!--              {% else %}-->
+<!--                <p>No Time slots available</p>-->
+<!--              {% endif %}-->
+
+          </div>
+          <p style="display:none" id="not_slots_available">{% trans "No time slots available" %}</p>
+          </div>
+        </div>
+        <section class="right-box">
+          <div class="head-pay">
+            <h3>{% trans "Items" %}</h3>
+          </div>
+
+          {% for i in cart %}
+          <li class="cart-items mt-3 {{ i.product_variant.pk }}">
+            <div class="pro-card">
+              <div class="img-box">
+                {% if i.product_variant.image %}
+                <img src="{{ i.product_variant.image.thumbnail.600x600 }}">
+                {% else %}
+                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:70px;"/>
+                {% endif %}
+              </div>
+              <div class="pay-content">
+                <div class="nameArea-Left" data-pk="{{ i.product_variant.pk }}"
+                     href="{% url 'web:decrement_cart' %}"></div>
+                <h6 class="main-heading">{{ i.product_variant }}
+
+
+                  <a class="remove-cart-checkout" data-pk="{{i.pk}}" href="{% url 'web:remove_cart' %}">
+                    <img alt="" class="" src="{% static 'web/images/icons/delete-icon.svg' %}">
+                  </a>
+                </h6>
+                <small>{{i.product_variant.product.category}}</small>
+                <div class="QuantitybuttonAreaMain-row">
+                  <div class="QuantitybuttonAreaSub-row">
+                    <h6><span class="rupees-symbol">₹ &nbsp;</span>{% get_product_price i.product_variant.pk pincode_session %}</h6>
+                    <div class="Quantity-button {{i.pk}}">
+                      <input class="cursor QuantityButton minus-checkout" href="{% url 'web:decrement_cart' %}"
+                             id="minus"
+                             type="button"
+                             value="-"
+                      >
+                      <input class="input-text qty text" disabled id="theInput" min="0" size="1"
+                             step="1" title="Qty" type="text"
+                             value="{% get_cart_count i.product_variant.pk request.user %}">
+                      <input class="plus-checkout QuantityButton {{i.pk}}plus" data-pk="{{ i.product_variant.pk }}"
+                             href="{% url 'web:increment_cart' %}" id="plus"
+                             type="button" value="+"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+          <div class="cart-list">
+            <div class="head-pay">
+              <h3>{% trans "Order Details" %}</h3>
+            </div>
+            <div class="contents">
+              <div class="list-content">
+                <h3>{% trans "Item Price" %}</h3>
+                <h6>{{cart_amt}}</h6>
+              </div>
+              <div class="list-content">
+                <h3>{% trans "Delivery Charge" %}</h3>
+                <h6>50</h6>
+              </div>
+              <div class="list-content">
+                <h3>{% trans "Tax" %}</h3>
+                <h6>5.8</h6>
+              </div>
+              <div class="list-content">
+                <h3>{% trans "Gift Voucher" %}</h3>
+                {% if coupon_session_amt %}
+                <h6 class="coupon-amt">- {{coupon_session_amt}}</h6>
+              {% else %}
+                <h6 class="coupon-amt">0</h6>
+              {% endif %}
+              </div>
+              <div class="list-content">
+                <h3>{% trans "Wallet Amount" %}</h3>
+                <h6>{{wallet_applied_amt}}</h6>
+              </div>
+              <div class="list-content amt1">
+                <h6 class="bolder">{% trans "Total" %}</h6>
+                <h6 class="bolder total-amount"><span class="rupees-symbol">₹</span>{{cart_grand_total}}</h6>
+              </div>
+            </div>
+            <button  type="submit"> {% trans "Proceed" %}</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section id="address">
+      <div class="top">
+        <h1>{% trans "My Addresses" %}</h1>
+      </div>
+      <div class="bottom">
+        <div class="header-box">
+          <div class="left">
+            <span class="no">{{address_count}}</span>
+            <h1>{% trans "Saved Addresses" %}</h1>
+          </div>
+          <div class="right">
+            <a class="add-button" href="#">{% trans "Add Address" %}</a>
+          </div>
+        </div>
+        <p class="red" id="addressError">{% trans "Please select a valid address" %}</p>
+        <div class="container default">
+          <ul id="customerAddress">
+            {% for i in address_instances %}
+            <li class="{% if i.is_default %} address-active {% endif %}" data-pk="{{i.pk}}"
+                data-url="{% url 'web:set_default_address' %}" style="cursor:pointer;">
+              <div class="item address-section">
+                <div class="one">
+                  <h1>{{i.name}}</h1>
+                  <p>
+                    {% if i.address_type == 10 %}
+                    Home
+                    {% else %}
+                    Office
+                    {% endif %}
+                  </p>
+                  <span class="num">{{i.phone}}</span>
+                </div>
+                <div class="two">
+                  <p>{{i.house_name}}, {{i.street}}, {{i.city}}, {{i.state}} - {{i.pincode}} <br>
+                    {{i.landmark}}
+                  </p>
+                  <div class="option">
+                    <a data-get_url="{% url 'web:get_address_edit_form' i.pk %}" data-post_url="{% url 'web:edit_address' i.pk %}" class="edit" href="#">
+                      <img alt="edit" src="{% static 'web/images/icons/edit.svg' %}">
+                    </a>
+
+                    <a class="delete" data-id="{{ i.pk }}" data-text="{{ confirm_delete_message }}"
+                       data-title="Are you sure?" href="{% url 'web:delete_address' pk=i.pk %}"><img
+                            alt="edit" src="{% static 'web/images/icons/delete-icon.svg' %}"></a>
+                  </div>
+                </div>
+                <div class="three">
+
+                  {% if i.is_default %}
+                  <h1>{% trans "Default Address" %}</h1>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <section class="right-box">
+        <div class="head-pay">
+          <h3>{% trans "Items" %}</h3>
+        </div>
+
+        {% for i in cart %}
+        <li class="cart-items mt-3 {{ i.product_variant.pk }}">
+          <div class="pro-card">
+            <div class="img-box">
+              {% if i.product_variant.image %}
+              <img src="{{ i.product_variant.image.thumbnail.600x600 }}">
+              {% else %}
+              <img src="{% static 'web/images/placeholder.jpg' %}" style="width:70px;"/>
+              {% endif %}
+            </div>
+            <div class="pay-content">
+              <div class="nameArea-Left" data-pk="{{ i.product_variant.pk }}"
+                   href="{% url 'web:decrement_cart' %}"></div>
+              <h6 class="main-heading">{{ i.product_variant }}
+
+
+                <a class="remove-cart-checkout" data-pk="{{i.pk}}" href="{% url 'web:remove_cart' %}">
+                  <img alt="" class="" src="{% static 'web/images/icons/delete-icon.svg' %}">
+                </a>
+              </h6>
+              <small>{{i.product_variant.product.category}}</small>
+              <div class="QuantitybuttonAreaMain-row">
+                <div class="QuantitybuttonAreaSub-row">
+                  <h6><span class="rupees-symbol">₹ &nbsp;</span>{% get_product_price i.product_variant.pk pincode_session %}</h6>
+                  <div class="Quantity-button {{i.pk}}">
+                    <input class="cursor QuantityButton minus-checkout" href="{% url 'web:decrement_cart' %}"
+                           type="button" value="-" id="minus">
+                    <input class="input-text qty text" disabled id="theInput" min="0" size="1"
+                           step="1" title="Qty" type="text"
+                           value="{% get_cart_count i.product_variant.pk request.user %}">
+                    <input class="plus-checkout QuantityButton {{i.pk}}plus" data-pk="{{ i.product_variant.pk }}"
+                           href="{% url 'web:increment_cart' %}" id="plus" type="button" value="+" >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+        <div class="cart-list">
+          <div class="head-pay">
+            <h3>{% trans "Order Details" %}</h3>
+          </div>
+          <div class="contents">
+            <div class="list-content ">
+              <h3>{% trans "Item Price" %}</h3>
+              <h6 class="item-total">{{cart_amt}}</h6>
+            </div>
+            <div class="list-content">
+              <h3>{% trans "Delivery Charge" %}</h3>
+              <h6>50</h6>
+            </div>
+            <div class="list-content">
+              <h3>{% trans "Tax" %}</h3>
+              <h6>5.8</h6>
+            </div>
+            <div class="list-content">
+              <h3>{% trans "Gift Voucher" %}</h3>
+              {% if coupon_session_amt %}
+                <h6 class="coupon-amt">- {{coupon_session_amt}}</h6>
+              {% else %}
+                <h6 class="coupon-amt">0</h6>
+              {% endif %}
+            </div>
+            <div class="list-content">
+              <h3>{% trans "Wallet Amount" %}</h3>
+              <h6>{{wallet_applied_amt}}</h6>
+            </div>
+            <div class="list-content amt1">
+              <h6 class="bolder">{% trans "Total" %}</h6>
+              <h6 class="bolder total-amount"><span class="rupees-symbol">₹</span>{{cart_grand_total}}</h6>
+            </div>
+          </div>
+          <button id="proceed" type="submit"> {% trans "Proceed" %}</button>
+        </div>
+      </section>
+    </section>
+  </section>
+</section>
+
+{{ form.media }}
+
+{% endblock content %}
+

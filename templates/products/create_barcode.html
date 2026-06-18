@@ -1,0 +1,366 @@
+
+
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+
+                <div class="card-body">
+                    <form target='_blank' action="{% url 'products:print_barcodes' %}" method="get">
+
+                        <div id="c-grid" class="clearfix" data-columns="2">
+                            <div class="card">
+
+                                <div class="card-body card-padding product">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.warehouse.id_for_label }}">
+                                            {{ form.warehouse.label }}
+                                            {% if form.warehouse.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.warehouse.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.warehouse.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                            </span>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.warehouse }}
+
+                                        {% if form.warehouse.errors %}
+                                        <label class="error">{{ form.warehouse.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.product_variant.id_for_label }}">
+                                            {{ form.product_variant.label }}
+                                            {% if form.product_variant.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.product_variant.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.product_variant.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                            </span>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.product_variant }}
+
+                                        {% if form.product_variant.errors %}
+                                        <label class="error">{{ form.product_variant.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.batch.id_for_label }}">
+                                            {{ form.batch.label }}
+                                            {% if form.batch.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.batch.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.batch.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                            </span>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.batch }}
+
+                                        {% if form.batch.errors %}
+                                        <label class="error">{{ form.batch.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group fg-line m-b-0">
+                                        <label for="{{ form.unit.id_for_label }}">
+                                            {{ form.unit.label }}
+                                            {% if form.unit.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.unit.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.unit.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                            </span>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.unit }}
+
+                                        {% if form.unit.errors %}
+                                        <label class="error">{{ form.unit.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{% load static %}
+<script>
+    $(document).ready(function () {
+
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+        $('input[type=text]').mouseup(function (e) { // fix for chrome and safari
+            e.preventDefault();
+        });
+        $('input[type=text]').select(function () {
+            $('.log').append(' Handler for .select() called. ');
+        });
+    });
+
+    $('#id_product_variant').on('change keyup', function () {
+        $this = $(this);
+        get_product_variant_items($this, false);
+    });
+
+function get_product_variant_items(element, barcode = false) {
+    var url = "{% url 'sales:get_product_variant_items' %}"
+    var $parent = element.parents('form');
+    var warehouse = $('#id_warehouse').val();
+    var product_id = element.val();
+    var is_ok = true;
+
+    if (warehouse == undefined || warehouse == null || warehouse == "") {
+        is_ok = false;
+    }
+    if (product_id == undefined || product_id == null || product_id == "") {
+        is_ok = false
+    }
+
+    if (is_ok) {
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: 'json',
+            data: {
+                id: product_id,
+                barcode: "no",
+                is_purchase: 'yes',
+                warehouse: warehouse,
+            },
+            success: function (data) {
+                var status = data['status'];
+                if (status == 'true') {
+                    var batch_list = data['batch_list'];
+                    var default_batch = data['default_batch'];
+
+                    $parent.find(".product_mrp input").val(0);
+                    $parent.find(".expire_date input").val('');
+                    $parent.find(".manufacturing_date input").val('');
+                    // $parent.find(".price input").val(0).trigger('keyup');
+                    // $parent.find(".purchase_amount input").val(0).change();
+
+                    if (batch_list.length == 1) {
+                        var batch_list_option = ''
+                    } else {
+                        var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>'
+                    }
+
+                    for (j = 0; j < batch_list.length; j++) {
+                        item = batch_list[j]
+                        batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                    }
+
+                    $parent.find("#id_batch").html(batch_list_option);
+                    $parent.find("#id_batch").selectpicker('refresh');
+
+                    if (batch_list.length == 1) {
+                        $parent.find("#id_batch").trigger('change');
+                    }
+                } else {
+                    var message = data['message']
+                    var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                    $parent.find(".batch select").html(batch_list_option);
+                    $parent.find(".batch select").selectpicker('refresh');
+                    $parent.find(".batch select").trigger('change')
+                }
+            },
+            error: function (data) { }
+        })
+    }
+    else {
+        if (warehouse == undefined || warehouse == null || warehouse == "") {
+            let title = "Warehouse not selected..!";
+            let message = "Please Select a Warehouse";
+            if (barcode) {
+                element.val('');
+            } else if (element.parent().hasClass('product_variant')) {
+                element.html('');
+            }
+            swal(title, message, "error");
+        }
+    }
+}
+
+function get_batch_data($this) {
+    var $parent = $this.parents('tr.form_set_row');
+    var batch_id = $this.val();
+    var url = "{% url 'general:get_batch_data' %}"
+
+    if (batch_id != undefined && batch_id != null && batch_id != "") {
+        $.ajax({
+            type: "GET",
+            url: url,
+            dataType: 'json',
+            data: {
+                id: batch_id,
+            },
+            success: function (data) {
+                var status = data['status'];
+                if (status == 'true') {
+                    var mrp = data['mrp'];
+                    var cost = data['cost'];
+                    var price = data['price'];
+                    var current_stock = data['stock'];
+                    var expire_date = data['expire_date'];
+                    var manufacturing_date = data['manufacturing_date'];
+                    var last_purchase_cost = data['last_cost'];
+                    var retail_price = data['retail_price'];
+                    var whole_sale_price = data['whole_sale_price'];
+
+                    //{% if is_edit %}
+                    if ($parent.find(".product_mrp").attr('data-value')) {
+                        var old_mrp = parseFloat($parent.find(".product_mrp").attr('data-value'));
+                        if (old_mrp > 0) {
+                            mrp = old_mrp
+                            // $parent.find(".product_mrp input").val(old_mrp).change();
+                        }
+                        $parent.find(".product_mrp").attr('data-value', '')
+                    }
+
+                    if ($parent.find(".retail_price").attr('data-value')) {
+                        var old_retail_price = parseFloat($parent.find(".retail_price").attr('data-value'));
+                        if (old_retail_price > 0) {
+                            retail_price = old_retail_price
+                            // $parent.find(".price input").val(old_price).change();
+                        }
+                        $parent.find(".retail_price").attr('data-value', '')
+                    }
+                    console.log($parent.find(".whole_sale_price").attr('data-value'), 'whole_sale_price')
+                    if ($parent.find(".whole_sale_price").attr('data-value')) {
+                        var old_whole_sale_price = parseFloat($parent.find(".whole_sale_price").attr('data-value'));
+                        if (old_whole_sale_price > 0) {
+                            whole_sale_price = old_whole_sale_price
+                            // $parent.find(".price input").val(old_price).change();
+                        }
+                        $parent.find(".whole_sale_price").attr('data-value', '')
+                    }
+                    if ($parent.find(".purchase_amount").attr('data-value')) {
+                        var old_purchase_amount = parseFloat($parent.find(".purchase_amount").attr('data-value'));
+                        if (old_purchase_amount > 0) {
+                            last_purchase_cost = old_purchase_amount;
+                            // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                        }
+                        $parent.find(".purchase_amount").attr('data-value', '')
+                    }
+                    if ($parent.find(".expire_date").attr('data-value')) {
+                        var old_expire_date = parseFloat($parent.find(".expire_date").attr('data-value'));
+                        if (old_expire_date > 0) {
+                            expire_date = old_expire_date;
+                            // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                        }
+                        $parent.find(".expire_date").attr('data-value', '')
+                    }
+                    if ($parent.find(".manufacturing_date").attr('data-value')) {
+                        var old_manufacturing_date = parseFloat($parent.find(".manufacturing_date").attr('data-value'));
+                        if (old_manufacturing_date > 0) {
+                            manufacturing_date = old_manufacturing_date;
+                            // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                        }
+                        $parent.find(".manufacturing_date").attr('data-value', '')
+                    }
+                    // {% endif %}
+                    // $parent.find(".whole_sale_price input").attr('value', whole_sale_price);
+                    $parent.find(".whole_sale_price input").val(whole_sale_price).trigger('keyup');
+                    $parent.find(".retail_price input").val(retail_price).trigger('keyup');
+                    $parent.find(".product_mrp input").val(mrp);
+                    $parent.find(".price input").val(price).trigger('keyup');
+                    // $parent.find(".purchase_amount_price input").val(cost);
+                    $parent.find(".expire_date input").val(expire_date);
+                    $parent.find(".manufacturing_date input").val(manufacturing_date);
+                    $parent.find(".purchase_amount input").val(last_purchase_cost).change();
+
+                    // change batch background colour and add new row
+                    let $last_parent = $('.purchase_item_formset table tbody tr:nth-last-child(2)');
+                    test_name1 = $parent.find('.batch select').attr('name');
+                    test_name2 = $last_parent.find('.batch select').attr('name');
+
+                    $parent.removeClass('coloured-row');
+                    $parent.find(".current_stock input").val(current_stock);
+
+                    if (test_name1 === test_name2) {
+                        $('.purchase_item_formset .icon_add_item').click();
+                    }
+                    $parent.next().find('.purchase_item_barcode input').focus()
+                    // end of add new row and batch background colour
+
+                }
+
+            },
+            error: function (data) {
+            }
+        })
+    }
+    else {
+        $parent.addClass('coloured-row');
+
+        $parent.find(".product_mrp input").val(0);
+        $parent.find(".price input").val(0).trigger('keyup');
+        $parent.find(".expire_date input").val('');
+        $parent.find(".manufacturing_date input").val('');
+        $parent.find(".purchase_amount input").val(0).change();
+    }
+
+}
+
+
+</script>
+
+{{ form.media }}
+{% endblock %}

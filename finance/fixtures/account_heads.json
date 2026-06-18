@@ -1,0 +1,92 @@
+[
+    {
+        "model": "finance.AccountHead",
+        "pk": 1,
+        "fields": {
+            "name": "Cash A/C",
+            "account_group": "8",
+            "code": "cash_account"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 2,
+        "fields": {
+            "name": "Capital A/C",
+            "account_group": "7",
+            "code": "capital_account"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 3,
+        "fields": {
+            "name": "Salary A/C",
+            "account_group": "4",
+            "code": "salary_account"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 4,
+        "fields": {
+            "name": "Sundry Debtor (Customer)",
+            "account_group": "8",
+            "code": "sundry_debtor_customer"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 5,
+        "fields": {
+            "name": "Sundry Creditor (Supplier)",
+            "account_group": "9",
+            "code": "sundry_creditor_supplier"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 6,
+        "fields": {
+            "name": "Sundry Creditor (Delivery Agent)",
+            "account_group": "9",
+            "code": "sundry_creditor_delivery_agent"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 7,
+        "fields": {
+            "name": "Sales A/C",
+            "account_group": "5",
+            "code": "sales_account"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 8,
+        "fields": {
+            "name": "Online Sales",
+            "account_group": "5",
+            "code": "online_sales"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 9,
+        "fields": {
+            "name": "Purchases",
+            "account_group": "6",
+            "code": "purchases"
+        }
+    },
+    {
+        "model": "finance.AccountHead",
+        "pk": 10,
+        "fields": {
+            "name": "Sundry Creditor (Vendor)",
+            "account_group": "9",
+            "code": "sundry_creditor_vendor"
+        }
+    }
+]

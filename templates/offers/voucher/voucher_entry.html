@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<style>
+  #voucherCustomer{
+    display: none;
+  }
+
+</style>
+
+<div class="content container-fluid">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row">
+      <div class="col">
+        <h3 class="page-title">{{title|title}}</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+          <li class="breadcrumb-item active">{{title|title}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+
+        <div class="card-body">
+          <form action="{{url}}" class="ajax redirect" method="post" novalidate>
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.voucher_code.id_for_label }}">
+                    {{ form.voucher_code.label }}
+
+                    {% if form.voucher_code.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.voucher_code }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.title.id_for_label }}">
+                    {{ form.title.label }}
+
+                    {% if form.title.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.title }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.description.id_for_label }}">
+                    {{ form.description.label }}
+
+                    {% if form.description.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.description }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.start_time.id_for_label }}">
+                    {{ form.start_time.label }}
+
+                    {% if form.start_time.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {% if edit %}
+<!--                   <input id="{{ form.start_time.id_for_label }}" type="text"-->
+<!--                                    class="required form-control date-picker-dd" name="{{form.start_time.html_name}}"-->
+<!--                                    placeholder="Enter sale date" value="{{ form.start_time.value|date:'d/m/Y' }}">-->
+                                    <input id="{{ form.start_time.id_for_label }}" type="text" class="required form-control date-picker"  name="{{form.start_time.html_name}}" placeholder="Enter start_time" value="{{ form.start_time.value|date:'m/d/Y' }}">
+
+                    {% else %}
+<!--                     <input id="{{ form.start_time.id_for_label }}" type="text"-->
+<!--                                    class="required form-control date-picker-dd" name="{{form.start_time.html_name}}"-->
+<!--                                    placeholder="Enter Sale date" value="{% now 'd/m/Y' %}">-->
+
+                  <input id="{{ form.start_time.id_for_label }}" type="text" class="required form-control date-picker"  name="{{form.start_time.html_name}}" placeholder="Enter start_time" value="{{ form.start_time.value|date:'m/d/Y' }}">
+                    {% endif %}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.end_time.id_for_label }}">
+                    {{ form.end_time.label }}
+
+                    {% if form.end_time.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                 {% if edit %}
+<!--                   <input id="{{ form.end_time.id_for_label }}" type="text"-->
+<!--                                    class="required form-control date-picker" name="{{form.end_time.html_name}}"-->
+<!--                                    placeholder="Enter sale date" value="{{ form.end_time.value|date:'d-m-Y' }}">-->
+                  <input id="{{ form.end_time.id_for_label }}" type="text" class="required form-control date-picker"  name="{{form.end_time.html_name}}" placeholder="Enter end_time" value="{{ form.end_time.value|date:'m/d/Y' }}">
+
+                    {% else %}
+<!--                     <input id="{{ form.end_time.id_for_label }}" type="text"-->
+<!--                                    class="required form-control date-picker" name="{{form.end_time.html_name}}"-->
+<!--                                    placeholder="Enter Sale date" value="{% now 'd-m-Y' %}">-->
+
+                  <input id="{{ form.end_time.id_for_label }}" type="text" class="required form-control date-picker"  name="{{form.end_time.html_name}}" placeholder="Enter end_time" value="{{ form.end_time.value|date:'m/d/Y' }}">
+                    {% endif %}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.upto_limit.id_for_label }}">
+                    {{ form.upto_limit.label }}
+
+                    {% if form.upto_limit.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.upto_limit }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.minimum_order_amount.id_for_label }}">
+                    {{ form.minimum_order_amount.label }}
+
+                    {% if form.minimum_order_amount.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.minimum_order_amount }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.percentage.id_for_label }}">
+                    {{ form.percentage.label }}
+
+                    {% if form.percentage.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.percentage }}
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.is_expired.id_for_label }}">
+                    {{ form.is_expired.label }}
+
+                    {% if form.is_expired.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.is_expired }}
+                </div>
+              </div>
+              <div class="col-md-6" id="voucherCustomer">
+                <div class="form-group">
+                  <label for="{{ form.customer.id_for_label }}">
+                    {{ form.customer.label }}
+
+                    {% if form.customer.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.customer }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.is_exclusive.id_for_label }}">
+                    {{ form.is_exclusive.label }}
+
+                    {% if form.is_exclusive.field.required %}
+                    <small class="star text-danger">*</small>
+                    {% endif %}
+                  </label>
+                  {{ form.is_exclusive }}
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <button class="btn btn-soft-primary btn-sm" type="submit">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+{% endblock %}

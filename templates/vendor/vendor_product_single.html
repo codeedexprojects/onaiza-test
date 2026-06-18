@@ -1,0 +1,719 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<!-- Page Content -->
+<div class="content container-fluid">
+   <!-- Page Header -->
+   <div class="page-header">
+      <div class="row">
+         <div class="col-sm-6">
+            <h3 class="page-title">{{title|title}}</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+               <li class="breadcrumb-item active">{{title|title}}</li>
+            </ul>
+         </div>
+         <div class="col-auto float-right ml-auto">
+            <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.name}} -
+               {{instance.price}}</h3>
+
+            <ul class="personal-info row">
+
+               {% if instance.is_admin_approved and not is_vendor %}
+               <a data-id="{{ instance.pk }}" class="action-button remove"
+                  href="{% url 'vendors:decline_vendor_item' item_type='variant' pk=instance.pk %}"
+                  data-text="{{ confirm_delete_message }}" data-title="Are you sure?">
+                  <i class="las la-times text-white bg-danger font-18"></i>
+               </a>
+               <a data-id="{{ instance.pk }}" class="action-button remove"
+                  href="{% url 'vendors:approve_vendor_item' item_type='variant' pk=instance.pk %}" data-reason="no"
+                  data-text="Are you sure you want to approve this category?" data-title="Are you sure?">
+                  <i class="las la-check text-white bg-success font-18"></i>
+               </a>
+               {% endif %}
+
+               {% if not instance.is_deleted %}
+               <li class="col">
+                  <a title="Edit Product" href="{% url 'products:edit' pk=instance.pk %}" class="btn btn-sm btn-soft-warning edit-icon">
+                     <i class="las la-pen"></i>
+                  </a>
+               </li>
+               <li class="col">
+                  <a title="Delete Product" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                     data-title="Are you sure?" href="{% url 'products:delete' pk=instance.pk %}"
+                     class="action-button redirect delete-icon edit-icon btn btn-sm btn-soft-danger">
+                     <i class="las la-trash-alt"></i>
+                  </a>
+               </li>
+               {% endif %}
+            </ul>
+         </div>
+      </div>
+   </div>
+   <!-- /Page Header -->
+
+   <div class="tab-content">
+      <!-- Profile Info Tab -->
+      <div id="emp_profile" class="pro-overview tab-pane fade show active">
+         <div class="row">
+            <div class="col-sm-8">
+               <div class="card">
+                  <div class="card-header">
+                     <h4>Product Info <small></small></h4>
+                  </div>
+
+                  <div class="row">
+                     <div class="col-sm-6 card-body">
+                        <div class="list-group lg-alt c-overflow">
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Name</div>
+                                 <small class="lgi-text">{{instance.name}}</small>
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Malayalam</div>
+                                 <small class="lgi-text">{{instance.malayalam_name}}</small>
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Brand</div>
+                                 <small class="lgi-text">{{instance.brand}}</small>
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Category </div>
+                                 <small class="lgi-text">{{instance.category}}</small>
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Subcategory </div>
+                                 <small class="lgi-text">{{instance.subcategory}}</small>
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Return Duration </div>
+                                 <small class="lgi-text">Within {{instance.returnable_duration}} - {{instance.returnable_duration_type}}</small>
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Cancel Duration </div>
+                                 <small class="lgi-text">Within {{instance.cancellable_duration}} - {{instance.cancellable_duration_type}}</small>
+                              </div>
+                           </div>
+
+                        </div>
+                     </div>
+
+                     <div class="col-sm-6 card-body">
+                        <div class="list-group lg-alt c-overflow">
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Hsn </div>
+                                 <small class="lgi-text">{{instance.hsn}}</small>
+                                 <input type="hidden" class="default-igst" value="{{instance.hsn.igst_rate}}">
+                                 <input type="hidden" class="default-sgst" value="{{instance.hsn.sgst_rate}}">
+                                 <input type="hidden" class="default-cgst" value="{{instance.hsn.cgst_rate}}">
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Description </div>
+                                 <small class="lgi-text">{{instance.description}}</small>
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Meta Description </div>
+                                 <small class="lgi-text">{{instance.meta_description}}</small>
+                              </div>
+                           </div>
+
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Vendor </div>
+                                 <small class="lgi-text">{{instance.vendor}}</small>
+                              </div>
+                           </div>
+
+                           {% if instance.image %}
+                           <div class="list-group-item media ">
+                              <div class="media-body">
+                                 <div class="lgi-heading">Image</div>
+                                 <img src="{{instance.image.crop.100x100}}" alt="Photo">
+                              </div>
+                           </div>
+                           {% endif %}
+
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-sm-4">
+               <div class="card">
+                  <div class="card-header">
+                     <h4>Basic Info <small></small></h4>
+                  </div>
+
+                  <div class="card-body">
+                     <div class="list-group lg-alt c-overflow">
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Creator </div>
+                              <small class="lgi-text">{{instance.creator}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Date Added </div>
+                              <small class="lgi-text">{{instance.date_added|date:"d, M Y P"}}</small>
+                           </div>
+                        </div>
+
+                        {% if instance.is_deleted %}
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Deleted By </div>
+                              <small class="lgi-text">{{instance.updater}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Deleted Date </div>
+                              <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Deleted Reason </div>
+                              <small class="lgi-text">{{instance.deleted_reason}}</small>
+                           </div>
+                        </div>
+
+                        {% else %}
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Updater </div>
+                              <small class="lgi-text">{{instance.updater}}</small>
+                           </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                           <div class="media-body">
+                              <div class="lgi-heading">Date Updated </div>
+                              <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                           </div>
+                        </div>
+
+                        {% endif %}
+
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+
+         </div>
+      </div>
+      <!-- /Profile Info Tab -->
+   </div>
+
+   <div class="card">
+      <div class="card-header d-flex justify-content-between">
+         <h4>Product Variants</h4>
+         <div>
+            <!-- Create varient by pop-up -->
+            <!-- <button data-url="{% url 'products:create_variant' pk=instance.pk %}" id="id_create_variant" type="button"
+               class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#exampleModalScrollable">
+               <i class="fas fa-plus mr-2"></i>Add Variant
+            </button> -->
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'products:create_variant' pk=instance.pk %}">
+               <i class="fas fa-plus mr-2"></i>Add Variant
+            </a>
+
+        <a class=" btn btn-sm btn-soft-primary" href="{% url 'products:export_variants' pk=instance.pk %}" role="button"><i
+            class="fas fa-plus mr-2"></i>Export To Excel</a>
+         </div>
+      </div>
+      <div class="card-body">
+         {% if product_variants %}
+         <div class="table-responsive">
+            <table id="data-table-basic" class="table table-striped table-vmiddle">
+               <thead>
+                  <tr>
+                     <th>Variant</th>
+                     <th>Product Code</th>
+                     <th>In stock</th>
+                     <th>Default</th>
+                     <th>Cost</th>
+                     <th>Retail Price</th>
+                     <th>whole Sale Price</th>
+                     <th>MRP</th>
+                     <th>Total Stock</th>
+                     <th>Expiry Date</th>
+                     <th>Manufacturing Date</th>
+                     <th>Image</th>
+                     <th class="text-right">Action</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for i in product_variants %}
+                  <tr>
+                     <td>{{i.title}}</td>
+                     <td>{{i.product_code}}</td>
+                     <td>
+                        {% if i.stock <= i.low_stock_limit %}
+                        <span class="badge badge-danger font-weight-bold">{{i.stock}}</span>
+                        {% else %}
+                        <span class="badge badge-success font-weight-bold">{{i.stock}}</span>
+                        {% endif %}
+                     </td>
+                     <td>{{i.is_default|yesno|title }}</td>
+                     <th>{{i.cost}}</th>
+                     <td>{{i.retail_price}}</td>
+                     <td>{{i.whole_sale_price}}</td>
+                     <th>{{i.mrp}}</th>
+                     <th>{{i.stock}}</th>
+                     <th>{{i.expire_date}}</th>
+                     <th>{{i.manufacturing_date}}</th>
+                     {% if i.image %}
+                     <th><img src="{{i.image.crop.100x100}}" alt=""></th>
+                     {% else %}
+                     <th><img style="width: 100px; height: 100px;" src="{% static 'img/unnamed.png' %}" alt=""></th>
+                     {% endif %}
+                     <td>
+                        <!-- <button id="id_edit_variant" data-url="{% url 'products:edit_variant' pk=i.pk %}"
+                           data-id="{{i.id}}" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                           data-target="#exampleModalScrollable">
+                           <i class="las la-pen"></i>
+                        </button> -->
+                        <a href="{% url 'products:edit_variant' pk=i.pk %}" class="btn btn-outline-primary btn-sm">
+                           <i class="las la-pen"></i>
+                        </a>
+
+                        <a data-id="{{ hsn_code.pk }}" class="action-button remove"
+                           href="{% url 'products:delete_variant' pk=i.pk %}"
+                           data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                              class="las la-trash-alt text-danger font-18"></i></a>
+                     </td>
+
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+         {% endif %}
+
+      </div>
+      <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Variant</h6>
+                  <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true"><i class="la la-times"></i></span>
+                  </button>
+               </div>
+               <!--end modal-header-->
+               <div class="modal-body">
+                  <div class="card col-md-12">
+                     <div class="card-body">
+                        <form id="variant_from" action="{{url}}" method="post" class="ajax redirect"
+                           enctype="multipart/form-data" action="{{ url }}">
+                           {% csrf_token %}
+                           <div class="col-md-12">
+                              <div class="form-group">
+                                 <label for="{{ form.title.id_for_label }}">
+                                    {{ form.title.label }}
+
+                                    {% if form.title.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                 </label>
+                                 {{ form.title }}
+                              </div>
+
+                              <div class="form-group">
+                                 <label for="{{ form.product_code.id_for_label }}">
+                                    {{ form.product_code.label }}
+
+                                    {% if form.product_code.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                 </label>
+                                 {{ form.product_code }}
+                              </div>
+
+                              <div class="form-group">
+                                 <label for="{{ form.is_default.id_for_label }}">
+                                    {{ form.is_default.label }}
+
+                                    {% if form.is_default.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                 </label>
+                                 {{ form.is_default }}
+                              </div>
+
+                              <div class="row">
+                                 <div class="col-sm-6 form-group">
+                                    <label for="{{ form.unit_of_measurement.id_for_label }}">
+                                       {{ form.unit_of_measurement.label }}
+
+                                       {% if form.unit_of_measurement.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.unit_of_measurement }}
+                                 </div>
+
+                                 <div class="col-sm-6 form-group">
+                                    <label for="{{ form.unit.id_for_label }}">
+                                       {{ form.unit.label }}
+
+                                       {% if form.unit.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.unit }}
+                                 </div>
+                              </div>
+
+                              <div class="row">
+                                 <div class="col-sm-4 form-group">
+                                    <label for="{{ form.sgst.id_for_label }}">
+                                       {{ form.sgst.label }}
+
+                                       {% if form.sgst.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.sgst }}
+                                 </div>
+
+                                 <div class="col-sm-4 form-group">
+                                    <label for="{{ form.cgst.id_for_label }}">
+                                       {{ form.cgst.label }}
+
+                                       {% if form.cgst.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.cgst }}
+                                 </div>
+
+                                 <div class="col-sm-4 form-group">
+                                    <label for="{{ form.igst.id_for_label }}">
+                                       {{ form.igst.label }}
+
+                                       {% if form.igst.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.igst }}
+                                 </div>
+                              </div>
+
+                              <div class="form-group">
+                                 <label for="{{ form.first_time_stock.id_for_label }}">
+                                    {{ form.first_time_stock.label }}
+
+                                    {% if form.first_time_stock.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                 </label>
+                                 {{ form.first_time_stock }}
+                              </div>
+
+                              <div class="form-group">
+                                 <label for="{{ form.warehouse.id_for_label }}">
+                                    {{ form.warehouse.label }}
+
+                                    {% if form.warehouse.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                 </label>
+                                 {{ form.warehouse }}
+                              </div>
+
+                              <div class="form-group">
+                                 <label for="{{ form.batch_number.id_for_label }}">
+                                    {{ form.batch_number.label }}
+
+                                    {% if form.batch_number.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                 </label>
+                                 {{ form.batch_number }}
+                              </div>
+
+                              <div class="row">
+                                 <div class="col-sm-6 form-group">
+                                    <label for="{{ form.expire_date.id_for_label }}">
+                                       {{ form.expire_date.label }}
+
+                                       {% if form.expire_date.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.expire_date }}
+                                 </div>
+
+                                 <div class="col-sm-6 form-group">
+                                    <label for="{{ form.manufacturing_date.id_for_label }}">
+                                       {{ form.manufacturing_date.label }}
+
+                                       {% if form.manufacturing_date.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.manufacturing_date }}
+                                 </div>
+                              </div>
+
+                              <div class="form-group">
+                                 <label for="{{ form.cost.id_for_label }}">
+                                    {{ form.cost.label }}
+
+                                    {% if form.cost.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                 </label>
+                                 {{ form.cost }}
+                              </div>
+
+                              <div class="form-group">
+                                 <label for="{{ form.mrp.id_for_label }}">
+                                    {{ form.mrp.label }}
+
+                                    <small class="star text-danger">*</small>
+                                 </label>
+                                 {{ form.mrp }}
+                              </div>
+
+                              <div class="row">
+                                 <div class="col-sm-6 form-group">
+                                    <label for="{{ form.retail_price.id_for_label }}">
+                                       {{ form.retail_price.label }}
+
+                                       {% if form.retail_price.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.retail_price }}
+                                 </div>
+
+                                 <div class="col-sm-6 form-group">
+                                    <label for="{{ form.whole_sale_price.id_for_label }}">
+                                       {{ form.whole_sale_price.label }}
+
+                                       {% if form.whole_sale_price.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.whole_sale_price }}
+                                 </div>
+                              </div>
+
+                              <div class="row">
+                                 <div class="col-sm-6 form-group">
+                                    <label for="{{ form.low_stock_limit.id_for_label }}">
+                                       {{ form.low_stock_limit.label }}
+
+                                       {% if form.low_stock_limit.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.low_stock_limit }}
+                                 </div>
+
+                                 <div class="col-sm-6 form-group">
+                                    <label for="{{ form.discount_limit.id_for_label }}">
+                                       {{ form.discount_limit.label }}
+
+                                       {% if form.discount_limit.field.required %}
+                                       <small class="star text-danger">*</small>
+                                       {% endif %}
+                                    </label>
+                                    {{ form.discount_limit }}
+                                 </div>
+                              </div>
+
+                              <div class="form-group">
+                                 <label for="{{ form.image.id_for_label }}">
+                                    {{ form.image.label }}
+
+                                    {% if form.image.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                 </label>
+                                 {{ form.image }}
+                              </div>
+                           </div>
+                     </div>
+                  </div>
+               </div>
+               <!--end modal-body-->
+               <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+
+                  <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                  <!-- <button type="button" class="btn btn-primary btn-sm">Save changes</button> -->
+               </div>
+               </form>
+               <!--end modal-footer-->
+            </div>
+            <!--end modal-content-->
+         </div>
+         <!--end modal-dialog-->
+      </div>
+      <!--end modal-->
+   </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}
+{% block static %}
+{% load static %}
+
+<script type="text/javascript">
+   $(document).on('change click', '#id_create_variant', function () {
+      console.log('create variant')
+      var url = $(this).attr('data-url')
+      var igst = $(".default-igst").val()
+      var sgst = $(".default-sgst").val()
+      var cgst = $(".default-cgst").val()
+
+      $("#variant_from").attr("action", url)
+      $("#id_title").val("")
+      $("#id_product_code").val("")
+      $("#id_batch_number").val("")
+      $("#id_igst").val(igst)
+      $("#id_cgst").val(sgst)
+      $("#id_sgst").val(cgst)
+      $("#id_cost").val("")
+      $("#id_mrp").val("")
+      $("#id_retail_price").val("")
+      $("#id_whole_sale_price").val("")
+      $("#id_discount_limit").val("")
+      $("#id_expire_date").val("")
+      $("#id_manufacturing_date").val("")
+      $('#id_warehouse').html(`<option selected value=${""}>${""}</option>`);
+      $('#id_unit_of_measurement').html(`<option selected value=${""}>${""}</option>`);
+      $('#id_unit').html(`<option selected value=${""}>${""}</option>`);
+      $("#id_is_default").prop('checked', false);
+   });
+
+   $(document).on('change click', '#id_edit_variant', function () {
+      $this = $(this)
+      var variant_id = $(this).attr('data-id')
+      var url = $(this).attr('data-url')
+      console.log(variant_id, 'edit variant', url)
+      $("#variant_from").attr("action", url)
+      get_varient(variant_id)
+   });
+
+   function get_varient(id) {
+      var url = "{% url 'sales:get_varient' %}"
+
+      if (id != undefined && id != null && id != "") {
+         $.ajax({
+            type: "GET",
+            url: url,
+            dataType: 'json',
+            data: {
+               id: id,
+            },
+            success: function (data) {
+               var status = data['status'];
+               if (status == 'true') {
+                  var title = data['title'];
+                  var product_code = data['product_code'];
+                  var batch_number = data['batch_number'];
+                  var igst = data['igst'];
+                  var cgst = data['cgst'];
+                  var sgst = data['sgst'];
+                  var cost = data['cost'];
+                  var is_default = data['is_default'];
+                  var mrp = data['mrp'];
+                  var retail_price = data['retail_price'];
+                  var whole_sale_price = data['whole_sale_price'];
+                  var discount_limit = data['discount_limit'];
+                  var expire_date = data['expire_date'];
+                  var manufacturing_date = data['manufacturing_date'];
+                  var warehouse = data['warehouse'];
+                  var warehouse_pk = data['warehouse_pk'];
+
+                  var unit_of_measurement = data['unit_of_measurement'];
+                  var unit_of_measurement_pk = data['unit_of_measurement_pk'];
+                  var unit = data['unit'];
+                  var unit_pk = data['unit_pk'];
+
+                  $("#id_title").val(title)
+                  $("#id_product_code").val(product_code)
+                  $("#id_batch_number").val(batch_number)
+                  $("#id_igst").val(igst)
+                  $("#id_cgst").val(cgst)
+                  $("#id_sgst").val(sgst)
+                  $("#id_cost").val(cost)
+                  $("#id_mrp").val(mrp)
+                  $("#id_retail_price").val(retail_price)
+                  $("#id_whole_sale_price").val(whole_sale_price)
+                  $("#id_discount_limit").val(discount_limit)
+                  $("#id_expire_date").val(expire_date)
+                  $("#id_manufacturing_date").val(manufacturing_date)
+
+                  if (is_default == 'yes'){
+                     $("#id_is_default").prop('checked', true);
+                  }else{
+                     $("#id_is_default").prop('checked', false);
+                  }
+
+                  // $(`#id_warehouse select option[value="${selected_variant}"]`).attr('selected', '')
+                  $('#id_warehouse').html(`<option selected value=${warehouse_pk}>${warehouse}</option>`);
+                  $('#id_unit_of_measurement').html(`<option selected value=${unit_of_measurement_pk}>${unit_of_measurement}</option>`);
+                  $('#id_unit').html(`<option selected value=${unit_pk}>${unit}</option>`);
+
+                  // $("#id_warehouse").selectpicker('refresh');
+                  // $parent.find(".product_variant select").trigger('change');
+               }
+
+            },
+            error: function (data) {
+            }
+         })
+      }
+      else {
+         console.log("Error")
+      }
+
+   }
+</script>
+
+
+{{ form.media }}
+{% endblock %}

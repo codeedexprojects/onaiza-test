@@ -1,0 +1,62 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load i18n %}
+{% load web_template_tags %}
+{% block content %}
+
+    <div id="mybooking">
+        <div class="wrapper">
+            <div class="top">
+                <h1>{% trans "My Booking" %}</h1>
+            </div>
+            <div class="container">
+
+                {% for i in instances %}
+                    <div class="booking-item">
+                        <div class="details-container">
+                            <div class="booking-image">
+                                <a href="">
+                                    {% if i.product_variant.image %}
+                                      <img src="{{i.product_variant.image.thumbnail.200x200}}"/>
+                                    {% else %}
+                                      <img src="{% static 'web/images/placeholder.jpg' %}" style="width:200px;"/>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="image-details">
+                                <h6>
+                                    {% get_english_or_malayalam i.product_variant.pk 'product' language_code as PRODUCT %}
+                                    {{ PRODUCT.name }}
+                                </h6>
+                                <h5>
+                                    {% get_english_or_malayalam i.product_variant.product.category.pk 'category' language_code %}
+                                </h5>
+                                <div style="display: flex;">
+                                    <!-- <h6 class="product-amonunt"><span class="rupees-symbol">₹ </span>{% get_booked_product_price i.product_variant.pk pincode_session %}</h6> -->
+                                    {% get_booked_product_price i.product_variant.pk pincode_session as price_data %}
+                                    <h6 class="product-mrp product-mrp"><span class="rupees-symbol"> ₹ </span>{{price_data.retail_price}} /-</h6>
+                                    {% if price_data.retail_price != price_data.mrp %}
+                                    <h5 style="margin-left: 10px; text-decoration:line-through;" class="product-mrp"><span class="rupees-symbol">₹ </span>{{price_data.mrp}} /-</h5>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="middileContainer">
+                            <h6>{% trans "Booking Date" %}</h6>
+                            <h4>{{i.date_added}}</h4>
+                        </div>
+                       <div class="lastContainer">
+                           <h4>{{i.date_added}}</h4>
+                           {% if i.status == 'pending' %}
+                                 <a href="" class="button redButton">{% trans "Pending" %}</a>
+                           {% else %}
+                                <a href="" class="button">{% trans "Confirmed" %}</a>
+                           {% endif %}
+                       </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

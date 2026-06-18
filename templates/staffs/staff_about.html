@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+
+
+<section id="content">
+    <div class="container">
+        <div class="c-header">
+            <h2>Malinda Hollaway <small>Web/UI Developer, Edinburgh, Scotland</small></h2>
+        </div>
+
+        <div class="card" id="profile-main">
+            <div class="pm-overview c-overflow mCustomScrollbar _mCS_4 mCS-autoHide" style="overflow: visible;">
+                <div id="mCSB_4" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical_horizontal mCSB_outside"
+                    tabindex="0">
+                    <div id="mCSB_4_container" class="mCSB_container mCS_x_hidden mCS_no_scrollbar_x"
+                        style="position: relative; top: 0px; left: 0px; width: 100%;" dir="ltr">
+                        <div class="pmo-pic">
+                            <div class="p-relative">
+                                {% if staff_data.photo %}
+                                <a href="">
+                                    <img class="img-responsive mCS_img_loaded" src="{{staff_data.photo.crop.260x260}}"
+                                        alt="Photo">
+                                </a>
+
+                                {% else %}
+                                {% if staff_data.gender == 'male' %}
+                                <a href="">
+                                    <img class="img-responsive mCS_img_loaded" src="../../static/img/blank-male.jpg"
+                                        alt="Photo">
+                                </a>
+                                {% elif staff_data.gender == 'female' %}
+                                <a href="">
+                                    <img class="img-responsive mCS_img_loaded" src="../../static/img/blank-female.png"
+                                        alt="Photo">
+                                </a>
+                                {% else %}
+                                <a href="">
+                                    <img class="img-responsive mCS_img_loaded" src="../../static/img/photo-other.png"
+                                        alt="Photo">
+                                </a>
+                                {% endif %}
+
+
+                                {% endif %}
+
+                                <a href="" class="pmop-edit">
+                                    <i class="zmdi zmdi-camera"></i> <span class="hidden-xs">Update Profile
+                                        Picture</span>
+                                </a>
+                            </div>
+
+
+                            <div class="pmo-stat p-t-15">
+                                <h4 class="m-0 c-white">{{staff_data.user}}</h4>
+
+                            </div>
+                        </div>
+
+                        <div class="pmo-block pmo-contact hidden-xs">
+                            <h2>Contact</h2>
+
+                            <ul>
+                                <li><i class="zmdi zmdi-phone"></i>{{staff_data.phone}}</li>
+                                <li><i class="zmdi zmdi-email"></i>{{staff_data.email}}</li>
+                                <li>
+                                    <i class="zmdi zmdi-pin"></i>
+                                    <address class="m-b-0 ng-binding">
+                                        {{staff_data.address}}
+                                    </address>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="my-buttons" style="display: flex;justify-content: center;">
+                            <a href="{% url 'staffs:view_staff' pk=staff_data.pk %}"
+                                class="m-r-10 btn btn-info">view</a>
+                            <a href="{% url 'staffs:edit_staff' pk=staff_data.pk %}"
+                                class="m-r-10 btn btn-warning">Edit</a>
+                            <a class="btn btn-danger action-button redirect" title="Delete Staff"
+                                data-id="{{staff_data.pk}}" data-text="{{confirm_delete_message}}"
+                                data-title="Are you sure?"
+                                href="{% url 'staffs:delete_staff' pk=staff_data.pk %}">Delete</a>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div id="mCSB_4_scrollbar_vertical"
+                    class="mCSB_scrollTools mCSB_4_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical"
+                    style="display: block;">
+                    <div class="mCSB_draggerContainer">
+                        <div id="mCSB_4_dragger_vertical" class="mCSB_dragger"
+                            style="position: absolute; min-height: 50px; display: block; height: 617px; max-height: 713px;"
+                            oncontextmenu="return false;">
+                            <div class="mCSB_dragger_bar" style="line-height: 50px;"></div>
+                        </div>
+                        <div class="mCSB_draggerRail"></div>
+                    </div>
+                </div>
+                <div id="mCSB_4_scrollbar_horizontal"
+                    class="mCSB_scrollTools mCSB_4_scrollbar mCS-minimal-dark mCSB_scrollTools_horizontal"
+                    style="display: none;">
+                    <div class="mCSB_draggerContainer">
+                        <div id="mCSB_4_dragger_horizontal" class="mCSB_dragger"
+                            style="position: absolute; min-width: 50px; width: 0px; left: 0px;"
+                            oncontextmenu="return false;">
+                            <div class="mCSB_dragger_bar"></div>
+                        </div>
+                        <div class="mCSB_draggerRail"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pm-body clearfix">
+                <ul class="tab-nav tn-justified">
+                    <li class="active waves-effect"><a href="{% url 'staffs:staff_about' pk=staff_data.pk %}">About</a>
+                    </li>
+                    <li class="waves-effect"><a
+                            href="{% url 'staffs:staff_attendance_single' pk=staff_data.pk %}">Attendance</a></li>
+                    <li class="waves-effect"><a href="{% url 'staffs:staff_salary' pk=staff_data.pk %}">Salary</a></li>
+                    <li class="waves-effect"><a
+                            href="{% url 'staffs:staff_permissions' pk=staff_data.pk %}">Permissions</a></li>
+                </ul>
+
+                <div class="pmb-block">
+                    <div class="pmbb-header">
+                        <h2><i class="zmdi zmdi-account m-r-5"></i> Basic Information</h2>
+
+                        <ul class="actions">
+                            <li class="dropdown">
+                                <a href="" data-toggle="dropdown">
+                                    <i class="zmdi zmdi-more-vert"></i>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li class="p-l-10" style="display: block;">
+                                        <a data-pmb-action="edit" href="">Edit</a>
+                                    </li>
+                                    <li class="p-l-10" style="display: block;">
+                                        <a href="{% url 'users:change_password' pk=staff_data.user.pk %}">Change
+                                            Password</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pmbb-body p-l-30">
+                        <div class="pmbb-view">
+                            <dl class="dl-horizontal">
+                                <dt>Full Name</dt>
+                                <dd>{{staff_data.name}}</dd>
+                            </dl>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Designation</dt>
+                                <dd>{{staff_data.designation}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Join Date</dt>
+                                <dd>{{staff_data.joining_date}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Age</dt>
+                                <dd>{{staff_data.staff_age}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Gender</dt>
+                                <dd>{{staff_data.gender}}</dd>
+                            </dl>
+
+                            <dl class="dl-horizontal">
+                                <dt>Salary</dt>
+                                <dd>{{staff_data.salary}}</dd>
+                            </dl>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                <div class="pmb-block">
+                    <div class="pmbb-header">
+                        <h2><i class="zmdi zmdi-phone m-r-5"></i> Contact Information</h2>
+
+                        <ul class="actions">
+                            <li class="dropdown">
+                                <a href="" data-toggle="dropdown">
+                                    <i class="zmdi zmdi-more-vert"></i>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a data-pmb-action="edit" href="">Edit</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pmbb-body p-l-30">
+                        <div class="pmbb-view">
+                            <dl class="dl-horizontal">
+                                <dt>Mobile Phone</dt>
+                                <dd>{{staff_data.phone}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Email Address</dt>
+                                <dd>{{staff_data.email}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Address</dt>
+                                <dd>{{staff_data.address}}</dd>
+                            </dl>
+                            <!-- <dl class="dl-horizontal">
+                                            <dt>Twitter</dt>
+                                            <dd>oooo@malinda</dd>
+                                        </dl>
+                                        <dl class="dl-horizontal">
+                                            <dt>Skype</dt>
+                                            <dd>malinda.hollaway</dd>
+                                        </dl> -->
+                        </div>
+
+                        <div class="pmbb-edit">
+                            <dl class="dl-horizontal">
+                                <dt class="p-t-10">Mobile Phone</dt>
+                                <dd>
+                                    <div class="fg-line">
+                                        <input type="text" class="form-control" placeholder="eg. 00971 12345678 9">
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt class="p-t-10">Email Address</dt>
+                                <dd>
+                                    <div class="fg-line">
+                                        <input type="email" class="form-control" placeholder="eg. malinda.h@gmail.com">
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt class="p-t-10">Twitter</dt>
+                                <dd>
+                                    <div class="fg-line">
+                                        <input type="text" class="form-control" placeholder="eg. @malinda">
+                                    </div>
+                                </dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt class="p-t-10">Skype</dt>
+                                <dd>
+                                    <div class="fg-line">
+                                        <input type="text" class="form-control" placeholder="eg. malinda.hollaway">
+                                    </div>
+                                </dd>
+                            </dl>
+
+                            <div class="m-t-30">
+                                <button class="btn btn-primary btn-sm waves-effect">Save</button>
+                                <button data-pmb-action="reset" class="btn btn-link btn-sm waves-effect">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="pmb-block">
+                    <div class="pmbb-header">
+                        <h2><i class="zmdi zmdi-equalizer m-r-5"></i> Bank Details </h2>
+
+                        <ul class="actions">
+                            <li class="dropdown">
+                                <a href="" data-toggle="dropdown">
+                                    <i class="zmdi zmdi-more-vert"></i>
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li>
+                                        <a data-pmb-action="edit" href="">Edit</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pmbb-body p-l-30">
+                        <div class="pmbb-view">
+                            <dl class="dl-horizontal">
+                                <dt>Bank Name</dt>
+                                <dd>{{staff_data.bank_name}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Bank Account No</dt>
+                                <dd>{{staff_data.account_num}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Bank Branch</dt>
+                                <dd>{{staff_data.branch}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Bank Branch Account Name</dt>
+                                <dd>{{staff_data.bank_account_name}}</dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                                <dt>Bank IFSC Code</dt>
+                                <dd>{{staff_data.ifsc_code}}</dd>
+                            </dl>
+                        </div>
+
+                        <div class="pmbb-edit">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

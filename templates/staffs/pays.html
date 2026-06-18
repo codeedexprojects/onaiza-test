@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+    <section id="content" style="width:80%;margin:0 auto;color:white !important" class="white">
+<!--         <div class="container">
+            
+            <div class="action-header palette-theme {{current_theme}} bg clearfix">
+                <div class="ah-label hidden-xs palette-White text">{{title}}</div>
+    
+                <div class="ah-search">
+                    <form method="get" action="{% url 'staffs:staff_attendances' %}">
+                        <input name="q" type="text" placeholder="Start typing..." class="ahs-input">
+    
+                        <i class="ah-search-close zmdi zmdi-long-arrow-left" data-ma-action="ah-search-close"></i>
+                        <input type="submit" class="hidden" />
+                    </form>
+                </div>
+    
+                <ul class="ah-actions actions a-alt">
+                    {% if is_superuser %}
+                        <li>
+                            <a href="{% url 'staffs:staff_attendances' %}" class="ah-search-trigger" data-ma-action="ah-search-open">
+                                <i class="zmdi zmdi-search"></i>
+                            </a>
+                        </li>                   
+                        
+                        <li>
+                            <a title="Filter" class="filter_button" href="{% url 'staffs:staff_attendances' %}">
+                                <i class="zmdi zmdi-filter-list"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if is_superuser or current_role in allowed_roles %}
+                        <li>
+                            <a title="Create Staff Attendance" href="{% url 'staffs:create_staff_attendance' %}">
+                                <i class="zmdi zmdi-plus"></i>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if instances %}
+                        <li>
+                            <a title="Select All" class="check_all" href="">
+                                <i class="zmdi zmdi-select-all"></i>
+                            </a>
+                        </li>                        
+                    {% endif %}
+                </ul>
+                
+            </div>
+
+
+            {% if instances %}
+
+            <div class="card m-b-30">       
+                
+                <div class="table-responsive">
+                    <table id="data-table-basic" class="table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th>Staff</th>
+                                <th>Is Present</th>
+                                <th>Is Leave</th>
+                                <th>Is Half Day Leave</th>
+                                <th>Is Excuse Leave</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for instance in instances %}
+                            <tr class="check_items_row">                             
+                                <td>{{instance.staff}}</td>
+                                <td>{{instance.is_present|yesno:"Yes,No"}}</td>
+                                <td>{{instance.is_leave|yesno:"Yes,No"}}</td>  
+                                <td>{{instance.is_halfday|yesno:"Yes,No"}}</td>  
+                                <td>{{instance.is_excuseleave|yesno:"Yes,No"}}</td>                           
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %} -->
+
+            <div id="calendar"></div>
+
+
+        </section>
+
+            
+{% endblock %}
+
+
+{% block static %}
+    {% load static %}
+    <script>
+        $('#calendar').fullCalendar({
+            dayClick: function(date, jsEvent, view) {
+                var redirect_url = "{% url 'staffs:pay' %}?date=" + date.format('MM/DD/YYYY');
+                window.location.href = redirect_url;
+                
+            }
+        });
+    </script>
+    <style>
+        .card {
+            margin-bottom: 0 !important;
+        }
+        .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover, .fc-unthemed .fc-list-view, .fc-unthemed .fc-list-heading td {
+            border-color: #afa7a7;
+        }/*
+        #calendar .fc-day-number {
+                color: #483f3f;
+        }*/
+         .color-widget {
+            background: -webkit-linear-gradient(-45deg, #091204, #128a04);
+            background: -o-linear-gradient(-45deg, #091204, #128a04);
+            background: -moz-linear-gradient(-45deg, #091204, #128a04);
+            background: linear-gradient(-45deg, #091204, #128a04);
+            width: 100%;
+            min-height: 80px;
+            border-radius: 4px;
+            -webkit-box-shadow: 3px 3px 10px rgba(0,0,0,.3);
+            box-shadow: 3px 3px 10px rgba(0,0,0,.3);
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 15px;
+            color: #fff;
+            position: relative;
+        }
+        .color-widget.two {
+            background: -webkit-linear-gradient(-45deg, #091204, #F2002F);
+            background: -o-linear-gradient(-45deg, #091204, #F2002F);
+            background: -moz-linear-gradient(-45deg, #091204, #F2002F);
+            background: linear-gradient(-45deg, #091204, #F2002F);
+        }
+        .color-widget h4 {
+            font-size: 15px;
+            font-weight: 500;
+            color: #fff;
+            margin-top: 0;
+        }
+        .color-widget small {
+            font-size: 23px;
+            font-weight: 500;
+            position: absolute;
+            bottom: 4px;
+            right: 15px;
+            color: #fff;
+        }
+        .m-b-30{
+            margin-bottom: 30px;
+        }
+        .p30{
+            padding:30px;
+        }
+        .table td {
+            padding: 0.9375rem;
+            text-align: center;
+        }
+        .table thead th{
+            padding-top: 4%;
+            text-align: center;
+        }
+        .tac{
+            text-align: center;
+        }
+    </style>
+{% endblock %}

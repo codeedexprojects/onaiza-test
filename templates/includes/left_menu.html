@@ -1,0 +1,15 @@
+<div class="menu-content h-100" data-simplebar>
+  <ul class="metismenu left-sidenav-menu">
+    <li>
+      <a href="{% url 'app' %}"> <i data-feather="home"
+          class="align-self-center menu-icon"></i><span>Dashboard</span></a>
+    </li>
+    {% if current_role == 'superadmin' %}
+    {% include 'includes/menu/superadmin_menu.html' %}
+    {% elif current_role == 'warehouse_manager' %}
+    {% include 'includes/menu/warehouse_manager_menu.html' %}
+    {% elif current_role == 'vendor_user' %}
+    {% include 'includes/menu/vendor_menu.html' %}
+    {% endif %}
+  </ul>
+</div>

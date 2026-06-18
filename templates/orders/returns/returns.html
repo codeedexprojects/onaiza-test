@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+            <div class="col-auto float-right ml-auto">
+                <a title="Filter" data-toggle="modal" data-target="#modal_aside_right" href="javascript:void(0)"
+                    class=" btn btn-sm btn-success">Filter
+                </a>
+            </div>
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form method="get" action="">
+                            <div class="row">
+                                {% if is_admin %}
+                                   <div class="col-md-4">
+                                    <div class="form-group">
+                                      <label> Warehouse </label>
+                                      <select
+                                        name="warehouse"
+                                        id="id_warehouse"
+                                        data-live-search='true'
+                                        class="form-control selectpicker"
+                                      >
+                                        <option value="">-------------------------</option>
+                                        {% for i in warehouse_instances %} {% if i.pk|stringformat:"s" == warehouse %}
+                                        <option selected value="{{i.pk}}">{{i}}</option>
+                                        {% else %}
+                                        <option value="{{i.pk}}">{{i}}</option>
+                                        {% endif %} {% endfor %}
+                                      </select>
+                                    </div>
+                                  </div>
+                                {% endif %}
+
+                                <div class="col-md-6">
+                                    <label> Return Status </label>
+                                    <select name="return_status" class="form-control selectpicker" id="">
+                                        <option value="accepted" {% if return_status == 'accepted' %} selected {% endif %}>Accepted</option>
+                                        <option value="rejected" {% if return_status == 'rejected' %} selected {% endif %}>Rejected</option>
+                                        <option value="pending" {% if return_status == 'pending' %} selected {% endif %}>Pending</option>
+                                         <option value="onaiza_received" {% if return_status == 'onaiza_received' %} selected {% endif %}>Onaiza Recieved</option>
+                                        <option value="delivery_boy_collected" {% if return_status == 'delivery_boy_collected' %} selected {% endif %}>Delivery Boy Collected</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">Sl no</th>
+                            <th>Name </th>
+                            <th>Warehouse</th>
+                            <th>Product </th>
+                            <th>Reason For Return</th>
+                            <th>Delivery Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for i in instances %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.order.billing_name }}</td>
+                            <td>{{i.order_item.batch.warehouse.name}}</td>
+                            <td>{{ i.reason_for_return }}</td>
+                            <td>{{ i.return_specification | default:"" }}</td>
+                            <td>
+                                {% if i.delivery_boy %}
+                                    {{ i.delivery_boy }}
+                                {% else %}
+                                   <a class=" btn btn-sm btn-soft-primary" href="{% url 'orders:product_return' pk=i.pk %}" role="button">Assign Delivery Agent For Return</a>
+                                {% endif %}
+                            </td>
+                           <td class="text-right">
+                                <a class="btn btn-sm btn-soft-primary" href="{% url 'orders:product_return' pk=i.pk %}" role="button">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+    <script src="{% static 'js/delivery_agent.js' %}"> </script>
+{% endblock %}

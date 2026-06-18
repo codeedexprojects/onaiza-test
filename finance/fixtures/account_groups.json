@@ -1,0 +1,92 @@
+[
+    {
+        "model": "finance.AccountGroup",
+        "pk": 1,
+        "fields": {
+            "name": "Direct Income",
+            "code": "direct_income",
+            "group_type": 25
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 2,
+        "fields": {
+            "name": "Direct Expense",
+            "code": "direct_expense",
+            "group_type": 20
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 3,
+        "fields": {
+            "name": "Indirect Income",
+            "code": "indirect_income",
+            "group_type": 25
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 4,
+        "fields": {
+            "name": "Indirect Expense",
+            "code": "indirect_expense",
+            "group_type": 20
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 5,
+        "fields": {
+            "name": "Sales",
+            "code": "sales",
+            "group_type": 25
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 6,
+        "fields": {
+            "name": "Purchase",
+            "code": "purchase",
+            "group_type": 20
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 7,
+        "fields": {
+            "name": "Capital Account",
+            "code": "capital_account",
+            "group_type": 15
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 8,
+        "fields": {
+            "name": "Current Asset",
+            "code": "current_asset",
+            "group_type": 10
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 9,
+        "fields": {
+            "name": "Current Liability",
+            "code": "current_liability",
+            "group_type": 15
+        }
+    },
+    {
+        "model": "finance.AccountGroup",
+        "pk": 10,
+        "fields": {
+            "name": "Loan & Liability",
+            "code": "loan_and_liability",
+            "group_type": 15
+        }
+    }
+]

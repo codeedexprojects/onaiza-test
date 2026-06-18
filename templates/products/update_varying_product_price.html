@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" enctype="multipart/form-data" class="ajax redirect">
+                        {% csrf_token %}
+
+                        <div class="card ordinary-variant-card">
+                            <div class="table-responsive card-body add_item_container product_varying_formset">
+                                <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                    <thead>
+                                        <th style="min-width: 130px;">Product Variant</th>
+                                        <th style="min-width: 110px;">MRP</th>
+                                        <th style="min-width: 110px;">Retail Price</th>
+                                        <th style="min-width: 110px;">Whole Sale Price</th>
+                                        <th></th>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for item in product_varying_formset.forms %}
+                                        <tr class="form_set_row product_variation">
+                                            <td class="image">
+                                                {{ item.variant_id }}
+                                                <span class="order_request_qty">
+                                                    {{ item.title }}
+                                                </span>
+                                            </td>
+
+                                            <td class="image">
+                                                <span class="order_request_qty">
+                                                    {{ item.mrp }}
+                                                </span>
+                                            </td>
+                                            <td class="image">
+                                                <span class="retail_price">
+                                                    {{ item.retail_price }}
+                                                </span>
+                                            </td>
+                                            <td class="image">
+                                                <span class="whole_sale_price">
+                                                    {{ item.whole_sale_price }}
+                                                </span>
+                                            </td>
+
+                                            <td></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {{ product_varying_formset.management_form }}
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block static %}
+{% load static %}
+
+<style>
+    #id_need_special_variant {
+        height: 18px;
+        width: 18px;
+        margin-left: 10px;
+    }
+</style>
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+
+        // $('.product_varying_formset table tr.form_set_row').formset({
+        //     prefix: '{{ product_varying_formset.prefix }}',
+        //     formCssClass: 'dynamic-formset',
+
+        //     'added': function (row) {
+        //         row.find('.product_variation select').selectpicker();
+        //         row.find('.date-picker').datepicker('destroy');
+        //         row.find('.date-picker').datepicker();
+        //         get_product_detailes($('#id_hsn'));
+
+        //         // {% if current_role == 'warehouse_manager' %}
+        //         var pk = '{{warehouse.pk}}'
+        //         console.log(pk)
+        //         if (pk != '') {
+        //             row.find('.warehouse select').html('<option value="{{warehouse.pk}}" selected>{{warehouse.name}}<option/>');
+        //         }
+        //         // {% endif %}
+        //     },
+        // });
+
+    });
+
+</script>
+
+{{ form.media }}
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-6">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.name}}</h3>
+
+                <ul class="personal-info row">
+                    <li class="col">
+                        <a title="Create new stock locations" href="{% url 'warehouses:create_warehouse' %}"
+                            class=" text-white edit-icon">
+                            <i style="color: #000000;" class="las la-plus"></i>
+                        </a>
+                    </li>
+
+                    <li class="col">
+                        <a title="Edit WareHouses" href="{% url 'warehouses:edit_warehouse' pk=instance.pk %}"
+                            class="edit-icon">
+                            <i class="las la-pen"></i>
+                        </a>
+                    </li>
+                    <li class="col">
+                        <a title="Delete WareHouses" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                            data-title="Are you sure?" href="{% url 'warehouses:delete_warehouse' pk=instance.pk %}"
+                            class="action-button redirect delete-icon edit-icon">
+                            <i class="las la-trash"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="tab-content">
+        <!-- Profile Info Tab -->
+
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="card">
+                    <div class="card-header">
+                       <h4>Warehouse Info <small></small></h4>
+                    </div>
+
+                    <div class="row">
+                        <div class="card-body">
+                            <div class="list-group lg-alt c-overflow">
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Name</div>
+                                        <small class="lgi-text">{{instance.name}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Staff </div>
+                                        <small class="lgi-text">{{instance.manager}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Phone </div>
+                                        <small class="lgi-text">{{instance.phone}}</small>
+                                    </div>
+                                </div>
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Address </div>
+                                        <small class="lgi-text">{{instance.address}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="list-group lg-alt c-overflow">
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">District </div>
+                                        <small class="lgi-text">{{instance.district}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">State </div>
+                                        <small class="lgi-text">{{instance.state}}</small>
+                                    </div>
+                                </div>
+
+                                <div class="list-group-item media">
+                                    <div class="media-body">
+                                        <div class="lgi-heading">Country </div>
+                                        <small class="lgi-text">{{instance.country}}</small>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            <!-- /Page Content -->
+            </div>
+
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Basic Info <small></small></h4>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="list-group lg-alt c-overflow">
+
+                            <div class="list-group-item media ">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Creator </div>
+                                    <small class="lgi-text">{{instance.creator}}</small>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item media ">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Date Added </div>
+                                    <small class="lgi-text">{{instance.date_added|date:"d, M Y P"}}</small>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item media ">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Updater </div>
+                                    <small class="lgi-text">{{instance.updater}}</small>
+                                </div>
+                            </div>
+
+                            <div class="list-group-item media ">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Date Updated </div>
+                                    <small class="lgi-text">{{instance.date_updated|date:"d, M Y P"}}</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

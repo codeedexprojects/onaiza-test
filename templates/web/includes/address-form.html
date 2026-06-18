@@ -1,0 +1,78 @@
+{% load static %}
+{% load i18n %}
+
+      {% csrf_token %}
+      <div class="AddressMainContainer">
+        <div class="title-Row">
+          {% trans "Contact Details" %}
+        </div>
+
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.name.label}}</Label>
+          {{address_form.name}}
+        </div>
+
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.phone.label}}</Label>
+          {{address_form.phone}}
+        </div>
+
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.email.label}}</Label>
+          {{address_form.email}}
+        </div>
+
+        <div class="title-Row Details">
+          {% trans "Address Details" %}
+        </div>
+
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.pincode.label}}</Label>
+          {{address_form.pincode}}
+        </div>
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.house_name.label}}</Label>
+          {{address_form.house_name}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.street.label}}</Label>
+          {{address_form.street}}
+        </div>
+        <div class="ContactDetails-Row fifty-fifty">
+          <Label>{{address_form.city.label}}</Label>
+          {{address_form.city}}
+        </div>
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.landmark.label}}</Label>
+          {{address_form.landmark}}
+        </div>
+        <div class="ContactDetails-Row">
+          <Label>{{address_form.state.label}}</Label>
+          {{address_form.state}}
+        </div>
+        <div class="title-Row">
+          {% trans "Save Address As" %}
+        </div>
+        <div class="ContactDetails-Row saveAddressAs">
+          <div class="homeSection">
+            <input {% if address_type == 10 %}checked{% endif %} class="input-hidden" id="home" name="homeoroffice" value="home" type="radio"/>
+            <label for="home"><img alt="home" src="{% static 'web/images/icons/home.svg' %}"/>{% trans "Home" %}</label>
+          </div>
+          <div class="officeSection">
+            <input {% if address_type == 20 %}checked{% endif %} class="input-hidden" id="office" name="homeoroffice" value="office" type="radio"/>
+            <label for="office">
+              <img alt="office" src="{% static 'web/images/icons/office.svg' %}"/>{% trans "Office" %}
+            </label>
+          </div>
+        </div>
+        <div class="commonCheckBox">
+          <label class="container">
+            <input name="default" type="checkbox">
+            <span class="checkmark"><span class="zmdi zmdi-check"></span></span>
+            {% trans "Use this as my default address" %}
+          </label>
+        </div>
+        <div class="buttonAreaSub">
+          <button type="submit">{% trans "Save" %}</button>
+        </div>
+      </div>

@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <h3 class="ah-label hidden-xs palette-White text">{{instance.customer|title}}
+                    {{instance.total}}</h3>
+
+                <ul class="personal-info row">
+                    {% if instance.creator == request.user %}
+
+                    <li class="col">
+                        <a title="Edit Sale" href="{% url 'sales:edit_sale_return' pk=instance.pk %}" class="edit-icon">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                    </li>
+                    {% if not instance.is_deleted %}
+                    <li class="col">
+                        <a title="Cancel Sale Return" data-id="{{instance.pk}}"
+                            data-text="Are yiu sure you want to Cancel this item?" data-title="Are you sure?"
+                            href="{% url 'sales:delete_sale_return' pk=instance.pk %}"
+                            class="action-button text-danger redirect delete-icon edit-icon">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="col">
+                        <a title="Print Sale" href="#" class="print-icon edit-icon">
+                            <i class="fa  fa-print"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="tab-content">
+        <!-- Profile Info Tab -->
+        <div id="c-grid" class="clearfix" data-columns="2">
+
+
+
+            <div class=" col-6">
+                <div class="card-header">
+                    <h5>Basic Info <small></small></h5>
+                </div>
+                <div class="card-body">
+
+
+
+                    <div class="list-group lg-alt c-overflow">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Customer</div>
+                                <small class="lgi-text">{{instance.customer|title}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Date</div>
+                                <small class="lgi-text">{{instance.time|date:"d/m/Y"}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Sale</div>
+                                <a href="{% url 'sales:sale' pk=instance.sale.pk %}">
+                                    <span class="lgi-text">{{instance.sale}}</span> </a>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Amount Returned</div>
+                                <small class="lgi-text">{{instance.amount_returned}}</small>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Updater </div>
+                                <small class="lgi-text">{{instance.updater}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Creator </div>
+                                <small class="lgi-text">{{instance.creator}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Date Created </div>
+                                <small class="lgi-text">{{instance.date_added|date:"d/m/Y h:i A"}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media">
+                            <div class="media-body">
+                                <div class="lgi-heading">Date Updated </div>
+                                <small class="lgi-text">{{instance.date_updated|date:"d/m/Y h:i A"}}</small>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /Page Content -->
+        </div>
+
+        <!-- /Profile Info Tab -->
+        {% if sale_items %}
+        <div class="card">
+            <div class="card-header">
+                <h2>Sale Items</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="data-table-basic" class="table table-striped table-vmiddle">
+                        <thead>
+                            <tr>
+                                <th class="p-l-10">Product</th>
+                                <th>Batch</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in sale_items %}
+                            <tr>
+                                <td>
+                                    {% if i.product_variant %}
+                                    {{i.product_variant}}
+                                    {% else %}
+                                    {{i.product}}
+                                    {% endif %}
+                                </td>
+                                <td>{{i.batch}}</td>
+                                <td>{{i.qty}}</td>
+                                <td>{{i.price}}</td>
+                                <td>{{i.status}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends 'base.html' %} {% block content %}
+{% load main_template_tags %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row align-items-center">
+      <div class="col">
+        <h3 class="page-title">{{title|title}}</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'app' %}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active">{{title|title}}</li>
+        </ul>
+      </div>
+      <div class="col-auto float-right ml-auto">
+
+        <button title="Filter" data-toggle="modal" data-target="#modal_aside_right" type="button"
+          class="btn btn-sm btn-soft-primary"><i class="fa fa-align-center mr-2"></i>Filter</button>
+      </div>
+
+      <div class="col-auto float-right ml-auto">
+        <a class=" btn btn-sm btn-soft-primary" href="{% url 'sales:create' %}" role="button"><i
+            class="fas fa-plus mr-2"></i>Add New</a>
+      </div>
+      {% get_filtered_url request.get_full_path as export_params %}
+        <a class=" btn btn-sm btn-soft-primary" href="{% url 'sales:sale_export' %}?{{export_params}}" role="button"><i
+            class="fas fa-plus mr-2"></i>Export To Excel</a>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-striped custom-table mb-0 datatable-">
+          <thead>
+            <tr>
+              <!-- <th style="width: 30px">ID</th> -->
+              <th>Invoice Id</th>
+              <th>Date</th>
+              <th>Customer</th>
+              <th>Total</th>
+              <th>Payment Type</th>
+              <th>Cancelled?</th>
+              <th class="text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% load el_pagination_tags %}
+            {% paginate 20 instances %}
+            {% for instance in instances %}
+            <tr class="{% if instance.is_updated %}text-danger{% endif %}">
+              <!-- <td>{{ forloop.counter }}</td> -->
+              <td>{{ instance.sale_id }}</td>
+              <td>{{ instance.sale_date|date:"d/m/y" }}</td>
+              <td>{{ instance.customer }}</td>
+              <td>{{ instance.total }}</td>
+              <td>{{ instance.payment_method|title }}</td>
+              <td class="text-danger">{{ instance.is_deleted|yesno:"Cancelled, " }}</td>
+              <td class="text-right noExl">
+                <a href="{% url 'sales:sale' pk=instance.pk %}"><i class="las la-eye text-info font-18"></i></a>
+                {% if not instance.is_deleted %}
+                <a href="{% url 'sales:edit' pk=instance.pk %}"><i class="las la-pen text-info font-18"></i></a>
+                <a data-id="{{ instance.pk }}" class="action-button remove"
+                  href="{% url 'sales:delete' pk=instance.pk %}" data-text="{{ confirm_delete_message }}"
+                  data-title="Are you sure?"><i class="las la-trash-alt text-danger font-18"></i></a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        {% get_pages %}
+        <div class="clearfix"></div>
+        <div class="row pagi my-3">
+          <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+          <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+            <div class="m-t-10">
+              Showing {{title}}
+              <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                class="current_end_status">{{ pages.current_end_index }}
+              </span> of <span class="total_count">{{pages.total_count }}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /Page Content -->
+</div>
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-aside" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Filter</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="get" action="{% url 'sales:sales' %}">
+        <div class="modal-body d-flex justify-content-between pt-3 pb-0">
+          <div class="form-group fg-line">
+            <label for='id_all' class="bmd-label-floating">View All</label>
+            <input id='id_all' type="radio" name="view" value="all" checked>
+          </div>
+          <div class="form-group fg-line">
+            <label for='id_active' class="bmd-label-floating">View Active</label>
+            <input id='id_active' type="radio" name="view" value="active">
+          </div>
+          <div class="form-group fg-line">
+            <label for='id_cancelled' class="bmd-label-floating">View Cancelled</label>
+            <input id='id_cancelled' type="radio" name="view" value="cancelled">
+          </div>
+        </div>
+        <div class="modal-body pt-0 pb-0">
+          <div class="form-group fg-line">
+            <label class="bmd-label-floating">Search</label>
+            <input name="q" value="{% if filter_data.query %}{{filter_data.query}}{% endif %}" type="text"
+              class="form-control" />
+          </div>
+        </div>
+        <div class="modal-body pt-0 pb-0">
+          <div class="form-group fg-line">
+            <label class="bmd-label-floating">On date</label>
+            <input type="date" name="on_date" value="{% if filter_data.on_date %}{{filter_data.on_date}}{% endif %}"
+              class="form-control">
+          </div>
+        </div>
+        <div class="modal-body d-flex justify-content-between pt-0 pb-0">
+          <div class="form-group col-5 px-0 fg-line">
+            <label class="bmd-label-floating">From date</label>
+            <input type="date" name="from_date" value="" class="form-control">
+          </div>
+          <div class="form-group col-5 px-0 fg-line">
+            <label class="bmd-label-floating">To date</label>
+            <input type="date" name="to_date" value="" class="form-control">
+          </div>
+        </div>
+
+        <div class="modal-body pt-0 pb-0">
+          <div class="form-group fg-line">
+            <label class="bmd-label-floating">Invoice id</label>
+            <input type="text" name="invoice_id" value="" class="form-control">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+        </div>
+      </form>
+
+    </div>
+  </div> <!-- modal-bialog .// -->
+</div> <!-- modal.// -->
+{% endblock %}

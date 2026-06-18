@@ -1,0 +1,39 @@
+<div class="modal fade" id="UpdateStockModal" tabindex="-1" role="dialog"
+    aria-labelledby="AgentModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title m-0">Update Stock : {{ product_variant }}</h6>
+                <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="la la-times"></i></span>
+                </button>
+            </div>
+            <!--end modal-header-->
+            <div class="modal-body">
+                <div class="card col-md-12">
+                    <div class="card-body">
+                        <form class="ajax reload form" method="post" action="{% url 'products:update_variant_stock' product_variant.pk %}">
+                            {% csrf_token %}
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_stock">Available Stock</label>
+                                    <input type="text" id="id_stock" class="form-control" name="stock" value="{{ product_variant.stock }}" />
+                                </div>
+                            </div>
+
+                            <div class="text-right">
+                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <!--end modal-body-->
+        </div>
+        <!--end modal-content-->
+    </div>
+    <!--end modal-dialog-->
+</div>

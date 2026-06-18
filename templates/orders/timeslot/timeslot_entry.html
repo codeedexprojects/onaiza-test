@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" class="ajax redirect" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="{{ form.day.id_for_label }}">
+                                        {{ form.day.label }}
+
+                                        {% if form.day.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.day }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+
+                                <div class="table-responsive card-body add_item_container time_slot_formset">
+                                    <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                        <thead>
+                                            <tr>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
+                                                <th class="one"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for form_item in time_slot_formset.forms %}
+                                            <tr class="form_set_row">
+                                                <td>{{ form_item.start_time }}</td>
+                                                <td>{{ form_item.end_time }}</td>
+                                                <td class="one"></td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {{ time_slot_formset.management_form }}
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-soft-primary btn-sm" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{{ form.media }}
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+
+<script>
+$(document).ready(function(){
+    $('.time_slot_formset table tr.form_set_row').formset({
+        prefix: '{{ time_slot_formset.prefix }}',
+        formCssClass: 'dynamic-formset1',
+
+        'added' : function (row) {
+            row.find('select.selectpicker').each(function(){
+                $(this).selectpicker('refresh');
+            })
+        }
+    });
+});
+
+</script>
+{% endblock %}

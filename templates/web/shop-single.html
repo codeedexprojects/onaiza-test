@@ -1,0 +1,173 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% load web_template_tags %}
+{% load i18n %}
+{% block content %}
+
+<div class="single-shop" id="shopMain">
+  <div class="container">
+    <img alt="Image" src="{% static 'web/images/Supermarkt-png.png' %}">
+
+  </div>
+  <div class="wrapper">
+    <div id="single-shop">
+      <div class="shop-details">
+        <div class="shop-image">
+           {% if shop.image %}
+              <img src="{{shop.image.thumbnail.200x200}}"/>
+              {% else %}
+              <img src="{% static 'web/images/placeholder.jpg' %}"/>
+              {% endif %}
+        </div>
+        <div class="shop-detail">
+          <div class="top">
+            <h1>
+              {% get_english_or_malayalam shop.pk 'shop' language_code %}
+            </h1>
+          </div>
+          <div class="contents">
+            <div class="location">
+              <div class="location-img">
+                <img alt="" src="{% static 'web/images/icons/Icon material-location-on.svg' %}">
+              </div>
+              <h2>
+                {% get_english_or_malayalam shop.location.pk 'location' language_code %}
+              </h2>
+            </div>
+            <span>|</span>
+            <div class="type">
+              <h2>{% trans "Grocery" %}</h2>
+            </div>
+            <span class="hideClass">|</span>
+            <div class="reviews">
+                                <span class="rating">
+                                    <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}"/>
+                                    <h4 class="review">4.5</h4>
+                                </span>
+              <h2 class="review_numbers">(45 {% trans "Reviews" %})</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if categories %}
+<div class="shop-category" id="firstSlider">
+  <div class="wrapper">
+    <div class="left-arrow">
+      <button aria-label="Previous" class="slick-prev slick-arrow" style="display: inline-block;" type="button"><span
+              class="zmdi zmdi-chevron-left"></span></button>
+    </div>
+
+    <div class="cards" id="slick-slider">
+
+      {% for i in categories %}
+        <div class="card">
+          <a href="{% url 'web:category' pk=i.pk %}">
+            <div class="horizondelSub-column">
+              <div class="imageArea">
+                {% if i.image %}
+              <img src="{{i.image.thumbnail.200x200}}"/>
+              {% else %}
+              <img src="{% static 'web/images/placeholder.jpg' %}"/>
+              {% endif %}              </div>
+              <div class="catogetryName">
+               {% get_english_or_malayalam i.pk 'category' language_code %}
+              </div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="right-arrow">
+      <button aria-label="Next" class="slick-next slick-arrow" style="display: inline-block;" type="button"><span
+              class="zmdi zmdi-chevron-right"></span></button>
+    </div>
+  </div><!-- #category .wrapper -->
+</div><!-- #category -->
+{% endif %}
+
+<div class="main-container">
+
+  {% if product_variants %}
+  <section class="bottomCards">
+    <div class="wrapper">
+      <div class="SectionTitle">
+        <h1>{% trans "Featured Products" %}</h1>
+      </div>
+      <div class="cards">
+        <div class="FPProductsCards boxitems">
+
+          {% for i in product_variants %}
+            <div class="item">
+                               <span class="wishlist" id="{{ i.pk }}">
+
+              <button data-id="add-to-wishlist" data-pk="{{ i.pk }}"
+                class="{% if not auth_status %}proceed_to_login {% endif %}"
+                data-toggle="tooltip"
+                href="{% url 'web:add_to_wishlist' %}"
+                id="wish-empty"
+                style="cursor: pointer;" title="Wish List" type="button">
+                <img
+                  data-path="{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %}"
+                  data-path-empty="{% static 'web/images/icons/wish-list-empty.svg' %}"
+                  src="{% if i.pk in wishlist_items %}{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %} {% else %} {% static 'web/images/icons/wish-list-empty.svg' %}{% endif %}"/>
+              </button>
+            </span>
+              <div class="item-img">
+                <a href="{% url 'web:product' pk=i.pk %}">
+                  {% if i.image %}
+                  <img src="{{i.image.thumbnail.200x200}}"/>
+                  {% else %}
+                  <img src="{% static 'web/images/placeholder.jpg' %}" style="width:200px;"/>
+                  {% endif %}
+                </a>
+              </div>
+              <a href="{% url 'web:product' pk=i.pk %}">
+                <h1>{{ i }}</h1>
+              </a>
+              <div class=item-bottom>
+                <div class="box">
+                  <div style="display: flex">
+                    <h2 class="text-decoration-underline" style="margin-right: 10px;">{{i.mrp}}</h2>
+                    <h2 ><span class="rupees-symbol">₹ </span>{{i.retail_price}}</h2>
+                  </div>
+                  <span class="rating">
+                                          <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}"/>
+                                          <h4>4.5</h4>
+                                      </span>
+                </div>
+                {% if pincode_session %}
+                {% if not i.pk in is_cart %}
+
+                <div class="cart">
+                  <a class="add-to-cart-button {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ i.pk }}" data-url="" href="{% url 'web:add_to_cart' %}" data-image="{% static 'web/images/icons/cart-added-Icon.svg' %}">
+                    <img class=""  src="{% static 'web/images/icons/add-to-cart-2.svg' %}" />
+                  </a>
+                </div>
+
+                {% else %}
+                <div class="added-cart" style="background: none;">
+                  <a class=" {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ i.pk }}" data-url="" href="javascript:void(0)">
+                    <img class="" src="{% static 'web/images/icons/cart-added-Icon.svg' %}" />
+                  </a>
+                </div>
+                {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {% endif %}
+
+</div>
+{% endblock content %}

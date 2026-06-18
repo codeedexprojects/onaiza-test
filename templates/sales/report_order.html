@@ -1,0 +1,244 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+  <!-- Page Content -->
+  <div class="content container-fluid">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">{{title|title}}</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'app' %}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">{{title|title}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <form method="get" action="">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label> Customer </label>
+                    <select
+                      name="customer"
+                      id="id_customer"
+                      class="form-control"
+                    >
+                      <option value="">-------------------------</option>
+                      {% for i in customers %} {% if i.pk == data.customer %}
+                      <option selected value="{{i.pk}}">{{i}}</option>
+                      {% else %}
+                      <option value="{{i.pk}}">{{i}}</option>
+                      {% endif %} {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label> From Date </label>
+                    <input
+                      type="text"
+                      value="{{data.from_date}}"
+                      name="from_date"
+                      id="from_date"
+                      class="form-control date-picker-dd"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label> To Date </label>
+                    <input
+                      type="text"
+                      value="{{data.to_date}}"
+                      name="to_date"
+                      id="to_date"
+                      class="form-control date-picker-dd"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="text-right">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row report">
+      {% comment %} <div class="col-auto float-right ml-auto">
+        <a href="{% url 'sales:print_sale_report/?customer=c172cb1b-2d7d-47d6-94ac-3e2175eff2ce&from_date=10%2F02%2F2020&to_date=10%2F06%2F2020' %}" class="btn add-btn"
+          > Print</a
+        >
+      </div> {% endcomment %}
+    </div
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-striped custom-table mb-0 datatable">
+            <thead>
+              <tr>
+                <th style="width: 30px">ID</th>
+                <th>Order Id</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Payment Mode</th>
+                <th>Date</th>
+                <th class="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for instance in instances %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <a href="{% url 'orders:order' pk=instance.pk %}"
+                      >{{ instance.order_id }}</a
+                    >
+                  </td>
+                <td class="amount paid">{{ instance.amount_payable }}</td>
+                <td>
+                    {% if instance.order_status == 'pending' %}
+                    <span class="badge bg-inverse-purple">Pending</span>
+                    {% elif instance.order_status == 'shipped' %}
+                    <span class="badge bg-inverse-info">Shipped</span>
+                    {% elif instance.order_status == 'delivered' %}
+                    <span class="badge bg-inverse-success">Delivered</span>
+                    {% elif instance.order_status == 'cancelled' %}
+                    <span class="badge bg-inverse-danger">Cancelled</span>
+                    {% endif %}
+                </td>
+                {% if instance.payment_method == 'cash_on_delivary' %}
+                <td>Cash on delivery</td>
+                {% else %}
+                <td>{{ instance.payment_method }}</td>
+                {% endif %}
+                <td>{{instance.date_added|date:"d/m/Y"}}</td>
+                <td class="text-right">
+                    <div class="dropdown dropdown-action">
+                      <a
+                        href="#"
+                        class="action-icon dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                        ><i class="material-icons">more_vert</i></a
+                      >
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'users:delivery_agent_assign' pk=instance.pk %}"
+                          ><i class="fa fa-user-plus m-r-5"></i> Assign Agent</a
+                        >
+                        <a
+                          class="dropdown-item"
+                          href="{% url 'orders:order' pk=instance.pk %}"
+                          ><i class="fa fa-eye m-r-5"></i> View</a
+                        >
+                      </div>
+                    </div>
+                  </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align: center; font-weight: bold;">Total</td>
+                <td class="final paid" style="font-weight: bold;"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Content -->
+</div>
+<!-- /Page Wrapper -->
+{% endblock content %} {% block static %}
+<script>
+  $(document).ready(function(){
+      var paid = 0;
+      var cess = 0;
+      var gst = 0;
+      var discount = 0;
+      var total = 0;
+      $(".amount.paid").each(function(){
+        paid += parseFloat($(this).html());
+      });
+      $(".amount.cess_amount").each(function(){
+        cess += parseFloat($(this).html());
+      });
+      $(".amount.total_tax").each(function(){
+        gst += parseFloat($(this).html());
+      });
+      $(".amount.discount").each(function(){
+        discount += parseFloat($(this).html());
+      });
+      $(".amount.total").each(function(){
+        total += parseFloat($(this).html());
+      });
+      $(".final.paid").html(Math.round(paid*100)/100);
+      $(".final.cess_amount").html(Math.round(cess*100)/100);
+      $(".final.gst").html(Math.round(gst*100)/100);
+      $(".final.discount").html(Math.round(discount*100)/100);
+      $(".final.total").html(Math.round(total*100)/100);
+  });
+      $(document).on("click",'div.report #print_sale_report',function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      $this = $(this);
+      $this.prop('disabled', true);
+
+      var url = $(this).attr("href");
+      var isReload = $this.hasClass("reload");
+      let customer = $('#id_customer').val();
+      let from_date = $('#from_date').val();
+      let to_date = $('#to_date').val();
+      console.log(customer,from_date,to_date,url,"FTM==========")
+      $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "json",
+        data: {
+          customer: customer,
+          from_date: from_date,
+          to_date: to_date
+        },
+
+        success: function (data) {
+          if (status = 'true'){
+              $this.prop('disabled', false);
+
+              if (redirect_url){
+                  window.location.href = redirect_url
+              }
+          }
+        },
+
+        error: function (data) {
+          var title = "An error occurred";
+          var message = "An error occurred. Please try again later.";
+        }
+      });
+    });
+</script>
+{% endblock %}

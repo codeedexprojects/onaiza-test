@@ -1,0 +1,69 @@
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %} {% endblock %} | {{app_title}}</title>
+
+        {% load static %}
+
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="author" content="" />
+        <meta name="robots" content="" />
+        <!-- App favicon -->
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/bootstrap/css/bootstrap.min.css' %}" media="screen" />
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/css/owl.carousel.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/theme/default/stylesheet/stylesheet.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/owl.carousel.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/owl.theme.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/swiper.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/opencart.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/swiper/css/css/owl.theme.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/magnific/magnific-popup.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/theme/default/stylesheet/inspirenewsletter.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/inspirequickview.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'js/jquery/blog/lightbox.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/sweetalert2.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css" rel="stylesheet" type="text/css" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800&display=swap" rel="stylesheet">
+
+
+        <!-- App css -->
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
+        <link href="{% static 'css/app.min.css' %}" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body class="account-body accountbg">
+
+    {% block content %}
+
+
+    {% endblock %}
+
+
+     <!-- jQuery  -->
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/waves.js' %}"></script>
+        <script src="{% static 'js/feather.min.js' %}"></script>
+        <script src="{% static 'js/simplebar.min.js' %}"></script>
+
+
+    {% block static %}
+    {% endblock %}
+
+</body>
+
+</html>

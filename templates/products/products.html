@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load stock %}
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="page-title">{{title|title}}</h4>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                    <li class="breadcrumb-item active">List</li>
+                </ol>
+            </div>
+            <div class="col-auto col-sm-2 float-right ml-auto">
+                <form method="get" action="{% url 'products:products' %}">
+                    <li class="list-inline-item">
+                        <div class="input-group">
+
+                            <input name="q" type="text" placeholder="Search" value="{{ filter_data.q }}"
+                                class="form-control" />
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn-soft-primary btn-sm"><i class="fas fa-search"></i></button>
+                            </span>
+                        </div>
+                    </li>
+                </form>
+            </div>
+
+            <div class="col-auto float-right ml-auto">
+                <a  href="{% url 'products:export_products' %}"
+                    class="btn btn-outline-primary">Export To Excel
+                </a>
+            </div>
+
+            <div class="col-auto float-right ml-auto">
+                <button title="Filter" data-toggle="modal" data-target="#modal_aside_right" type="button" class="btn btn-sm btn-soft-primary"><i class="fa fa-align-center mr-2"></i>Filter</button>
+            </div>
+
+            <div class="col-auto float-right ml-auto">
+                <a class=" btn btn-sm btn-soft-primary" href="{% url 'products:create' %}" role="button"><i
+                        class="fas fa-plus mr-2"></i>Create Product</a>
+            </div>
+            {% if instances %}
+            <div class="delete_list_item">
+                <a title="Delete selected {{caption|default:'item'}}"
+                    href="{% url 'products:delete_selected_products' %}" data-id=""
+                    class="btn btn-link  action-button reload selected-items-button"><i style="font-size: 25px;"
+                        class="la la-trash"></i>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable- table2excel">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th style="width: 30px;">ID</th>
+                            <th>Name </th>
+                            <th>Image</th>
+                            <th>Variants </th>
+                            <th>Brand </th>
+                            <!-- <th>HSN Code </th> -->
+                            <th>Category </th>
+                            <th>Subcategory </th>
+                            <th>Vendor </th>
+                            <th>Total Stock</th>
+                            <th>Enable / Disable</th>
+                            <th class="text-right noExl">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% get_pages %}
+
+                        {% for product in instances %}
+                        <tr>
+                            <td>
+                                <span class=" check_items_row">
+                                    <input class="check_item" type="checkbox" value="{{product.pk}}">
+                                </span>
+                            </td>
+                            <td>{{ forloop.counter0|add:pages.current_start_index }}</td>
+                            <td><a href="{% url 'products:product' pk=product.pk %}">{{ product.name }} | {{product.malayalam_name}}</a></td>
+                            <td>
+                                {% if product.image %}
+                                <a href="{% url 'products:product' pk=product.pk %}">
+                                    <img style="max-width: 100px;" src="{{ product.image.url }}" alt="">
+                                </a>
+                                {% endif %}
+                            </td>
+                            <td>{{ product.get_variant_names }}</td>
+                            <td>{{ product.brand }}</td>
+                            <!-- <td>{{ product.hsn }}</td> -->
+                            <td>{{ product.category }}</td>
+                            <td>{{ product.subcategory }}</td>
+                            <td>{{ product.vendor|default:'-' }}</td>
+                            <td>{% get_total_stock product %}</td>
+                            <td>
+                                <a class="reload action-button btn btn-sm btn-{{product.is_active|yesno:'success,warning'}}"
+                                    href="{% url 'products:enable_or_disable_product' pk=product.pk %}"
+                                    data-text="Are you sure to {{ product.is_active|yesno:'Disable,Enable' }} this product"
+                                    data-title="Are you sure?" data-id="{{ product.pk }}" data-reason="no">
+                                    {{ product.is_active|yesno:'Enabled,Disabled' }}
+                                </a>
+                            </td>
+
+                            <td class="text-right noExl">
+                                <a href="{% url 'products:product' pk=product.pk %}"><i
+                                        class="las la-eye text-info font-18"></i></a>
+                                <a href="{% url 'products:edit' pk=product.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ product.pk }}" class="action-button remove"
+                                    href="{% url 'products:delete' pk=product.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- {% if is_excel_export %}
+                <div class="export_button">
+                    <button class="export_to_excel exportToExcel- " title="Export to XLS"><i
+                            class="la la-download"></i></button>
+                </div>
+                {% endif %} -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+</div>
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="get" action="{% url 'products:products' %}">
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Search</label>
+                        <input name="q" type="text" value="{{ filter_data.q }}" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Category</label>
+                        <!-- <input name="category" type="text" class="form-control" /> -->
+                        <select class="selectpicker form-control" data-live-search="true" data-size="5" name="category">
+                            <option value="">-----All-----</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Subcategory</label>
+                        <select class="selectpicker form-control" data-live-search="true" data-size="5"
+                            name="sub_category">
+                            <option value="">-----All-----</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Brand</label>
+                        <select class="selectpicker form-control" data-live-search="true" data-size="5" name="brand">
+                            <option value="">-----All-----</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div> <!-- modal-bialog .// -->
+    {% endblock %}
+
+    {% block static %}
+    <style>
+        .btn-simple {
+            min-width: max-content;
+            text-align: center;
+        }
+
+        .btn-simple .fa {
+            margin-right: 0;
+        }
+        td.text-right.noExl {
+            min-width: 80px;
+        }
+    </style>
+
+    <script>
+        $("[name='category']").on('change', function () {
+            var $this = $(this);
+            get_sub_categories($this);
+        });
+
+        function get_sub_categories(element) {
+            var id_category = element.val();
+            var selected = "{{ filter_data.sub_category }}";
+            var url = "{% url 'products:get_category_details' %}";
+
+            if (id_category != "" || id_category != null || id_category != undefined) {
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: 'json',
+                    data: {
+                        id_category: id_category,
+                    },
+                    success: function (data) {
+                        var status = data['status'];
+                        var subcategory = data['subcategory']
+
+                        if (status == "true") {
+                            console.log()
+                            var subcategory = data['subcategory']
+                            var i, maxlength = subcategory.length;
+
+                            if (selected.length > 10) {
+                                var options = '<option value="">-----All----</option>'
+                            } else {
+                                var options = '<option selected value="">-----All----</option>'
+                            }
+
+                            for (i = 0; i < maxlength; i++) {
+                                options += `<option value="${subcategory[i]['id']}">${subcategory[i]['name']}</<option>`
+                            }
+
+                        }
+
+                        else {
+                            var message = data['message']
+                            var options = `<option value="">${message}</option>`
+                        }
+                        $("[name='sub_category']").html(options)
+                        $(`[name='sub_category'] option[value="${selected}"]`).attr('selected', '')
+                        $("[name='sub_category']").selectpicker('refresh');
+                    },
+                    error: function (data) {
+
+                    }
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            get_sub_categories($("[name='category']"));
+
+            $(".export_to_excel").click(function () {
+                excelExport();
+            });
+
+            function excelExport() {
+                var url = "{% url 'products:export_filtered_products' %}";
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: 'json',
+                    data: {
+                        q: "{{ filter_data.q }}",
+                        brand: "{{ filter_data.brand }}",
+                        category: "{{ filter_data.category }}",
+                        sub_category: "{{ filter_data.sub_category }}",
+                    },
+                    success: function (data) {
+                        var status = data['status'];
+                        var file_url = data['file_url'];
+
+                        if (status == "true") {
+                            window.location.href = file_url;
+                        }
+                    },
+                    error: function (data) {
+                    }
+                });
+            }
+        })
+
+    </script>
+
+    {% endblock %}

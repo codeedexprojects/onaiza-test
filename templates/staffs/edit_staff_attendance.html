@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+	<section id="content">
+        <div class="container card p-10">
+            
+			<div class="action-header palette-theme {{current_theme}} bg clearfix">
+                <div class="ah-label hidden-xs palette-White text">{{title}}</div>
+
+                <div class="ah-search">
+	            	<form method="get" action="{% url 'staffs:staffs' %}">
+	                    <input name="q" type="text" placeholder="Start typing..." class="ahs-input">
+	
+	                    <i class="ah-search-close zmdi zmdi-long-arrow-left" data-ma-action="ah-search-close"></i>
+	                    <input type="submit" class="hidden" />
+	                </form>
+	            </div>
+
+            </div>
+            
+            <form class="ajax reset {% if redirect %}redirect{% endif %}" method="post" action="{{url}}">
+            	{% csrf_token %}
+                <div class="row">
+                    <div class="col-sm-6">
+                    	<div class="card">
+
+                    		<div class="card-body card-padding">
+		                        <div class="form-group fg-line">
+		                            <label for="{{ form.name.id_for_label }}">
+		                            	{{ form.name.label }}
+		                            	{% if form.name.field.required %}
+							        		<small class="star">*</small>
+							        	{% endif %}
+							        	
+							        	<div class="mt-2 fz-12">
+											<input type="text" class="form-control" disabled="disabled" value="{{instance}}">
+										</div>
+		                            </label>
+		                            {{ form.name }}
+		                            
+		                            {% if form.name.errors %}
+		                            	<label class="error">{{ form.name.errors.as_text }}</label>
+		                            {% endif %}
+		                        </div>	
+		                        <div class="form-group fg-line">
+		                            <label for="{{ form.date.id_for_label }}">
+		                            	{{ form.date.label }}
+		                            	{% if form.date.field.required %}
+							        		<small class="star">*</small>
+							        	{% endif %}
+							        	
+							        	<div class="mt-2 fz-12">
+											<input type="text" class="form-control" disabled="disabled" value="{{date}}">
+										</div>
+		                            </label>
+		                            {{ form.date }}
+		                            
+		                            {% if form.date.errors %}
+		                            	<label class="error">{{ form.date.errors.as_text }}</label>
+		                            {% endif %}
+		                        </div>	
+		                    <div class="form-group fg-line checkbox m-b-10">
+                                <label for="{{ form.is_present.id_for_label }}">
+                                	{{ form.is_present.label }}
+                                	{% if form.is_present.field.required %}
+						        		<small class="star">*</small>
+						        	{% endif %}
+						        	
+						        	{% if form.is_present.help_text %}
+						        		<span data-original-title="Field Info" title="" data-content="{{ form.name.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
+                                    {% endif %}
+                                </label>
+                                {{ form.is_present }}
+                                <i class="input-helper"></i>
+                                
+                                {% if form.is_present.errors %}
+                                	<label class="error">{{ form.is_present.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group fg-line checkbox m-b-10">
+                                <label for="{{ form.is_leave.id_for_label }}">
+                                	{{ form.is_leave.label }}
+                                	{% if form.is_leave.field.required %}
+						        		<small class="star">*</small>
+						        	{% endif %}
+						        	
+						        	{% if form.is_leave.help_text %}
+						        		<span data-original-title="Field Info" title="" data-content="{{ form.name.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
+                                    {% endif %}
+                                </label>
+                                {{ form.is_leave }}
+                                <i class="input-helper"></i>
+                                
+                                {% if form.is_leave.errors %}
+                                	<label class="error">{{ form.is_leave.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+                            <div class="form-group fg-line checkbox m-b-10">
+                                <label for="{{ form.is_halfday.id_for_label }}">
+                                	{{ form.is_halfday.label }}
+                                	{% if form.is_halfday.field.required %}
+						        		<small class="star">*</small>
+						        	{% endif %}
+						        	
+						        	{% if form.is_halfday.help_text %}
+						        		<span data-original-title="Field Info" title="" data-content="{{ form.name.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
+                                    {% endif %}
+                                </label>
+                                {{ form.is_halfday }}
+                                <i class="input-helper"></i>
+                                
+                                {% if form.is_halfday.errors %}
+                                	<label class="error">{{ form.is_halfday.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+                            <div class="form-group fg-line checkbox m-b-10">
+                                <label for="{{ form.is_excuseleave.id_for_label }}">
+                                	{{ form.is_excuseleave.label }}
+                                	{% if form.is_excuseleave.field.required %}
+						        		<small class="star">*</small>
+						        	{% endif %}
+						        	
+						        	{% if form.is_excuseleave.help_text %}
+						        		<span data-original-title="Field Info" title="" data-content="{{ form.name.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
+                                    {% endif %}
+                                </label>
+                                {{ form.is_excuseleave }}
+                                <i class="input-helper"></i>
+                                
+                                {% if form.is_excuseleave.errors %}
+                                	<label class="error">{{ form.is_excuseleave.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+                            <div class="form-group fg-line checkbox m-b-10">
+                                <label for="{{ form.is_work_at_home.id_for_label }}">
+                                	{{ form.is_work_at_home.label }}
+                                	{% if form.is_work_at_home.required %}
+						        		<small class="star">*</small>
+						        	{% endif %}
+						        	
+						        	{% if form.is_work_at_home.help_text %}
+						        		<span data-original-title="Field Info" title="" data-content="{{ form.name.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
+                                    {% endif %}
+                                </label>
+                                {{ form.is_work_at_home }}
+                                <i class="input-helper"></i>
+                                
+                                {% if form.is_work_at_home.errors %}
+                                	<label class="error">{{ form.is_work_at_home.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+                            <div>
+                    <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                </div>  
+		                </div>
+
+	                </div>
+                </div>
+
+                 
+            </form>
+            
+        </div>
+    </section>
+{% endblock %}
+
+{% block static %}
+	{% load static %}
+	<script>
+		
+		$(document).ready(function(){
+            $('input[type=text]').focus(function () {
+               $(this).select();
+            });
+
+            $('input[type="checkbox"]').click(function(){
+
+         		$('input[type="checkbox"]').not(this).prop('checked', false); 
+            });            
+
+        });
+
+	</script>
+	{{form.media}}
+{% endblock %}
+

@@ -1,0 +1,363 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" class="ajax redirect">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.date.id_for_label }}">
+                                        {{ form.date.label }}
+
+                                        {% if form.date.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {% if is_create_page %}
+                                    <input id="{{ form.date.id_for_label }}" type="text" readonly
+                                        class="required form-control date-picker-dd" name="{{form.date.html_name}}"
+                                        placeholder="Enter Sale date" value="{% now 'd/m/Y' %}">
+                                    {% else %}
+                                    <input id="{{ form.date.id_for_label }}" type="text" readonly
+                                        class="required form-control date-picker-dd" name="{{form.date.html_name}}"
+                                        placeholder="Enter sale date" value="{{ form.date.value|date:'d/m/Y' }}">
+                                    {% endif %}
+                                    {% if form.date.errors %}
+                                    <label class="error">{{ form.date.errors.as_text }}</label>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.purchase.id_for_label }}">
+                                        {{ form.purchase.label }}
+
+                                        {% if form.purchase.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.purchase }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group supplier">
+                                    <label for="{{ form.supplier.id_for_label }}">
+                                        {{ form.supplier.label }}
+
+                                        {% if form.supplier.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.supplier }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="table-responsive  product_list_container">
+                                <p class="text-center p-30">No Products found</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block static %}
+{% load static %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+    });
+</script>
+<script>
+    function showHideCreditUser() {
+        var category = $('#id_transaction_category option:selected').text();
+        var $user_parent = $('#id_shop_credit_user').parents('div.form-group');
+        if (category == "debit") {
+            $user_parent.show();
+        } else {
+            $user_parent.hide();
+        }
+    }
+
+    function showHideCashBank() {
+        var mode = $('#id_transaction_mode').val();
+        var $bank_parents = $('.bank_item').parents('div.form-group');
+        if (mode == "cash") {
+            $bank_parents.hide();
+            $('#id_payment_to').val('cash_account').change();
+            $('#id_cash_account').parents('div.form-group').show();
+        } else {
+            $bank_parents.show();
+            showHidePaymentModeItems();
+        }
+    }
+
+    function showHidePaymentModeItems() {
+        var transaction_mode = $('#id_transaction_mode').val();
+        if (transaction_mode == "bank") {
+            var mode = $('#id_payment_mode').val();
+            var $cheque_parents = $('.cheque_item').parents('div.form-group');
+            var $card_parents = $('.card_item').parents('div.form-group');
+            if (mode == "cheque_payment") {
+                $cheque_parents.show();
+                $card_parents.hide();
+                $('#id_payment_to').val('bank_account').change();
+                $('#id_cash_account').parents('div.form-group').hide();
+
+            } else if (mode == "card_payment") {
+                $cheque_parents.hide();
+                $card_parents.show();
+                $('#id_payment_to').val('bank_account').change();
+                $('#id_payment_to').parents('div.form-group').hide();
+
+            } else if (mode == "internet_banking") {
+                $card_parents.hide();
+                $cheque_parents.hide();
+                $('#id_payment_to').val('bank_account').change();
+                $('#id_payment_to').parents('div.form-group').hide();
+            }
+
+            showHidePaymentToItems();
+        }
+    }
+
+    function ReturnableQTY() {
+        $('tr.return_data').each(function () {
+            var $row = $(this);
+            var returned_qty = parseFloat($row.find('.quantity_td input.returned_qty').val());
+            var purchased_qty = parseFloat($row.find('.quantity_td input.purchase_qty').val());
+
+            var returnable_qty = purchased_qty - returned_qty;
+            $row.find('td.sale_return_item_qty_td .sale_return_item_qty').html(String(returnable_qty))
+            $row.find('td .checkbox input').attr('data-qty', returnable_qty)
+        })
+    }
+
+    function showHidePaymentToItems() {
+        var transaction_mode = $('#id_transaction_mode').val();
+        if (transaction_mode == "bank") {
+            var to = $('#id_payment_to').val();
+            if (to == "bank_account") {
+                $('#id_bank_account').parents('div.form-group').show();
+                $('#id_cash_account').parents('div.form-group').hide();
+            } else {
+                $('#id_cash_account').parents('div.form-group').show();
+                $('#id_bank_account').parents('div.form-group').hide();
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        showHideCreditUser();
+        showHideCashBank();
+        showHidePaymentModeItems();
+        showHidePaymentToItems();
+
+        $(document).on('change', '#id_transaction_category', function () {
+            showHideCreditUser();
+        });
+
+        $(document).on('change', '#id_transaction_mode', function () {
+            showHideCashBank();
+        });
+
+        $(document).on('change', '#id_payment_mode', function () {
+            showHidePaymentModeItems();
+        });
+
+        $(document).on('change', '#id_payment_to', function () {
+            showHidePaymentToItems();
+        });
+
+    });
+
+    function showCredit($selector) {
+        var sale = $selector.val();
+        var url = "{% url 'purchases:get_customer' %}";
+        console.log("purchase");
+        if (sale != '' && sale != null) {
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {
+                    id: sale
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var status = data['status'];
+                    var credit = data['credit'];
+                    var debit = data['debit'];
+                    if (status == "true") {
+                        $('#credit').val(credit);
+                        $('#debit').val(debit);
+                    }
+                },
+            });
+        }
+    }
+
+    function getSaleItems($selector) {
+        var id = $selector.val();
+        var url = "{% url 'purchases:get_purchase_items' %}";
+
+        if (id != '' && id != null) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    var template = data['template'];
+                    if (status == "true") {
+                        var supplier = data['supplier'];
+                        var supplier_name = data['supplier_name'];
+                        var options = `<option value="${supplier}" selected> ${supplier_name} </option>`
+                        $("#id_supplier").append(options);
+
+                        $('.product_list_container').html(template);
+                        ReturnableQTY()
+                        calculate();
+                    } else {
+                        var nothing_found = "class='text-center p-30'>No Products found</p>";
+                        console.log("No data")
+                    }
+                },
+                error: function (data) {
+                    // remove_popup_box();
+                    console.log(data)
+                }
+            });
+        }
+    }
+  
+  
+    $(document).on('change', '#id_purchase', function () {
+        var $this = $(this);
+        showCredit($this)
+        getSaleItems($this)
+    });
+
+    var purchase = $('#id_purchase').val()
+    if (purchase == '') {
+        console.log("empty")
+    } else {
+        console.log("Not empty")
+        var $this = $('#id_purchase');
+        getSaleItems($this)
+        showCredit($this)
+    }
+    $(document).on('change', '.return_product_check', function () {
+        var $this = $(this);
+        var $parent = $this.parents('tr');
+        var qty = $this.attr('data-qty');
+        var unit = $this.attr('data-unit');
+        if ($this.is(":checked")) {
+
+            var input_el = '<input type="text" class="form-control" name="returned_qty" value="' + qty + '" />';
+            var unit_el = '<input type="hidden" name="returned_product_unit" value="' + unit + '">';
+            var status_select = '<select name="status" class="form-control selectpicker"><option value="returnable">Returnable</option><option value="damaged">Damaged</option></select>'
+            $parent.find('.sale_return_item_qty').html(input_el);
+            $parent.find('.product_datail').append(unit_el);
+            $parent.find('.sale_return_item_status').html(status_select);
+            $('.selectpicker').selectpicker('refresh');
+            calculate();
+        } else {
+            $parent.find('.sale_return_item_qty').html(qty);
+            $parent.find('.sale_return_item_status').html('Select Status');
+            $parent.find('.product_datail input').remove();
+            calculate();
+        }
+    });
+
+    $(document).on('change, keyup', '.sale_return_item_qty input', function () {
+        calculate();
+    });
+
+    function calculate() {
+        var return_item_total = 0;
+        var amount_returned = 0;
+        $('.product_list_container table tr.return_data').each(function () {
+            $this = $(this);
+            if ($this.find('.return_product_check').is(":checked")) {
+                var qty = parseFloat($this.find('.sale_return_item_qty input').val());
+                if (!qty) {
+                    qty = 0;
+                }
+                var purchased_qty = $this.find('.return_product_check').attr('data-qty');
+                if (!purchased_qty) {
+                    purchased_qty = 0;
+                }
+
+                var price = parseFloat($this.find('.product_price').text());
+                if (!price) {
+                    price = 0;
+                }
+                var tax = parseFloat($this.find('.product_tax').text());
+                if (!tax) {
+                    tax = 0;
+                }
+
+                var tax_added_price = price + (tax / purchased_qty)
+                var subtotal = tax_added_price * qty
+                // var discount = parseFloat($this.find('.productsale_discount').text());
+                // if (!discount) {
+                //     discount = 0;
+                // }
+                // var the_amount = ((price * qty) - ((discount / purchased_qty) * qty))
+                // console.log(the_amount)
+                // var tax_added = (the_amount + (the_amount * tax / 100))
+                // console.log(tax_added)
+                // var subtotal = tax_added;
+
+                return_item_total += subtotal;
+                $this.find('.sale_return_item_subtotal input').val(subtotal.toFixed(2));
+            }
+
+        });
+        var credit = $('#credit').val();
+        var debit = $('#debit').val();
+        return_item_total = return_item_total - parseFloat(credit) + parseFloat(debit)
+
+        $('#sub_total_amount').val(parseFloat(return_item_total.toFixed(2)));
+        if (return_item_total > 0) {
+            amount_returned = return_item_total
+        }
+        $('#id_amount_returned').val(parseFloat(amount_returned.toFixed(2)));
+
+    }
+</script>
+{{ form.media }}
+{% endblock %}

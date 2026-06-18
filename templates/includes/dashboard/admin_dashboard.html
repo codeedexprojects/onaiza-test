@@ -1,0 +1,387 @@
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- Page-Title -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="page-title">Analytics</h4>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div><!--end page-title-box-->
+            </div><!--end col-->
+        </div>
+        <div class="row">
+            <div class="row col-lg-12">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card report-card">
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col">
+                                        <p class="text-dark mb-0 font-weight-semibold">Today's Orders <span class="ml-10 text-success">&nbsp;{{ no_of_oders }}</span> </p>
+                                        <h3 class="m-0">{{ order_subtotal }}</h3>
+                                        <p class="mb-0 text-truncate text-muted"></p>
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <div class="report-main-icon bg-light-alt">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users align-self-center text-muted icon-sm"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div> <!--end col-->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card report-card">
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col">
+                                        <p class="text-dark mb-0 font-weight-semibold">Today's Pending Orders <span class="ml-10 text-success">&nbsp;{{ no_of_oders }}</span> </p>
+                                        <h3 class="m-0">{{ no_of_pending_orders }}</h3>
+                                        <p class="mb-0 text-truncate text-muted"></p>
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <div class="report-main-icon bg-light-alt">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users align-self-center text-muted icon-sm"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div> <!--end col-->
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card report-card">
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col">
+                                        <p class="text-dark mb-0 font-weight-semibold">Today's Shipped Orders <span class="ml-10 text-success">&nbsp;{{ no_of_oders }}</span> </p>
+                                        <h3 class="m-0">{{ no_of_shipped_orders }}</h3>
+                                        <p class="mb-0 text-truncate text-muted"></p>
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <div class="report-main-icon bg-light-alt">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users align-self-center text-muted icon-sm"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div> <!--end col-->
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card report-card">
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col">
+                                        <p class="text-dark mb-0 font-weight-semibold">Today's Delivered Orders <span class="ml-10 text-success">&nbsp;{{ no_of_oders }}</span> </p>
+                                        <h3 class="m-0">{{ no_of_delivered_orders }}</h3>
+                                        <p class="mb-0 text-truncate text-muted"></p>
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <div class="report-main-icon bg-light-alt">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users align-self-center text-muted icon-sm"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div> <!--end col-->
+                    
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card report-card">
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col">
+                                        <p class="text-dark mb-0 font-weight-semibold">Today's Cancelled Orders <span class="ml-10 text-success">&nbsp;{{ no_of_oders }}</span> </p>
+                                        <h3 class="m-0">{{ no_of_cancelled_orders }}</h3>
+                                        <p class="mb-0 text-truncate text-muted"></p>
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <div class="report-main-icon bg-light-alt">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users align-self-center text-muted icon-sm"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div> <!--end col-->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card report-card">
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col">
+                                        <p class="text-dark mb-0 font-weight-semibold">Today's Sales <span class="ml-10 text-success">&nbsp;{{ no_of_sales }}</span> </p>
+                                        <h3 class="m-0">{{ sale_subtotal }}</h3>
+                                        <p class="mb-0 text-truncate text-muted"></p>
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <div class="report-main-icon bg-light-alt">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock align-self-center text-muted icon-sm"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div> <!--end col-->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card report-card">
+                            <div class="card-body">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col">
+                                        <p class="text-dark mb-0 font-weight-semibold">Today's Purchases <span class="ml-10 text-success">&nbsp;{{sale_subtotal}}</span></p>
+                                        <h3 class="m-0">{{no_of_oders}}</h3>
+                                    </div>
+                                    <div class="col-auto align-self-center">
+                                        <div class="report-main-icon bg-light-alt">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity align-self-center text-muted icon-sm"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!--end card-body-->
+                        </div><!--end card-->
+                    </div> <!--end col-->
+                </div><!--end row-->
+                {% if invoices %}
+                <div class="card col-lg-6">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title">Latest Sales</h4>
+                        </div><!--end col-->
+                    </div>  <!--end row-->
+                </div><!--end card-header-->
+                <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                            <thead class="thead-light">
+                                    <tr>
+                                        <th class="border-top-0">Sale Number</th>
+                                        <th class="border-top-0">Customer</th>
+                                        <th class="border-top-0">Date</th>
+                                        <th class="border-top-0">Sale Type</th>
+                                        <th class="border-top-0">Total</th>
+                                    </tr><!--end tr-->
+                            </thead>
+                            <tbody>
+                                {% for sale in invoices %}
+                                    <tr>
+                                        <td><a class="text-primary" href="{% url 'sales:sale' sale.pk %}">{{ sale.sale_id }}</a></td>
+                                        <td>{{ sale.customer }}</td>
+                                        <td>{{ sale.sale_date }}</td>
+                                        <td class="text-uppercase">{{ sale.sale_type }}</td>
+                                        <td>{{ sale.subtotal }}</td>
+
+                                    </tr><!--end tr-->
+                                {% endfor %}
+                            </tbody>
+                            </table> <!--end table-->
+                        </div><!--end /div-->
+                </div><!--end card-body-->
+                </div>
+                {% endif %}
+                {% if orders %}
+                <div class="card col-lg-6">
+                    <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title">Latest Orders</h4>
+                        </div><!--end col-->
+                    </div>  <!--end row-->
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="border-top-0">Order ID</th>
+                                        <th class="border-top-0">Billing Name</th>
+                                        <th class="border-top-0">Order Date</th>
+                                        <th class="border-top-0">Order Status</th>
+                                        <th class="border-top-0">Total</th>
+                                    </tr><!--end tr-->
+                                </thead>
+                                <tbody>
+                                {% for order in orders %}
+                                    <tr>
+                                        <td>{{ order.order_id }}</td>
+                                        <td>{{ order.billing_name }}</td>
+                                        <td>{{ order.date_added }}</td>
+                                        <td>{{ order.get_order_status_display }}</td>
+                                        <td>{{ order.total_amt }}</td>
+                                    </tr><!--end tr-->
+                                {% endfor %}
+                                </tbody>
+                            </table> <!--end table-->
+                        </div><!--end /div-->
+                    </div><!--end card-body-->
+                </div>
+                {% endif %}
+                {% if pending_orders %}
+                <div class="card col-lg-6">
+                    <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title">Pending Orders</h4>
+                        </div><!--end col-->
+                    </div>  <!--end row-->
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="border-top-0">Order ID</th>
+                                        <th class="border-top-0">Billing Name</th>
+                                        <th class="border-top-0">Order Date</th>
+                                        <th class="border-top-0">Order Status</th>
+                                        <th class="border-top-0">Total</th>
+                                    </tr><!--end tr-->
+                                </thead>
+                                <tbody>
+                                {% for order in pending_orders %}
+                                    <tr>
+                                        <td>{{ order.order_id }}</td>
+                                        <td>{{ order.billing_name }}</td>
+                                        <td>{{ order.date_added }}</td>
+                                        <td>{{ order.get_order_status_display }}</td>
+                                        <td>{{ order.total_amt }}</td>
+                                    </tr><!--end tr-->
+                                {% endfor %}
+                                </tbody>
+                            </table> <!--end table-->
+                        </div><!--end /div-->
+                    </div><!--end card-body-->
+                </div>
+                {% endif %}
+
+                {% if shipped_orders %}
+                <div class="card col-lg-6">
+                    <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title">Shipped Orders</h4>
+                        </div><!--end col-->
+                    </div>  <!--end row-->
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="border-top-0">Order ID</th>
+                                        <th class="border-top-0">Billing Name</th>
+                                        <th class="border-top-0">Order Date</th>
+                                        <th class="border-top-0">Order Status</th>
+                                        <th class="border-top-0">Total</th>
+                                    </tr><!--end tr-->
+                                </thead>
+                                <tbody>
+                                {% for order in shipped_orders %}
+                                    <tr>
+                                        <td>{{ order.order_id }}</td>
+                                        <td>{{ order.billing_name }}</td>
+                                        <td>{{ order.date_added }}</td>
+                                        <td>{{ order.get_order_status_display }}</td>
+                                        <td>{{ order.total_amt }}</td>
+                                    </tr><!--end tr-->
+                                {% endfor %}
+                                </tbody>
+                            </table> <!--end table-->
+                        </div><!--end /div-->
+                    </div><!--end card-body-->
+                </div>
+                {% endif %}
+
+                {% if delivered_orders %}
+                <div class="card col-lg-6">
+                    <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title">Delivered Orders</h4>
+                        </div><!--end col-->
+                    </div>  <!--end row-->
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="border-top-0">Order ID</th>
+                                        <th class="border-top-0">Billing Name</th>
+                                        <th class="border-top-0">Order Date</th>
+                                        <th class="border-top-0">Order Status</th>
+                                        <th class="border-top-0">Total</th>
+                                    </tr><!--end tr-->
+                                </thead>
+                                <tbody>
+                                {% for order in delivered_orders %}
+                                    <tr>
+                                        <td>{{ order.order_id }}</td>
+                                        <td>{{ order.billing_name }}</td>
+                                        <td>{{ order.date_added }}</td>
+                                        <td>{{ order.get_order_status_display }}</td>
+                                        <td>{{ order.total_amt }}</td>
+                                    </tr><!--end tr-->
+                                {% endfor %}
+                                </tbody>
+                            </table> <!--end table-->
+                        </div><!--end /div-->
+                    </div><!--end card-body-->
+                </div>
+                {% endif %}
+
+
+                {% if cancelled_orders %}
+                <div class="card col-lg-6">
+                    <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h4 class="card-title">Cancelled Orders</h4>
+                        </div><!--end col-->
+                    </div>  <!--end row-->
+                    </div><!--end card-header-->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="border-top-0">Order ID</th>
+                                        <th class="border-top-0">Billing Name</th>
+                                        <th class="border-top-0">Order Date</th>
+                                        <th class="border-top-0">Order Status</th>
+                                        <th class="border-top-0">Total</th>
+                                    </tr><!--end tr-->
+                                </thead>
+                                <tbody>
+                                {% for order in cancelled_orders %}
+                                    <tr>
+                                        <td>{{ order.order_id }}</td>
+                                        <td>{{ order.billing_name }}</td>
+                                        <td>{{ order.date_added }}</td>
+                                        <td>{{ order.get_order_status_display }}</td>
+                                        <td>{{ order.total_amt }}</td>
+                                    </tr><!--end tr-->
+                                {% endfor %}
+                                </tbody>
+                            </table> <!--end table-->
+                        </div><!--end /div-->
+                    </div><!--end card-body-->
+                </div>
+                {% endif %}
+
+
+
+            </div>
+
+        </div>
+    </div><!-- container -->
+</div>
+
+
+

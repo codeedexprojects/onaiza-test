@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a href="{% url 'general:create_damaged_product' %}" class="btn btn-sm btn-soft-primary"><i
+                        class="fa fa-plus"></i>
+                    Add New</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="card">
+        <div class="card-body card-padding">
+            <form action="" method="get">
+                <div class="row m-b-20">
+                    <div class="col-sm-12">
+                        <div class="row">
+
+                            <div class="col-sm-3">
+                                <label for="from_date">From Date:</label><br />
+                                <input type="text" class="date-picker-dd form-control" id="from_date"
+                                    name="from_date" />
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="to_date">To Date:</label><br />
+                                <input type="text" class="date-picker-dd form-control" id="to_date" name="to_date" />
+                            </div>
+                            <div class="col-sm-1 d-flex flex-column-reverse">
+                                <div class="m-t-30">
+                                    <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable-">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">Sl.No</th>
+                            <th style="width: 30px;">ID</th>
+                            <th>Product</th>
+                            <th>Variant</th>
+                            <!-- <th>Batch</th> -->
+                            <th>Reason</th>
+                            <th>Quantity</th>
+                            <!-- <th>Total</th> -->
+                            <th>Cancelled?</th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for instance in instances %}
+                        <tr class="{% if instance.is_updated %}text-danger{% endif %}">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ instance.auto_id }}</td>
+                            <td>{{ instance.product }}</td>
+                            <td>
+                                {% if instance.product_variant %}
+                                {{ instance.product_variant.title }}
+                                {% else %}
+                                {{ instance.product_variant.unit }}
+                                {% endif %}
+                            </td>
+                            <!-- <td>{{ instance.batch }}</td> -->
+                            <td>{{ instance.description }}</td>
+                            <td>{{ instance.quantity }}</td>
+                            <!-- <td>{{ instance.total }}</td> -->
+                            <td class="text-danger">{{ instance.is_deleted|yesno:"Cancelled, " }}</td>
+
+                            <td class="text-right noExl">
+
+
+                                <a href="{% url 'general:damaged_product' pk=instance.pk %}"><i
+                                        class="las la-eye text-info font-18"></i></a>
+                                {% if not instance.is_deleted %}
+                                <a href="{% url 'general:edit_damaged_product' pk=instance.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ instance.pk }}" class="action-button remove"
+                                    href="{% url 'general:delete_damaged_product' pk=instance.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+                                {% endif %}
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="7" class="text-center"> Total</th>
+                            <th>{{ total_amount|default:0.0 }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+{% endblock %}

@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+<section id="content">
+    <div class="container card p-10">
+
+        <div class="action-header palette-theme {{current_theme}} bg clearfix">
+            <div class="ah-label hidden-xs palette-White text">{{title}}</div>
+
+            <div class="ah-search">
+                <form method="get" action="{% url 'staffs:staffs' %}">
+                    <input name="q" type="text" placeholder="Start typing..." class="ahs-input">
+
+                    <i class="ah-search-close zmdi zmdi-long-arrow-left" data-ma-action="ah-search-close"></i>
+                    <input type="submit" class="hidden" />
+                </form>
+            </div>
+
+            <ul class="ah-actions actions a-alt">
+                <li>
+                    <a href="{% url 'staffs:staffs' %}" class="ah-search-trigger" data-ma-action="ah-search-open">
+                        <i class="zmdi zmdi-search"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-body card-padding">
+                <div class="row m-b-20">
+                    <form action="" method="get">
+                        <div class="col-sm-11">
+                            <div class="col-sm-3">
+                                <label for="id_staff">Staff</label><br />
+                                {% if form_filter %}
+                                <select name="staff" class="selectpicker form-control" id="id_staff">
+                                    <option value="">-----------</option>
+                                    {% for staff in staffs %}
+                                    <option {% if form_filter.staff|safe == staff.pk|safe %}selected{% endif %} value="{{ staff.pk }}">{{ staff.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% else %}
+                                <select name="staff" class="selectpicker form-control" id="id_staff">
+                                    <option selected value="">-----------</option>
+                                    {% for staff in staffs %}
+                                    <option value="{{ staff.pk }}">{{ staff.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="from_date">From Date:</label><br />
+                                <input type="text" class="date-picker form-control" {% if form_filter.from_date %}value="{{form_filter.from_date}}" {% endif %} id="from_date" name="from_date" />
+                            </div>
+                            <div class="col-sm-3">
+                                <label for="to_date">To Date:</label><br />
+                                <input type="text" class="date-picker form-control" {% if form_filter.to_date %}value="{{form_filter.to_date}}" {% endif %} id="to_date" name="to_date" />
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="m-t-20">
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- <div> -->
+    </div>
+
+    {% if instance %}
+    <div class="row">
+
+        <div class="col-sm-4 staff-profile">
+            <div class="card">
+                <div class="card-body">
+                    <div class="list-group lg-alt c-overflow">
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Staff ID </div>
+                                <small class="lgi-text">{{instance.staff_id}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Name</div>
+                                <small class="lgi-text">{{instance.name}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Designation </div>
+                                <small class="lgi-text">{{instance.designation}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Phone </div>
+                                <small class="lgi-text">{{instance.phone}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Email </div>
+                                <small class="lgi-text">{{instance.email}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Salary </div>
+                                <small class="lgi-text">{{instance.salary}}</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Username</div>
+                                <small class="lgi-text">{{instance.user}}</small>
+                            </div>
+                        </div>
+
+                        {% if instance.photo %}
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <div class="lgi-heading">Photo</div>
+                                <img src="{{ instance.photo.thumbnail.150x150 }}" alt="Profile">
+                            </div>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 ">
+
+            <div class="col-sm-4 attendance">
+                <div class="card">
+                    <div class="card-padding">
+                        <div class="table-responsive">
+                            <h4 style="text-align: center;">Attandances</h4>
+                            <div class="table-responsive">
+                                <table class="table table-borderd">
+                                    <thead>
+                                        <tr>
+                                            <th>Attendance</th>
+                                            <th>Count</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Present</td>
+                                            <td>{{ attendance_data.present_count|default:0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Half Day Leave</td>
+                                            <td>{{ attendance_data.halfday_count|default:0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Leave</td>
+                                            <td>{{ attendance_data.leave_count|default:0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Excuse Leave</td>
+                                            <td>{{ attendance_data.excuseleave_count|default:0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Work At Home</td>
+                                            <td>{{ attendance_data.work_at_home_count|default:0 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Holiday</td>
+                                            <td>{{ attendance_data.holiday_count|default:0 }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 allowance">
+                <div class="card">
+                    <div class="card-padding">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <h4 class="lgi-heading">Allowances</h4>
+                                <h4 class="text-right">{{ allowance|default:0 }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 payment">
+                <div class="card">
+                    <div class="card-padding">
+                        <div class="list-group-item media ">
+                            <div class="media-body">
+                                <h4 class="lgi-heading">Payment</h4>
+                                <h4 class="text-right">{{ paid_amount|default:0 }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8 salary-history">
+                <div class="card">
+                    <div class="card-padding">
+                        <div class="table-responsive">
+                            <h4 style="text-align: center;">Salary History</h4>
+                            <div class="table-responsive">
+                                <table class="table table-borderd">
+                                    <thead>
+                                        <tr>
+                                            <th>SL.No</th>
+                                            <th >Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in salary_items %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ item.date|date:'F Y' }}</td>
+                                            <td>{{ item.salary }}</td>
+                                            <td>{{ item.is_paid|yesno:'Paid, Not Paid' }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+    <!-- </div> -->
+</section>
+{% endblock %}
+
+{% block static %}
+{% load static %}
+{% endblock %}

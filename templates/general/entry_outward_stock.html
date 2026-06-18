@@ -1,0 +1,734 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <form enctype="multipart/form-data" class="ajax redirect reset" method="post" action="{{url}}">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            {% csrf_token %}
+                            <h4 class="card-title">{{ title }}</h4>
+                            <div class="row">
+                                {% for field in form %}
+                                <div class="col-md-4">
+                                    <div class="form-group ">
+                                        <label for="{{ field.id_for_label }}">
+                                            {{ field.label }}
+
+                                            {% if field.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{field}}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="table-responsive card-body add_item_container stock_update_item_formset">
+                            <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 130px;" data-column-id="barcode">Product code</th>
+                                        <th style="min-width: 130px;" data-column-id="product">Product Variant</th>
+                                        <th style="min-width: 130px;" data-column-id="product">Batch</th>
+                                        <th style="min-width: 130px;" data-column-id="stock">Available stock</th>
+                                        <th style="min-width: 130px;" data-column-id="qty">Outward Stock</th>
+                                        <th style="min-width: 110px;">Retail Price</th>
+                                        <th style="min-width: 110px;">Whole Sale Price</th>
+                                        <th style="min-width: 130px;" data-column-id="category">Mrp</th>
+                                        <th style="min-width: 130px;" data-column-id="category">Cost</th>
+                                        <th data-column-id="category">Manufacturing Date</th>
+
+                                        <th style="min-width: 130px;" data-column-id="category">Expiry Date</th>
+                                        <th class="one"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in stock_update_item_formset.forms %}
+                                    <tr class="form_set_row">
+                                        <td>
+                                            <span class="product_barcode p-relative">
+                                                <input type="text" name="barcode" class="form-control">
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{ item.id }}
+                                            <span class="product_variant" data-value="{% if is_edit %}{{ item.product_variant.value }}{% endif %}">
+                                                {{ item.product_variant }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="current_batch" data-value="{% if is_edit %}{{ item.batch.value }}{% endif %}">
+                                                {{ item.batch }}
+                                            </span>
+                                        </td>
+
+                                        <td class="available_stock"><input type="text" class="form-control" readonly /></td>
+
+                                        <td class="purchase_stock">
+                                            <span class="order_request_qty">
+                                                {{ item.stock }}
+                                            </span>
+                                        </td>
+                                        <td class="image">
+                                            <span class="retail_price" data-value="{{ item.retail_price.value }}">
+                                                {{ item.retail_price }}
+                                            </span>
+                                        </td>
+                                        <td class="">
+                                            <span class="whole_sale_price"
+                                                data-value="{{ item.whole_sale_price.value }}">
+                                                {{ item.whole_sale_price }}
+                                            </span>
+                                        </td>
+                                        <td class="product_mrp" data-value="{% if is_edit %}{{ item.mrp.value }}{% endif %}">
+                                            {{ item.mrp }}
+                                        </td>
+                                        <td class="cost" data-value="{% if is_edit %}{{item.cost.value}}{% endif %}">
+                                            {{item.cost}}
+                                        </td>
+                                        <td class="expire_date" data-value="{{ item.expire_date.value }}">
+                                            {{item.expire_date}}</td>
+                                        <td class="manufacturing_date"
+                                            data-value="{{ item.manufacturing_date.value }}">
+                                            {{item.manufacturing_date}}</td>                                        <td class="one">{% if item.instance.pk %}{{ item.DELETE }}{% endif %}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {{ stock_update_item_formset.management_form }}
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
+{% block static %}
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.stock_update_item_formset table tr.form_set_row').formset({
+            prefix: '{{ stock_update_item_formset.prefix }}',
+            formCssClass: 'dynamic-formset1',
+            'added' : function (row) {
+                // {% if is_edit %}
+                row.find('.product_price select').val('');
+                row.find('.product_variant select').val('');
+                row.find('.current_batch select').val('');
+                row.find('.product_price').attr('data-value', '');
+                row.find('.current_batch').attr('data-value', '');
+                row.find('.product_variant').attr('data-value', '');
+                // {% endif %}
+
+                row.find('select.selectpicker').each(function(){
+                    $(this).selectpicker('refresh');
+                })
+            }
+        });
+
+        // {% if is_edit %}
+        // $('.product_price select').each(function () {
+        //     get_product_items($(this), false);
+        // })
+        $('.product_variant select').each(function () {
+            get_product_variant_items($(this), false);
+        })
+        // {% endif %}
+
+    })
+
+    // function get_product_items(element, barcode) {
+    //     var url = "{% url 'sales:get_product_items' %}"
+    //     var product_id = element.val();
+    //     var $parent = element.parents('tr.form_set_row');
+
+    //     var selected_batch_pk = $parent.find('.current_batch').attr('data-value')
+
+    //     if (product_id != undefined && product_id != null && product_id != "") {
+    //         var code = "no";
+    //         if (barcode) {
+    //             code = "yes";
+    //         }
+    //         $.ajax({
+    //             type: "GET",
+    //             url: url,
+    //             dataType: 'json',
+    //             data: {
+    //                 id: product_id,
+    //                 barcode: code,
+    //                 batch_id: selected_batch_pk
+    //             },
+    //             success: function (data) {
+    //                 var status = data['status'];
+    //                 if (status == 'true') {
+    //                     var price = data['price'];
+    //                     var mrp = data['mrp'];
+    //                     var hsn = data['hsn'];
+    //                     var gst = data['gst'];
+    //                     var sgst = data['sgst'];
+    //                     var cgst = data['cgst'];
+    //                     var name = data['name'];
+    //                     var unit_type = data['unit'];
+    //                     var pk = data['pk'];
+    //                     var product_code = data['product_code'];
+    //                     var cess = data['cess'];
+    //                     var discount_limit = data['discount_limit'];
+    //                     var current_stock = data['stock'];
+    //                     var current_varient = data['current_varient'];
+    //                     var varient_barcode = data['varient_barcode'];
+    //                     var product_name = data['product_name'];
+    //                     var rate = 0;
+    //                     var varience = data['varience'];
+    //                     var batch_list = data['batch_list'];
+
+    //                     if (current_varient)
+    //                         var options = `<option value="${current_varient}" selected="">${unit_type}</option>`
+    //                     else
+    //                         var options = '<option value="" selected="">' + unit_type + '</option>'
+
+    //                     var i, maxlength = varience.length;
+
+    //                     for (i = 0; i < maxlength; i++) {
+    //                         options += `<option value="${varience[i]['varience_pk']}">${varience[i]['varience_name']}</<option>` }
+    //                     $parent.find(".product_variant select").html(options).selectpicker('refresh');
+    //                     $parent.find(".product_variant ").find('div.filter-option-inner-inner').html(unit_type);
+    //                     var variant_ok = true;
+
+    //                     if ($parent.find(".product_variant").attr('data-value')){
+    //                         var selected_variant = $parent.find(".product_variant").attr('data-value');
+    //                         if (selected_variant != "None"){
+    //                             variant_ok = false;
+    //                             $parent.find(`.product_variant select option[value="${selected_variant}"]`).attr('selected', '')
+    //                             $parent.find(".product_variant select").selectpicker('refresh');
+    //                             $parent.find(".product_variant select").trigger('change');
+    //                         }
+    //                         $parent.find(".product_variant").attr('data-value', '')
+    //                     }
+
+    //                     if (batch_list.length==1){
+    //                         var batch_list_option = '';
+    //                     }else{
+    //                         var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>';
+    //                     }
+    //                     for (j = 0; j < batch_list.length; j++) {
+    //                         item = batch_list[j]
+    //                         if (batch_list.length==1){
+    //                             batch_list_option += `<option selected data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+    //                         }else{
+    //                             batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+    //                         }
+    //                     }
+
+    //                     let old_qty = $parent.find('.purchase_quantity').attr('data-value')
+    //                     if (!old_qty)
+    //                         old_qty = 1
+    //                     $parent.find(".purchase_quantity input").val(old_qty);
+
+    //                     $parent.find(".current_batch select").html(batch_list_option);
+    //                     $parent.find(".current_batch select").selectpicker('refresh');
+
+    //                     if ($parent.find('.current_batch').attr('data-value')){
+    //                         if (selected_batch_pk != '' && variant_ok){
+    //                             // $parent.find(".current_batch select option").removeAttr('selected') // not working don't know why
+    //                             $parent.find(".current_batch select").find(`[value="${selected_batch_pk}"]`).attr('selected','')
+    //                             $parent.find(".current_batch select").selectpicker('refresh');
+    //                             $parent.find(".current_batch select").change();
+    //                             $parent.find(".current_batch").attr('data-value', '')
+    //                         }
+    //                     }else{
+    //                         if (batch_list.length==1){
+    //                             $parent.find(".current_batch select").change();
+    //                         }
+    //                     }
+
+    //                     if (barcode) {
+    //                         $parent.find('.product_price select').html(`<option selected value=${pk}>${product_name}</option>`); //.selectpicker('refresh')
+
+    //                     } else {
+    //                         $parent.find('.product_barcode input').val(product_code);
+    //                     }
+    //                     // $parent.find(".current_batch select").selectpicker('refresh');
+    //                     // $parent.find(".current_batch select").trigger('change')
+
+    //                 }
+    //             },
+    //             error: function (data) {
+    //             }
+    //         })
+    //     }
+    // }
+
+    function get_product_items(element, barcode) {
+        var url = "{% url 'sales:get_product_items' %}"
+        var product_id = element.val();
+
+        var $parent = element.parents('tr.form_set_row');
+        var warehouse = $('#id_warehouse').val()
+
+        if (product_id != undefined && product_id != null && product_id != "") {
+            var code = "no";
+            if (barcode)
+                code = "yes";
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    warehouse: warehouse,
+                    is_purchase: 'yes'
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var price = data['price'];
+                        // var mrp = data['mrp'];
+                        // var hsn = data['hsn'];
+                        var igst = data['igst'];
+                        var sgst = data['sgst'];
+                        var cgst = data['cgst'];
+                        var cess = data['cess'];
+                        var cost = data['cost'];
+                        var unit = data['unit'];
+                        var hsn = data['hsn'];
+                        var unit_type = data['unit'];
+                        var pk = data['pk'];
+                        var current_stock = data['stock'];
+                        var varience = data['varience'];
+                        var current_varient = data['current_varient'];
+                        var varient_barcode = data['varient_barcode'];
+                        var product_code = data['product_code'];
+                        var default_batch = data['default_batch'];
+                        var batch_list = data['batch_list'];
+                        var last_purchase_cost = data['last_cost'];
+                        var product_name = data['product_name'];
+                        var variant_name = data['variant_name'];
+
+                        var variant_exists = false;
+
+                        $parent.find(".product_mrp input").val(0);
+                        $parent.find(".price input").val(0).trigger('keyup');
+                        $parent.find(".expire_date input").val('');
+                        $parent.find(".manufacturing_date input").val('');
+                        $parent.find(".purchase_amount input").val(0).change();
+
+                        var i, maxlength = varience.length;
+                        if (current_varient == '') {
+                            var options = `<option value="" selected>${variant_name}</option>`
+                        } else {
+                            var options = `<option value="${current_varient}" selected="">${variant_name}</option>`
+                        }
+
+                        for (i = 0; i < maxlength; i++) {
+                            options += `<option value="${varience[i]['varience_pk']}">${varience[i]['varience_name']}</<option>`;
+                        }
+
+                        $parent.find(".product_variant select").html(options).selectpicker('refresh');
+                        $parent.find(".product_variant").find('div.filter-option-inner-inner').html(variant_name);
+
+                        // {% if is_edit %}
+                        if ($parent.find(".product_variant").attr('data-value') != '') {
+                            variant_exists = true;
+                            var selected_variant = $parent.find(".product_variant").attr('data-value');
+                            $parent.find(`.product_variant select option[value="${selected_variant}"]`).attr('selected', '')
+                            $parent.find(".product_variant select").selectpicker('refresh');
+                            $parent.find(".product_variant select").trigger('change');
+                        }
+                        // {% endif %}
+
+                        if (!variant_exists) {
+                            if (batch_list.length == 1) {
+                                var batch_list_option = ''
+                            } else {
+                                var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>'
+                            }
+
+                            for (j = 0; j < batch_list.length; j++) {
+                                item = batch_list[j]
+                                batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                            }
+
+                            $parent.find(".current_batch select").html(batch_list_option);
+                            $parent.find(".current_batch select").selectpicker('refresh');
+
+                            if ($parent.find(".current_batch").attr('data-value')) {
+                                var selected_batch = $parent.find(".current_batch").attr('data-value');
+                                $parent.find(`.current_batch select option[value="${selected_batch}"]`).attr('selected', '')
+                                $parent.find(".current_batch select").selectpicker('refresh');
+                                $parent.find(".current_batch select").trigger('change');
+                            }
+                            else if (batch_list.length == 1) {
+                                $parent.find(".current_batch select").trigger('change');
+                            }
+                        }
+                        var supplier_state = $("#supplier_state").val()
+                        if (supplier_state == "Kerala") {
+
+                            cgst = Math.round(cgst * 100) / 100;
+                            sgst = Math.round(sgst * 100) / 100;
+                            igst = Math.round(0);
+                        } else {
+                            cgst = Math.round(0);
+                            sgst = Math.round(0);
+                            igst = Math.round(igst * 100) / 100;
+                        }
+                        $parent.find(".tax input").val(igst);
+                        $parent.find(".sgst input").val(sgst);
+                        $parent.find(".cgst input").val(cgst);
+                        $parent.find(".igst input").val(igst);
+                        $parent.find(".unit_type input").val(unit);
+                        $parent.find(".product_hsn input").val(hsn);
+                        $parent.find('.discount_amound_new input').val(0)
+
+
+                        if (barcode) {
+                            $parent.find('.product_price select').html(`<option selected value=${pk}>${product_name}</option>`); //.selectpicker('refresh')
+                        } else {
+                            $parent.find('.purchase_item_barcode input').val(product_code);
+                        }
+
+                    }
+                    else {
+                        var message = data['message']
+                        var title = data['title']
+                        if (barcode) {
+                            element.val('');
+                        } else if (element.parent().hasClass('product_variant')) {
+                            element.html('');
+                        }
+
+                        swal(title, message, "error");
+                        // var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                        // $parent.find(".current_batch select").html(batch_list_option);
+                        // $parent.find(".current_batch select").selectpicker('refresh');
+                        // $parent.find(".current_batch select").trigger('change')
+                    }
+                },
+                error: function (data) {
+
+                }
+            })
+        }
+    }
+
+    function get_product_variant_items(element, barcode) {
+
+        var url = "{% url 'sales:get_product_variant_items' %}"
+        var $parent = element.parents('tr.form_set_row');
+        var warehouse = $('#id_warehouse').val()
+        var product_id = element.val();
+        if (product_id == "") {
+            product_id = $parent.find('.product_price select').val();
+        }
+
+        var code = "no";
+        if (barcode) {
+            code = "yes";
+        }
+
+        var is_ok = true;
+        if (warehouse == undefined || warehouse == null || warehouse == "") {
+            is_ok = false;
+        }
+        if (product_id == undefined || product_id == null || product_id == "") {
+            is_ok = false
+        }
+
+        if (is_ok) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    warehouse: warehouse,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var price = data['price'];
+                        // var mrp = data['mrp'];
+                        // var hsn = data['hsn'];
+                        var igst = data['igst'];
+                        var sgst = data['sgst'];
+                        var cgst = data['cgst'];
+                        // var cess = data['cess'];
+                        var cost = data['cost'];
+                        var unit = data['unit'];
+                        var hsn = data['hsn'];
+                        var current_stock = data['stock'];
+                        var batch_list = data['batch_list'];
+                        var product_code = data['product_code'];
+                        var default_batch = data['default_batch'];
+                        var last_purchase_cost = data['last_cost'];
+
+                        var supplier_state = $("#supplier_state").val()
+                        if (supplier_state == "Kerala") {
+                            cgst = Math.round(cgst * 100) / 100;
+                            sgst = Math.round(sgst * 100) / 100;
+                            igst = Math.round(0);
+                        } else {
+
+                            cgst_amount = Math.round(cgst * 100) / 100;
+                            sgst_amount = Math.round(sgst * 100) / 100;
+                            igst = Math.round(cgst_amount + sgst_amount);
+                            cgst = Math.round(0);
+                            sgst = Math.round(0);
+
+                        }
+
+                        $parent.find(".tax input").val(igst);
+                        $parent.find(".sgst input").val(sgst);
+                        $parent.find(".cgst input").val(cgst);
+                        $parent.find(".igst input").val(igst);
+                        $parent.find(".unit_type input").val(unit);
+                        $parent.find(".product_hsn input").val(hsn);
+                        $parent.find('.discount_amound_new input').val(0)
+                        // $parent.find(".price input").val(price);
+                        // $parent.find(".product_mrp input").val(default_batch['mrp']);
+                        // $parent.find(".purchase_amount input").val(last_purchase_cost);
+
+                        $parent.find(".product_mrp input").val(0);
+                        $parent.find(".price input").val(0).trigger('keyup');
+                        $parent.find(".expire_date input").val('');
+                        $parent.find(".manufacturing_date input").val('');
+                        $parent.find(".purchase_amount input").val(0).change();
+
+                        if (batch_list.length == 1) {
+                            var batch_list_option = ''
+                        } else {
+                            var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>'
+                        }
+
+                        for (j = 0; j < batch_list.length; j++) {
+                            item = batch_list[j]
+                            batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                        }
+
+                        $parent.find(".current_batch select").html(batch_list_option);
+                        $parent.find(".current_batch select").selectpicker('refresh');
+
+
+                        if ($parent.find(".current_batch").attr('data-value')) {
+                            var selected_batch = $parent.find(".current_batch").attr('data-value');
+                            $parent.find(`.current_batch select option[value="${selected_batch}"]`).attr('selected', '')
+                            $parent.find(".current_batch select").selectpicker('refresh');
+                            $parent.find(".current_batch select").trigger('change');
+                        }
+                        else if (batch_list.length == 1) {
+                            $parent.find(".current_batch select").trigger('change');
+                        }
+
+                        if (barcode) {
+                            $parent.find('.product_variant select').val(pk).selectpicker('refresh');
+
+                        } else {
+                            $parent.find('.purchase_item_barcode input').val(product_code);
+                        }
+                    } else {
+                        var message = data['message']
+                        var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                        $parent.find(".batch select").html(batch_list_option);
+                        $parent.find(".batch select").selectpicker('refresh');
+                        $parent.find(".batch select").trigger('change')
+                    }
+                },
+                error: function (data) { }
+            })
+        }
+        else {
+            if (warehouse == undefined || warehouse == null || warehouse == "") {
+                let title = "Warehouse not selected..!";
+                let message = "Please Select a Warehouse";
+                if (barcode) {
+                    element.val('');
+                } else if (element.parent().hasClass('product_variant')) {
+                    element.html('');
+                }
+                swal(title, message, "error");
+            }
+        }
+        }
+
+    function get_batch_data($this) {
+        var $parent = $this.parents('tr.form_set_row');
+        var batch_id = $this.val();
+        var url = "{% url 'general:get_batch_data' %}"
+
+        if (batch_id != undefined && batch_id != null && batch_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: batch_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var mrp = data['mrp'];
+                        var cost = data['cost'];
+                        var price = data['price'];
+                        var current_stock = data['stock'];
+                        var expire_date = data['expire_date'];
+                        var manufacturing_date = data['manufacturing_date'];
+                        var last_purchase_cost = data['last_cost'];
+                        var retail_price = data['retail_price'];
+                        var whole_sale_price = data['whole_sale_price'];
+
+                        //{% if is_edit %}
+                        if ($parent.find(".product_mrp").attr('data-value')) {
+                            var old_mrp = parseFloat($parent.find(".product_mrp").attr('data-value'));
+                            if (old_mrp > 0) {
+                                mrp = old_mrp
+                                // $parent.find(".product_mrp input").val(old_mrp).change();
+                            }
+                            $parent.find(".product_mrp").attr('data-value', '')
+                        }
+
+                        if ($parent.find(".retail_price").attr('data-value')) {
+                            var old_retail_price = parseFloat($parent.find(".retail_price").attr('data-value'));
+                            if (old_retail_price > 0) {
+                                retail_price = old_retail_price
+                                // $parent.find(".price input").val(old_price).change();
+                            }
+                            $parent.find(".retail_price").attr('data-value', '')
+                        }
+                        console.log($parent.find(".whole_sale_price").attr('data-value'), 'whole_sale_price')
+                        if ($parent.find(".whole_sale_price").attr('data-value')) {
+                            var old_whole_sale_price = parseFloat($parent.find(".whole_sale_price").attr('data-value'));
+                            if (old_whole_sale_price > 0) {
+                                whole_sale_price = old_whole_sale_price
+                                // $parent.find(".price input").val(old_price).change();
+                            }
+                            $parent.find(".whole_sale_price").attr('data-value', '')
+                        }
+                        if ($parent.find(".purchase_amount").attr('data-value')) {
+                            var old_purchase_amount = parseFloat($parent.find(".purchase_amount").attr('data-value'));
+                            if (old_purchase_amount > 0) {
+                                last_purchase_cost = old_purchase_amount;
+                                // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                            }
+                            $parent.find(".purchase_amount").attr('data-value', '')
+                        }
+                        if ($parent.find(".expire_date").attr('data-value')) {
+                            var old_expire_date = parseFloat($parent.find(".expire_date").attr('data-value'));
+                            if (old_expire_date > 0) {
+                                expire_date = old_expire_date;
+                                // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                            }
+                            $parent.find(".expire_date").attr('data-value', '')
+                        }
+                        if ($parent.find(".manufacturing_date").attr('data-value')) {
+                            var old_manufacturing_date = parseFloat($parent.find(".manufacturing_date").attr('data-value'));
+                            if (old_manufacturing_date > 0) {
+                                manufacturing_date = old_manufacturing_date;
+                                // $parent.find(".purchase_amount input").val(old_purchase_amount).change();
+                            }
+                            $parent.find(".manufacturing_date").attr('data-value', '')
+                        }
+                        // {% endif %}
+                        // $parent.find(".whole_sale_price input").attr('value', whole_sale_price);
+                        $parent.find(".whole_sale_price input").val(whole_sale_price).trigger('keyup');
+                        $parent.find(".retail_price input").val(retail_price).trigger('keyup');
+                        $parent.find(".product_mrp input").val(mrp);
+                        $parent.find(".price input").val(price).trigger('keyup');
+                        // $parent.find(".purchase_amount_price input").val(cost);
+                        $parent.find(".expire_date input").val(expire_date);
+                        $parent.find(".manufacturing_date input").val(manufacturing_date);
+                        $parent.find(".purchase_amount input").val(last_purchase_cost).change();
+
+                        // change batch background colour and add new row
+                        let $last_parent = $('.purchase_item_formset table tbody tr:nth-last-child(2)');
+                        test_name1 = $parent.find('.batch select').attr('name');
+                        test_name2 = $last_parent.find('.batch select').attr('name');
+
+                        $parent.removeClass('coloured-row');
+                        $parent.find(".current_stock input").val(current_stock);
+
+                        if (test_name1 === test_name2) {
+                            $('.purchase_item_formset .icon_add_item').click();
+                        }
+                        $parent.next().find('.purchase_item_barcode input').focus()
+                        // end of add new row and batch background colour
+
+                    }
+
+                },
+                error: function (data) {
+                }
+            })
+        }
+        else {
+            $parent.addClass('coloured-row');
+
+            $parent.find(".product_mrp input").val(0);
+            $parent.find(".price input").val(0).trigger('keyup');
+            $parent.find(".expire_date input").val('');
+            $parent.find(".manufacturing_date input").val('');
+            $parent.find(".purchase_amount input").val(0).change();
+        }
+    }
+
+    $(document).on('keypress', 'tr.form_set_row .product_barcode input', function (event) {
+        if (event.which == '10' || event.which == '13') {
+            event.preventDefault();
+            $selector = $(this);
+
+            get_product_items($selector, true);
+        }
+    })
+
+    $('.product_price select').on('change keyup', function () {
+        $this = $(this);
+        get_product_items($this, false);
+    });
+
+    $('.product_variant select').on('change keyup', function () {
+        $this = $(this);
+        get_product_variant_items($this, false);
+    });
+
+    $('.current_batch select').on('change keyup', function () {
+        $this = $(this);
+        var parent = $this.parents('tr.form_set_row');
+        get_batch_data($this)
+    });
+
+</script>
+{{ stock_update_item_formset.media }}
+{{ form.media }}
+{% endblock %}

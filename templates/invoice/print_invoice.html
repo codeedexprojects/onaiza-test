@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load main_template_tags %}
+
+<head>
+    <meta charset="utf-8" />
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/invoice_css/style.css' %}" />
+    <meta name="viewport" content="width=device-width" initial-scale="1.0" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <!--
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+		<script src="js/script.js" type="text/javascript"></script> -->
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/invoice_js/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/invoice_js/script.js' %}" type="text/javascript"></script>
+</head>
+
+<body>
+    <section id="gst-tax-invoice">
+        <section class="outer-module">
+            <div class="top-module">
+                <div class="left">
+                    <!-- {% if finance_manager %}
+                    <h1><img src="{% static 'img/hghgh.jpg' %}" alt="image" /></h1>
+                    {% endif %}
+                    <h1 class="shop_name">{{instance.franchisee.shop_name}}</h1> -->
+                </div>
+                <div class="right">
+                    <div class="box">
+                        <h1>Tax Invoice</h1>
+                    </div>
+                </div>
+                <br class="clear" />
+            </div>
+            <div class="invoice">
+                <table>
+                    <tr class="head">
+                        <th colspan="16">TAX INVOICE</th>
+                    </tr>
+                    <tr>
+                        <td rowspan="4" colspan="7">
+                            <p class="bld">Sold By</p>
+                            <p class="bld">Onaiza Online Supermarket</p>
+                        </td>
+                        <td colspan="2">Order No.</td>
+                        <td colspan="2">{{instance.a_id}}</td>
+                        <td colspan="2">Invoice No.</td>
+                        <td colspan="3">{{instance.sale_id}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">PO No.</td>
+                        <td colspan="2">695586</td>
+                        <td colspan="2">Transporter</td>
+                        <td colspan="3">{{instance.transporter}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Invoice Date</td>
+                        <td colspan="2">{{instance.sale_date}}</td>
+                        <td colspan="2">Tracking Number</td>
+                        <td colspan="3">{{instance.tracking_id}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Payment Method</td>
+                        <td colspan="2">{{instance.payment_method}}</td>
+                        <td colspan="2">Shipment Date</td>
+                        <td colspan="3">{{instance.shipment_date|date:"d/m/Y"}}</td>
+                    </tr>
+                    <tr class="head">
+                        <th colspan="7">Billing Address</th>
+                        <th colspan="9">Shipping Address</th>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="7">Customer Name : {{instance.customer.name}}</td>
+                        <td class="bb-none" colspan="9">Customer Name : {{instance.customer.name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="7">Building No/Name : {{instance.customer.address}}</td>
+                        <td class="bb-none" colspan="9">Building No/Name : {{instance.customer.address}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="7">Place : {{instance.customer.place}}</td>
+                        <td class="bb-none" colspan="9">Place : {{instance.customer.place}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="7">District : {{instance.customer.district}}</td>
+                        <td class="bb-none" colspan="9">District : {{instance.customer.district}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="7">State : {{instance.customer.state}}</td>
+                        <td class="bb-none" colspan="9">State : {{instance.customer.state}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="7">PIN : {{instance.customer.pin}}</td>
+                        <td class="bb-none" colspan="9">PIN : {{instance.customer.pin}}</td>
+                    </tr>
+                    <tr>
+                        <td class="bb-none" colspan="7">GSTIN : {{instance.customer.customer_gstn}}</td>
+                        <td class="bb-none" colspan="9">GSTIN : {{instance.customer.customer_gstn}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">State Code : {{instance.customer.state_code}}</td>
+                        <td colspan="9">State Code : {{instance.customer.state_code}}</td>
+                    </tr>
+                    {% if sale_items %}
+                    <tr class="sub-title t-a-c">
+                        <th class="bld" rowspan="2">Sl No.</th>
+                        <th class="bld" rowspan="2">Items <br>Size/Model</th>
+                        <th class="bld" rowspan="2">HSN <br>Code</th>
+                        <th class="bld" rowspan="2">Unit <br>Price</th>
+                        <th class="bld" rowspan="2">QTY</th>
+                        <th class="bld" rowspan="2">Subtotal</th>
+                        <th class="bld" rowspan="2">Discount</th>
+                        <th class="bld" colspan="2">CGST</th>
+                        <th class="bld" colspan="2">SGST/UGST</th>
+                        <th class="bld" colspan="2">IGST</th>
+                        <!-- <th class="bld" colspan="2">Cess</th> -->
+                        <th class="bld" rowspan="2">Total</th>
+                    </tr>
+                    <tr class="t-a-c">
+                        <td class="bld">Rate%</td>
+                        <td class="bld">Amt</td>
+                        <td class="bld">Rate%</td>
+                        <td class="bld">Amt</td>
+                        <td class="bld">Rate%</td>
+                        <td class="bld">Amt</td>
+                        <!-- <td class="bld">Rate%</td> -->
+                        <!-- <td class="bld">Amt</td> -->
+                    </tr>
+                    {% for i in sale_items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{i.product_variant}}</td>
+                        <td>{{i.hsn}}</td>
+                        <td>{{i.amount }}</td>
+                        <td>{{i.quantity}}</td>
+                        <td>{{i.sub_total}}</td>
+                        <td>{{i.discount}}</td>
+                        {% if sale_category == "intra_state" %}
+                        <td>{{i.gst|default:0|tax_devide}}</td>
+                        <td class="cgst">{{i.cgst|default:0}}</td>
+                        <td>{{i.gst|default:0|tax_devide}}</td>
+                        <td class="sgst">{{i.sgst|default:0}}</td>
+                        {% else %}
+                        <td>0</td>
+                        <td class="cgst">0</td>
+                        <td>0</td>
+                        <td class="sgst">0</td>
+                        {% endif %}
+                        {% if sale_category == "inter_state" %}
+                        <td>{{i.gst|default:0}}</td>
+                        <td class="igst">{{i.igst}}</td>
+                        {% else %}
+                        <td>0</td>
+                        <td class="igst">0</td>
+                        {% endif %}
+                        <!-- <td>{{i.product_cess}}</td>
+						<td class="cess">{{i.cess}}</td> -->
+                        <td>{{i.total}}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    <tr>
+                        <td class="bld" colspan="5">Total:</td>
+                        <td class="subtotal_total bld">{{total_subtotal}}</td>
+                        <td class="subtotal_total bld">{{total_discount}}</td>
+                        <td>xxxx</td>
+                        <td class="cgst_total bld">{{total_cgst}}</td>
+                        <td>xxxx</td>
+                        <td class="sgst_total bld">{{total_sgst}}</td>
+                        <td>xxxx</td>
+                        <td class="igst_total bld">{{total_igst}}</td>
+                        <!-- <td>xxxx</td>
+						<td class="igst_total bld">{{cess_amount}}</td> -->
+                        <td class="igst_total bld">{{grant_total_value}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"></td>
+                        <td class="t-a-r" colspan="3">Sub Total:</td>
+                        <td colspan="5" class="bld">{{ grant_total_value }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="8"></td>
+                        <td class="t-a-r" colspan="3">Discount:</td>
+                        <td colspan="5">{{instance.discount}}</td>
+                    </tr>
+                    {% if instance.use_privilege_point %}
+                    <tr>
+                        <td colspan="8"></td>
+                        <td class="t-a-r" colspan="3">Privilege Points Discount:</td>
+                        <td colspan="5">{{ instance.privilege_point_amnt }}<!-- ({{ instance.privilege_point_used }} points) --></td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <td colspan="8"></td>
+                        <td class="t-a-r" colspan="3">Grand Total:</td>
+                        <td colspan="5">{{instance.total}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="lower-module">
+                <div class="inner-module one">
+                    <div class="left">
+                        <p>Bank:- <span>***** Bank</span></p>
+                        <p>Branch:- <span>*****</span></p>
+                        <p>A/C No.:- <span>*****</span></p>
+                        <p>IFSC Code:- <span>*****</span></p>
+                    </div>
+                    <div class="right">
+                        <h3>Onaiza Online Supermarket</h3>
+                        <div class="sign"></div>
+                        <p>(Authorized Signatory)</p>
+                    </div>
+                    <br class="clear" />
+
+                    <p>Customer Support Email: <span>*****</span></p>
+                </div>
+                <div class="inner-module">
+                    <p><span>Cash on Delivery:</span> please pay remaining amount to the sales representative before
+                        unloading the materials.</p>
+                    <p><span>Return Policy:</span> We try to deliver perfectly each and every time. But in case you need
+                        to return the item, please do so with the original packing, tags & invoice without which it will
+                        be really difficult for us to act on your request, please help us in helping you.</p>
+                    <p><span>If Repurchasing any:</span> please contact our company we always ready to serve you at best
+                        price.</p>
+                </div>
+            </div>
+            <p class="p">* Terms & Conditions apply</p>
+        </section>
+    </section>
+</body>
+<style type="text/css">
+h1.shop_name {
+    font-size: 22pt;
+    text-transform: uppercase;
+    color: #622424;
+    text-align: center;
+    font-weight: bold;
+}
+</style>
+
+</html>

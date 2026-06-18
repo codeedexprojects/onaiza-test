@@ -1,0 +1,476 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" class="ajax redirect">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label for="{{ form.time.id_for_label }}">
+                                    {{ form.time.label }}
+
+                                    {% if form.time.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {% if is_create_page %}
+                                <input id="{{ form.time.id_for_label }}" type="text"
+                                    class="required form-control date-picker-dd" readonly name="{{form.time.html_name}}"
+                                    placeholder="Enter time" value="{% now 'd/m/Y' %}">
+                                {% else %}
+                                <input id="{{ form.time.id_for_label }}" type="text"
+                                    class="required form-control date-picker-dd" readonly name="{{form.time.html_name}}"
+                                    placeholder="Enter time" value="{{ form.time.value|date:'d/m/Y' }}">
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label for="{{ form.sale.id_for_label }}">
+                                    {{ form.sale.label }}
+
+                                    {% if form.sale.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.sale }}
+                            </div>
+
+                            <div class="col-md-4 form-group customer">
+                                <label for="{{ form.customer.id_for_label }}">
+                                    {{ form.customer.label }}
+
+                                    {% if form.customer.field.required %}
+                                    <small class="star text-danger">*</small>
+                                    {% endif %}
+                                </label>
+                                {{ form.customer }}
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label for="id_special_discount">Special Discount</label>
+                                <input type="text" id="id_special_discount" class="form-control" readonly />
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label for="id_sale_total">Total Sale Amount</label>
+                                <input type="text" id="id_sale_total" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="table-responsive  product_list_container">
+                                <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:20px;"></th>
+                                            <th data-column-id="product">Product</th>
+                                            <th data-column-id="qty">Qty</th>
+                                            <th data-column-id="price">Amount</th>
+                                            <!-- <th data-column-id="qty">Already Return Qty</th> -->
+                                            <!-- <th data-column-id="unit">GST</th> -->
+                                            <!-- <th data-column-id="Discount">Discount</th> -->
+                                            <!-- <th data-column-id="gst_amount">GST Amount</th> -->
+                                            <!-- <th data-column-id="total">Sub Total</th> -->
+                                            <th data-column-id="status">Status</th>
+                                            <th data-column-id="sub_total">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in return_items %}
+                                        <tr class="return_data">
+                                            {% if item.quantity == 0 %}
+                                            <td></td>
+                                            {% else %}
+                                            <td style="width:20px;">
+                                                <div class="checkbox lgi-checkbox m-t-5">
+                                                    <label>
+                                                        <input class="check_item return_product_check"
+                                                            data-unit="{{item.unit.pk}}" type="checkbox"
+                                                            data-qty="{{item.qty}}" checked data-cess="{{item.cess}}"
+                                                            data-gst="{{item.gst_amount}}" value="{{item.pk}}"
+                                                            name="sale_item_pk">
+                                                        <i class="input-helper"></i>
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            {% endif %}
+                                            <td class="product_datail">
+                                                {{item.product.hsn.hsn_number}} -
+                                                {% if item.product_variant.title %}
+                                                {{item.product_variant}}
+                                                {% else %}
+                                                {{item.product.name}} - {{item.product.unit_type}}
+                                                {% endif %}
+                                            </td>
+                                            <td class="sale_return_item_qty_td">
+                                                <span class="sale_return_item_qty">
+                                                    {{item.quantity}}
+                                                </span>
+                                            </td>
+                                            <td class="product_price">{{item.price}}</td>
+                                            <!-- <td>
+                                                    <span>
+                                                        {{item.return_qty}}
+                                                    </span>
+                                                </td> -->
+                                            <!-- <td>
+                                                    {{item.gst}}
+                                                </td> -->
+                                            <!-- <td class="productsale_discount">
+                                                {{item.discount}}
+                                            </td> -->
+                                            <!-- <td class="product_tax">
+                                                    {% if item.sale.add_gst %}
+                                                    {{item.gst_amount}}
+                                                    {% else %}
+                                                    0
+                                                    {% endif %}
+                                                </td> -->
+                                            <!-- <td class="productsale_subtotal">
+                                                    {{item.total}}
+                                                </td> -->
+
+                                            <td>
+                                                <span class="sale_return_item_status p-relative">
+                                                    Change Status
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="sale_return_item_subtotal p-relative">
+                                                    <!-- <input type="text" disabled class="form-control" value="{{item.total}}" /> -->
+                                                    {{item.sale_item.total}}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block static %}
+{% load static %}
+<style>
+    form .select2-container .select2-selection--single {
+        height: 40px;
+        padding-left: 5px;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input[type=text]').focus(function () {
+            $(this).select();
+        });
+    });
+
+    function showHideCreditUser() {
+        var category = $('#id_transaction_category option:selected').text();
+        var $user_parent = $('#id_shop_credit_user').parents('div.form-group');
+        if (category == "debit") {
+            $user_parent.show();
+        } else {
+            $user_parent.hide();
+        }
+    }
+
+    function showHideCashBank() {
+        var mode = $('#id_transaction_mode').val();
+        var $bank_parents = $('.bank_item').parents('div.form-group');
+        if (mode == "cash") {
+            $bank_parents.hide();
+            $('#id_payment_to').val('cash_account').change();
+            $('#id_cash_account').parents('div.form-group').show();
+        } else {
+            $bank_parents.show();
+            showHidePaymentModeItems();
+        }
+    }
+
+    function showHidePaymentModeItems() {
+        var transaction_mode = $('#id_transaction_mode').val();
+        if (transaction_mode == "bank") {
+            var mode = $('#id_payment_mode').val();
+            var $cheque_parents = $('.cheque_item').parents('div.form-group');
+            var $card_parents = $('.card_item').parents('div.form-group');
+            if (mode == "cheque_payment") {
+                $cheque_parents.show();
+                $card_parents.hide();
+                $('#id_payment_to').val('bank_account').change();
+                $('#id_cash_account').parents('div.form-group').hide();
+
+            } else if (mode == "card_payment") {
+                $cheque_parents.hide();
+                $card_parents.show();
+                $('#id_payment_to').val('bank_account').change();
+                $('#id_payment_to').parents('div.form-group').hide();
+
+            } else if (mode == "internet_banking") {
+                $card_parents.hide();
+                $cheque_parents.hide();
+                $('#id_payment_to').val('bank_account').change();
+                $('#id_payment_to').parents('div.form-group').hide();
+            }
+
+            showHidePaymentToItems();
+        }
+    }
+
+    function showHidePaymentToItems() {
+        var transaction_mode = $('#id_transaction_mode').val();
+        if (transaction_mode == "bank") {
+            var to = $('#id_payment_to').val();
+            if (to == "bank_account") {
+                $('#id_bank_account').parents('div.form-group').show();
+                $('#id_cash_account').parents('div.form-group').hide();
+            } else {
+                $('#id_cash_account').parents('div.form-group').show();
+                $('#id_bank_account').parents('div.form-group').hide();
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        showHideCreditUser();
+        showHideCashBank();
+        showHidePaymentModeItems();
+        showHidePaymentToItems();
+
+        $('.return_product_check').each(function () {
+            $(this).change();
+        })
+
+        $(document).on('change', '#id_transaction_category', function () {
+            showHideCreditUser();
+        });
+
+        $(document).on('change', '#id_transaction_mode', function () {
+            showHideCashBank();
+        });
+
+        $(document).on('change', '#id_payment_mode', function () {
+            showHidePaymentModeItems();
+        });
+
+        $(document).on('change', '#id_payment_to', function () {
+            showHidePaymentToItems();
+        });
+
+    });
+
+    function showCredit($selector) {
+        var sale = $selector.val();
+        var url = "{% url 'sales:get_customer' %}";
+        if (sale != '' && sale != null) {
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {
+                    id: sale
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var status = data['status'];
+                    var credit = data['credit'];
+                    var debit = data['debit'];
+                    if (status == "true") {
+                        $('#credit').val(credit);
+                        $('#debit').val(debit);
+                    }
+                },
+            });
+        }
+    }
+
+    function getSaleItems($selector) {
+        var id = $selector.val();
+        var url = "{% url 'sales:get_sale_items' %}";
+
+        if (id != '' && id != null) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    var template = data['template'];
+                    var customer = data['customer'];
+                    var total_amount = data['total_amount'];
+                    var special_discount = data['special_discount'];
+                    var customer_name = data['customer_name'];
+
+                    $('#id_sale_total').val(total_amount)
+                    $('#id_special_discount').val(special_discount)
+
+                    if (status == "true") {
+                        $('.product_list_container').html(template);
+                        var options = `<option value="${customer}" selected> ${customer_name} </option>`
+                        $("#id_customer").append(options);
+
+                        calculate();
+
+                    } else {
+                        var nothing_found = "class='text-center p-30'>No Products found</p>";
+                    }
+                },
+                error: function (data) {
+                    remove_popup_box();
+                }
+            });
+        }
+    }
+
+    // $(document).on('change','#id_customer',function(){
+    //     console.log("clicked");
+    //     $('.select2-selection__clear').click();
+    //     $('#id_sale').autocomplete('close').val('');
+    // });
+    $(document).on('change', '#id_sale', function () {
+        var $this = $(this);
+        getSaleItems($this)
+        showCredit($this)
+    });
+
+    var sale = $('#id_sale').val()
+    if (sale == '') {
+        console.log("empty")
+    } else {
+        console.log("Not empty")
+        var $this = $('#id_sale');
+        showCredit($this)
+    }
+
+    $(document).on('change', '.return_product_check', function () {
+        var $this = $(this);
+        var $parent = $this.parents('tr');
+        var qty = $this.attr('data-qty');
+        var unit = $this.attr('data-unit');
+
+        if ($this.is(":checked")) {
+            var input_el = '<input type="text" class="form-control" name="returned_qty" value="' + qty + '" />';
+            var unit_el = '<input type="hidden" name="returned_product_unit" value="' + unit + '">';
+            var status_select = '<select name="status" class="form-control selectpicker"><option value="returnable">Returnable</option><option value="damaged">Damaged</option></select>'
+
+            $parent.find('.sale_return_item_qty').html(input_el);
+            $parent.find('.product_datail').append(unit_el);
+            $parent.find('.sale_return_item_status').html(status_select);
+            $('.selectpicker').selectpicker('refresh');
+            calculate();
+        } else {
+            $parent.find('.sale_return_item_qty').html(qty);
+            $parent.find('.sale_return_item_status').html('Select Status');
+            $parent.find('.product_datail input').remove();
+            calculate();
+        }
+    });
+
+    $(document).on('change, keyup', '.sale_return_item_qty input', function () {
+        calculate();
+    });
+
+    function calculate() {
+        var amount_returned = 0;
+        var return_item_total = 0;
+
+        $('.product_list_container table tr.return_data').each(function () {
+            $this = $(this);
+            if ($this.find('.return_product_check').is(":checked")) {
+                var qty = parseFloat($this.find('.sale_return_item_qty input').val());
+                if (!qty) {
+                    qty = 0;
+                }
+                var purchased_qty = $this.find('.return_product_check').attr('data-qty');
+                if (!purchased_qty) {
+                    purchased_qty = 0;
+                }
+
+                var price = parseFloat($this.find('.product_price').text());
+                if (!price) {
+                    price = 0;
+                }
+
+                var total_cess = $this.find('.return_product_check').attr('data-cess');
+                if (!total_cess) {
+                    total_cess = 0;
+                }
+
+                var tax = parseFloat($this.find('.product_tax').text());
+                if (!tax) {
+                    tax = 0;
+                    var tax_added_price = price
+                } else {
+                    // var tax_added_price = price + (price * tax / 100)
+                    var tax_added_price = price + (tax / purchased_qty) + (total_cess / purchased_qty);
+                }
+                console.log(tax_added_price)
+                subtotal = tax_added_price * qty
+
+                // var discount = parseFloat($this.find('.productsale_discount').text());
+                // if (!discount) {
+                //     discount = 0;
+                // }
+                // var the_amount = ((price * qty) - ((discount / purchased_qty) * qty))
+                // console.log(the_amount)
+                // var tax_added = (the_amount + (the_amount * tax / 100))
+                // console.log(tax_added)
+                // var subtotal = tax_added;
+                return_item_total += subtotal;
+                subtotal = Math.round(subtotal * 100) / 100;
+                $this.find('.sale_return_item_subtotal input').val(subtotal);
+            }
+
+        });
+
+        var credit = $('#credit').val();
+        var debit = $('#debit').val();
+        return_item_total = return_item_total - parseFloat(credit) + parseFloat(debit)
+        return_item_total = Math.round(return_item_total * 100) / 100;
+        $('#sub_total_amount').val(parseFloat(return_item_total));
+        $('#id_returnable_amount').val(parseFloat(return_item_total));
+        if (return_item_total > 0) {
+            amount_returned = return_item_total
+        }
+        amount_returned = Math.round(amount_returned * 100) / 100;
+        $('#id_amount_returned').val(parseFloat(amount_returned));
+    }
+
+</script>
+{{ form.media }}
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <!-- Page Content -->
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="tab-content">
+            <!-- Profile Info Tab -->
+            <div id="emp_profile" class="pro-overview tab-pane fade show active">
+                <div class="row">
+                    <div class="col-md-6 d-flex">
+                        <div class="card profile-box flex-fill">
+                            <div class="card-body">
+
+                                <ul class="personal-info">
+                                    <li>
+                                        <div class="title">User</div>
+                                        <div class="text">{{instance.user|title}}</div>
+                                    </li>
+                                    {% if instance.customer.phone %}
+                                    <li>
+                                        <div class="title">Customer Phone</div>
+                                        <div class="text">{{instance.customer.phone}}</div>
+                                    </li>
+                                    {% endif %}
+                                    <li>
+                                        <div class="title">Customer Email</div>
+                                        <div class="text">{{instance.customer.email}}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Total Amount</div>
+                                        <div class="text" style="font-weight: bold; color: black;">{{instance.total}}
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Profile Info Tab -->
+            {% if items %}
+            <div class="card">
+                <div class="card-header">
+                    <h2>Cart Items</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped table-vmiddle">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product</th>
+                                    <th>Product Variant</th>
+                                    <th>Quatity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in items %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{i.product}}</td>
+                                    <td>{{i.product_variant}}</td>
+                                    <td>{{i.qty}}</td>
+                                    <th>{{i.price}}</th>
+                                    <th>{{i.subtotal}}</th>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <!-- /Page Content -->
+</div>
+<!-- /Page Wrapper -->
+
+{% endblock %}

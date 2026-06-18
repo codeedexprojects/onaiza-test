@@ -1,0 +1,1684 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-05-31 10:37+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: customers/forms.py:29 delivery_agent/forms.py:26 finance/forms.py:63
+#: finance/forms.py:91 finance/forms.py:129 finance/forms.py:157
+#: finance/forms.py:223 finance/forms.py:291 products/forms.py:38
+#: products/forms.py:74 products/forms.py:113 products/forms.py:136
+#: products/forms.py:189 products/forms.py:305 sales/forms.py:129
+#: staffs/forms.py:21 staffs/forms.py:56 staffs/forms.py:111
+#: suppliers/forms.py:39 vendors/forms.py:49 warehouses/forms.py:29
+#: warehouses/forms.py:50 web/forms.py:74 web/forms.py:96
+msgid "Name field is required."
+msgstr ""
+
+#: customers/forms.py:32 delivery_agent/forms.py:29 sales/forms.py:132
+#: staffs/forms.py:59 staffs/forms.py:114 web/forms.py:99
+msgid "Email field is required."
+msgstr ""
+
+#: customers/forms.py:35 delivery_agent/forms.py:32 sales/forms.py:135
+#: staffs/forms.py:62 staffs/forms.py:117 suppliers/forms.py:45
+#: vendors/forms.py:55 web/forms.py:71 web/forms.py:93
+msgid "Phone field is required."
+msgstr ""
+
+#: customers/forms.py:38 delivery_agent/forms.py:35 sales/forms.py:138
+msgid "Addess field is required."
+msgstr ""
+
+#: customers/forms.py:66 customers/forms.py:95
+msgid "minimum_amount field is required."
+msgstr ""
+
+#: customers/forms.py:69
+msgid "value_of_point field is required."
+msgstr ""
+
+#: customers/forms.py:72
+msgid "point_gained_online field is required."
+msgstr ""
+
+#: customers/forms.py:75
+msgid "point_gained_offline field is required."
+msgstr ""
+
+#: customers/forms.py:112
+msgid "Message field is required."
+msgstr ""
+
+#: customers/models.py:98
+msgid "customer"
+msgstr ""
+
+#: customers/models.py:99
+msgid "customers"
+msgstr ""
+
+#: customers/models.py:153
+msgid "OTP Record"
+msgstr ""
+
+#: customers/models.py:154
+msgid "OTP Records"
+msgstr ""
+
+#: customers/models.py:168
+msgid "privilege_point"
+msgstr ""
+
+#: customers/models.py:169
+msgid "privilege_points"
+msgstr ""
+
+#: customers/models.py:191
+msgid "ticket"
+msgstr ""
+
+#: customers/models.py:192
+#, fuzzy
+#| msgid "Tickets"
+msgid "tickets"
+msgstr "ടിക്കറ്റ്"
+
+#: delivery_agent/models.py:32
+msgid "delivery agent"
+msgstr ""
+
+#: delivery_agent/models.py:33
+msgid "delivery agents"
+msgstr ""
+
+#: delivery_agent/models.py:49
+msgid "collected payment"
+msgstr ""
+
+#: delivery_agent/models.py:50
+msgid "collected payments"
+msgstr ""
+
+#: delivery_agent/models.py:63 delivery_agent/models.py:64
+msgid "rating"
+msgstr ""
+
+#: delivery_agent/models.py:94
+#, fuzzy
+#| msgid "Delivery date setting"
+msgid "delivery agent location"
+msgstr ""
+
+#: delivery_agent/models.py:95
+#, fuzzy
+#| msgid "Delivery date setting"
+msgid "delivery agent locations"
+msgstr ""
+
+#: delivery_agent/models.py:116
+msgid "collected payment register"
+msgstr ""
+
+#: delivery_agent/models.py:117
+msgid "collected payments register"
+msgstr ""
+
+#: finance/forms.py:41
+msgid "whole_sale field is required."
+msgstr ""
+
+#: finance/forms.py:44
+msgid "retail_sale field is required."
+msgstr ""
+
+#: finance/forms.py:66 finance/forms.py:226 finance/forms.py:294
+#: finance/forms.py:385 finance/forms.py:434 purchases/forms.py:193
+#: sales/forms.py:206
+msgid "Type field is required."
+msgstr ""
+
+#: finance/forms.py:94
+msgid "Ifsc field is required."
+msgstr ""
+
+#: finance/forms.py:97
+msgid "Branch field is required."
+msgstr ""
+
+#: finance/forms.py:100
+msgid "Account Type field is required."
+msgstr ""
+
+#: finance/forms.py:103
+msgid "Account No field is required."
+msgstr ""
+
+#: finance/forms.py:132
+msgid "Account Group field is required."
+msgstr ""
+
+#: finance/forms.py:319
+msgid "Voucher date field is required."
+msgstr ""
+
+#: finance/forms.py:340
+msgid "Account Head field is required."
+msgstr ""
+
+#: finance/models.py:125
+msgid "Financial Year"
+msgstr ""
+
+#: finance/models.py:126
+msgid "Financial Years"
+msgstr ""
+
+#: finance/models.py:143
+msgid "Invoice Prefix"
+msgstr ""
+
+#: finance/models.py:144
+msgid "Invoice Prefixs"
+msgstr ""
+
+#: finance/models.py:165
+msgid "Account Group"
+msgstr ""
+
+#: finance/models.py:166
+msgid "Account Groups"
+msgstr ""
+
+#: finance/models.py:188
+msgid "Account Head"
+msgstr ""
+
+#: finance/models.py:189
+msgid "Account Heads"
+msgstr ""
+
+#: finance/models.py:212
+msgid "Bank Account"
+msgstr ""
+
+#: finance/models.py:213
+msgid "Bank Accounts"
+msgstr ""
+
+#: finance/models.py:235
+msgid "Subledger Opening"
+msgstr ""
+
+#: finance/models.py:236
+msgid "Subledger Openings"
+msgstr ""
+
+#: finance/models.py:253
+msgid "Account Head Opening"
+msgstr ""
+
+#: finance/models.py:254
+msgid "Account Head Openings"
+msgstr ""
+
+#: finance/models.py:288
+msgid "Payment Voucher"
+msgstr ""
+
+#: finance/models.py:289
+msgid "Payment Vouchers"
+msgstr ""
+
+#: finance/models.py:324
+msgid "Receipt Voucher"
+msgstr ""
+
+#: finance/models.py:325
+msgid "Receipt Vouchers"
+msgstr ""
+
+#: finance/models.py:345
+msgid "Journal Voucher"
+msgstr ""
+
+#: finance/models.py:346
+msgid "Journal Vouchers"
+msgstr ""
+
+#: finance/models.py:375
+msgid "Journal Voucher Item"
+msgstr ""
+
+#: finance/models.py:376
+msgid "Journal Voucher Items"
+msgstr ""
+
+#: finance/models.py:412
+msgid "Credit note Voucher"
+msgstr ""
+
+#: finance/models.py:413
+msgid "Credit note Vouchers"
+msgstr ""
+
+#: finance/models.py:450
+msgid "Debit note Voucher"
+msgstr ""
+
+#: finance/models.py:451
+msgid "Debit note Vouchers"
+msgstr ""
+
+#: general/forms.py:31 general/forms.py:83 general/forms.py:103
+msgid "quantity field is required."
+msgstr ""
+
+#: general/forms.py:34 general/forms.py:86 general/forms.py:106
+msgid "amount field is required."
+msgstr ""
+
+#: general/forms.py:52
+msgid "deal_date field is required."
+msgstr ""
+
+#: general/forms.py:55 offers/forms.py:36 offers/forms.py:64
+msgid "Warehouse field is required."
+msgstr ""
+
+#: general/forms.py:58
+msgid "To Warehouse field is required."
+msgstr ""
+
+#: general/models.py:34
+msgid "general_batch"
+msgstr ""
+
+#: general/models.py:35
+msgid "general_batchs"
+msgstr ""
+
+#: general/models.py:60
+msgid "Damaged Product"
+msgstr ""
+
+#: general/models.py:61
+msgid "Damaged Products"
+msgstr ""
+
+#: general/models.py:84
+msgid "stock_transfer"
+msgstr ""
+
+#: general/models.py:85
+msgid "stock_transfers"
+msgstr ""
+
+#: general/models.py:107
+msgid "stock_transfer_item"
+msgstr ""
+
+#: general/models.py:108
+msgid "stock_transfer_items"
+msgstr ""
+
+#: general/models.py:122
+msgid "charge per kilometer"
+msgstr ""
+
+#: general/models.py:123
+msgid "charges per kilometer"
+msgstr ""
+
+#: general/models.py:140
+msgid "Invoice Design"
+msgstr ""
+
+#: general/models.py:141
+msgid "Invoice Designs"
+msgstr ""
+
+#: general/models.py:157
+msgid "stock_update"
+msgstr ""
+
+#: general/models.py:158
+msgid "stock_updates"
+msgstr ""
+
+#: general/models.py:185
+msgid "stock_update_item"
+msgstr ""
+
+#: general/models.py:186
+msgid "stock_update_items"
+msgstr ""
+
+#: main/forms.py:10 users/forms.py:15 users/forms.py:100 users/forms.py:234
+#: vendors/forms.py:9
+msgid "Username"
+msgstr ""
+
+#: main/forms.py:13
+msgid "Enter username"
+msgstr ""
+
+#: main/forms.py:15 templates/web/profile.html:50 templates/web/profile.html:91
+#: users/forms.py:20 users/forms.py:110
+msgid "Email"
+msgstr ""
+
+#: main/forms.py:18
+msgid "Enter email"
+msgstr ""
+
+#: main/forms.py:20 users/forms.py:25 users/forms.py:120 users/forms.py:244
+#: vendors/forms.py:12
+msgid "Password"
+msgstr ""
+
+#: main/forms.py:22
+msgid "Enter password"
+msgstr ""
+
+#: main/forms.py:24 users/forms.py:29 users/forms.py:129
+msgid "Repeat Password"
+msgstr ""
+
+#: main/forms.py:26
+msgid "Enter password again"
+msgstr ""
+
+#: main/forms.py:34 users/forms.py:40 users/forms.py:158
+msgid "This email address is already in use."
+msgstr ""
+
+#: main/forms.py:36 users/forms.py:43 users/forms.py:162
+#, python-format
+msgid ""
+"Registration using %s email addresses is not allowed. Please supply a "
+"different email address."
+msgstr ""
+
+#: main/forms.py:64 users/forms.py:74 users/forms.py:197
+msgid "A user with that username already exists."
+msgstr ""
+
+#: main/models.py:31 main/models.py:32
+msgid "mode"
+msgstr ""
+
+#: main/models.py:56
+msgid "setting"
+msgstr ""
+
+#: main/models.py:57
+msgid "settings"
+msgstr ""
+
+#: main/models.py:71
+msgid "Application Update"
+msgstr ""
+
+#: main/models.py:72
+msgid "Application Updates"
+msgstr ""
+
+#: offers/forms.py:30 orders/forms.py:38 orders/forms.py:61
+msgid "Start Time field is required."
+msgstr ""
+
+#: offers/forms.py:33 orders/forms.py:41 orders/forms.py:64
+msgid "End Time field is required."
+msgstr ""
+
+#: offers/forms.py:39 offers/forms.py:67
+msgid "Product Variant field is required."
+msgstr ""
+
+#: offers/forms.py:42 offers/forms.py:70
+msgid "Offer Percentage field is required."
+msgstr ""
+
+#: offers/forms.py:61
+msgid "Deal Date field is required."
+msgstr ""
+
+#: offers/forms.py:95
+msgid "Expired field is required."
+msgstr ""
+
+#: offers/forms.py:98
+msgid "Voucher Code field is required."
+msgstr ""
+
+#: offers/forms.py:101 purchases/forms.py:190 sales/forms.py:203
+msgid "Title field is required."
+msgstr ""
+
+#: offers/forms.py:104
+msgid "Description Variant field is required."
+msgstr ""
+
+#: offers/forms.py:107
+msgid "Exclusive field is required."
+msgstr ""
+
+#: offers/forms.py:110 sales/forms.py:86
+msgid "Customer field is required."
+msgstr ""
+
+#: offers/forms.py:113
+msgid "Start time field is required."
+msgstr ""
+
+#: offers/forms.py:116
+msgid "End time field is required."
+msgstr ""
+
+#: offers/forms.py:119
+msgid "Upto Limit field is required."
+msgstr ""
+
+#: offers/models.py:34
+msgid "offer"
+msgstr ""
+
+#: offers/models.py:35
+msgid "offers"
+msgstr ""
+
+#: offers/models.py:50
+msgid "deal_of_day"
+msgstr ""
+
+#: offers/models.py:51
+msgid "deal_of_days"
+msgstr ""
+
+#: offers/models.py:76
+msgid "voucher code"
+msgstr ""
+
+#: offers/models.py:77
+msgid "voucher codes"
+msgstr ""
+
+#: onaiza/settings.py:136
+msgid "Malayalam"
+msgstr ""
+
+#: onaiza/settings.py:137
+msgid "English"
+msgstr ""
+
+#: orders/forms.py:19 orders/forms.py:35 orders/forms.py:58 orders/forms.py:81
+msgid "Day field is required."
+msgstr ""
+
+#: orders/models.py:104
+msgid "Order"
+msgstr ""
+
+#: orders/models.py:105
+msgid "Orders"
+msgstr ""
+
+#: products/forms.py:41
+msgid "Malayalam name field is required."
+msgstr ""
+
+#: products/forms.py:56 products/forms.py:322
+msgid "Unit of Measurement field is required."
+msgstr ""
+
+#: products/forms.py:77 products/forms.py:198 products/forms.py:308
+#: web/forms.py:26
+msgid "Category field is required."
+msgstr ""
+
+#: products/forms.py:94 products/forms.py:269
+msgid "Unit field is required."
+msgstr ""
+
+#: products/forms.py:97
+msgid "Unit Measurement field is required."
+msgstr ""
+
+#: products/forms.py:139
+msgid "Description field is required."
+msgstr ""
+
+#: products/forms.py:142
+msgid "IGST rate field is required."
+msgstr ""
+
+#: products/forms.py:145
+msgid "SGST rate field is required."
+msgstr ""
+
+#: products/forms.py:148
+msgid "CGST rate field is required."
+msgstr ""
+
+#: products/forms.py:151
+msgid "CESS rate field is required."
+msgstr ""
+
+#: products/forms.py:192
+msgid "Vendor type field is required."
+msgstr ""
+
+#: products/forms.py:195
+msgid "Image field is required. "
+msgstr ""
+
+#: products/forms.py:215 products/forms.py:257 products/forms.py:272
+msgid "Image field is required."
+msgstr ""
+
+#: products/forms.py:260 purchases/forms.py:91 purchases/forms.py:150
+#: purchases/forms.py:282 purchases/forms.py:343 sales/forms.py:37
+#: web/forms.py:53
+msgid "Product field is required."
+msgstr ""
+
+#: products/forms.py:263
+msgid "Batch field is required."
+msgstr ""
+
+#: products/forms.py:266
+msgid "Unit_of_measurement field is required."
+msgstr ""
+
+#: products/models.py:33
+msgid "category"
+msgstr ""
+
+#: products/models.py:34
+msgid "categories"
+msgstr ""
+
+#: products/models.py:63
+msgid "Sub category"
+msgstr ""
+
+#: products/models.py:64
+msgid "Sub categories"
+msgstr ""
+
+#: products/models.py:81
+msgid "brand"
+msgstr ""
+
+#: products/models.py:82
+msgid "brands"
+msgstr ""
+
+#: products/models.py:98
+msgid "Unit measurement"
+msgstr ""
+
+#: products/models.py:99
+msgid "Unit measurements"
+msgstr ""
+
+#: products/models.py:116 products/models.py:117
+msgid "Proudct unit"
+msgstr ""
+
+#: products/models.py:139
+msgid "product_hsn_code"
+msgstr ""
+
+#: products/models.py:140
+msgid "product_hsn_codes"
+msgstr ""
+
+#: products/models.py:172
+msgid "product"
+msgstr ""
+
+#: products/models.py:173
+msgid "products"
+msgstr ""
+
+#: products/models.py:223
+msgid "product_variant"
+msgstr ""
+
+#: products/models.py:224
+msgid "product_variants"
+msgstr ""
+
+#: products/models.py:279
+msgid "product_image"
+msgstr ""
+
+#: products/models.py:280
+msgid "product_images"
+msgstr ""
+
+#: products/models.py:298
+msgid "product_stock"
+msgstr ""
+
+#: products/models.py:299
+msgid "product_stocks"
+msgstr ""
+
+#: purchases/forms.py:32 purchases/forms.py:125 purchases/forms.py:223
+#: sales/forms.py:83 staffs/forms.py:148 staffs/forms.py:259
+msgid "Date field is required."
+msgstr ""
+
+#: purchases/forms.py:35 purchases/forms.py:128 purchases/forms.py:226
+msgid "Supplier field is required."
+msgstr ""
+
+#: purchases/forms.py:38 purchases/forms.py:229 sales/forms.py:89
+msgid "Subtotal field is required."
+msgstr ""
+
+#: purchases/forms.py:41 purchases/forms.py:232
+msgid "paid field is required."
+msgstr ""
+
+#: purchases/forms.py:44 purchases/forms.py:235
+msgid "Balance field is required."
+msgstr ""
+
+#: purchases/forms.py:94 purchases/forms.py:285 purchases/forms.py:346
+msgid "Quantity before field is required."
+msgstr ""
+
+#: purchases/forms.py:96 purchases/forms.py:287 purchases/forms.py:348
+msgid "Rate field is required."
+msgstr ""
+
+#: purchases/forms.py:98 purchases/forms.py:289 purchases/forms.py:350
+msgid "Tax field is required."
+msgstr ""
+
+#: purchases/forms.py:100 purchases/forms.py:291 purchases/forms.py:352
+msgid "Tax Amount field is required."
+msgstr ""
+
+#: purchases/forms.py:103 purchases/forms.py:294 purchases/forms.py:355
+msgid "Gross Amount field is required."
+msgstr ""
+
+#: purchases/forms.py:131 sales/forms.py:46 sales/forms.py:92
+msgid "Total field is required."
+msgstr ""
+
+#: purchases/forms.py:153
+msgid "Quantity field is required."
+msgstr ""
+
+#: purchases/forms.py:156 sales/forms.py:43
+msgid "Amount field is required."
+msgstr ""
+
+#: purchases/models.py:43
+msgid "purchase"
+msgstr ""
+
+#: purchases/models.py:44
+msgid "purchases"
+msgstr ""
+
+#: purchases/models.py:97
+msgid "purchase_item"
+msgstr ""
+
+#: purchases/models.py:98
+msgid "purchase_items"
+msgstr ""
+
+#: purchases/models.py:180
+msgid "purchase_order"
+msgstr ""
+
+#: purchases/models.py:181
+msgid "purchase_orders"
+msgstr ""
+
+#: purchases/models.py:235
+msgid "purchase_order_item"
+msgstr ""
+
+#: purchases/models.py:236
+msgid "purchase_order_items"
+msgstr ""
+
+#: sales/forms.py:40
+msgid "Qty field is required."
+msgstr ""
+
+#: sales/models.py:81
+msgid "sale"
+msgstr ""
+
+#: sales/models.py:82
+msgid "sales"
+msgstr ""
+
+#: sales/models.py:283
+msgid "sale item"
+msgstr ""
+
+#: sales/models.py:284
+msgid "sale items"
+msgstr ""
+
+#: sales/models.py:317
+msgid "sale return"
+msgstr ""
+
+#: sales/models.py:318
+msgid "sale returns"
+msgstr ""
+
+#: sales/models.py:395
+msgid "sale return item"
+msgstr ""
+
+#: sales/models.py:396
+msgid "sale return items"
+msgstr ""
+
+#: staffs/forms.py:65 staffs/forms.py:120 suppliers/forms.py:42
+#: vendors/forms.py:52
+msgid "Address field is required."
+msgstr ""
+
+#: staffs/forms.py:68 staffs/forms.py:123
+msgid "Staff Age field is required."
+msgstr ""
+
+#: staffs/forms.py:71 staffs/forms.py:126
+msgid "Salary field is required."
+msgstr ""
+
+#: staffs/forms.py:221 staffs/forms.py:283
+msgid "staff field is required."
+msgstr ""
+
+#: staffs/models.py:58
+msgid "designation"
+msgstr ""
+
+#: staffs/models.py:59
+msgid "designations"
+msgstr ""
+
+#: staffs/models.py:118
+msgid "staff"
+msgstr ""
+
+#: staffs/models.py:119
+msgid "staffs"
+msgstr ""
+
+#: staffs/models.py:160
+msgid "staff_attendance"
+msgstr ""
+
+#: staffs/models.py:161
+msgid "staff_attendances"
+msgstr ""
+
+#: staffs/models.py:186
+msgid "Techpe staff record"
+msgstr ""
+
+#: staffs/models.py:187
+msgid "Techpe staff records"
+msgstr ""
+
+#: staffs/models.py:214
+msgid "salary_pay"
+msgstr ""
+
+#: staffs/models.py:215
+msgid "salary_pays"
+msgstr ""
+
+#: staffs/models.py:245
+msgid "Salary Allowance"
+msgstr ""
+
+#: staffs/models.py:246
+msgid "Salary Allowances"
+msgstr ""
+
+#: suppliers/models.py:84
+msgid "supplier"
+msgstr ""
+
+#: suppliers/models.py:85
+msgid "suppliers"
+msgstr ""
+
+#: templates/registration/activate.html:15
+msgid "Account successfully activated."
+msgstr ""
+
+#: templates/registration/activate.html:15
+msgid "Log in"
+msgstr ""
+
+#: templates/registration/activate.html:17
+msgid "Account activation failed or already activated."
+msgstr ""
+
+#: templates/registration/activation_complete.html:15
+msgid "Your account is now activated."
+msgstr ""
+
+#: templates/registration/activation_email.txt:2
+msgid "Activate account at"
+msgstr ""
+
+#: templates/registration/activation_email.txt:6
+#, python-format
+msgid "Link is valid for %(expiration_days)s days."
+msgstr ""
+
+#: templates/registration/activation_email_subject.txt:1
+msgid "Account activation on"
+msgstr ""
+
+#: templates/registration/password_change_done.html:14
+msgid "Password changed successfully."
+msgstr ""
+
+#: templates/registration/password_change_done.html:14
+#: templates/registration/password_reset_complete.html:14
+msgid "Log in now"
+msgstr ""
+
+#: templates/registration/password_reset_complete.html:14
+msgid "Password reset completed successfully."
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:38
+msgid "Password reset failed"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:2
+#, python-format
+msgid "Reset password at %(app_title)s"
+msgstr ""
+
+#: templates/registration/registration_closed.html:14
+msgid "Registration is currently closed."
+msgstr ""
+
+#: templates/web/category.html:15 templates/web/index.html:342
+#: templates/web/sub-category.html:16
+msgid "Shops"
+msgstr "കടകൾ"
+
+#: templates/web/category.html:47 templates/web/index.html:374
+#: templates/web/sub-category.html:45 templates/web/sub-category.html:142
+msgid "Shop Now"
+msgstr "ഇപ്പോൾ വാങ്ങുക"
+
+#: templates/web/category.html:62 templates/web/sub-category.html:60
+msgid "Products"
+msgstr "ഉൽപ്പന്നങ്ങൾ"
+
+#: templates/web/includes/address-form.html:7 templates/web/payment.html:56
+msgid "Contact Details"
+msgstr "ബന്ധപ്പെടാനുള്ള വിശദാംശങ്ങൾ"
+
+#: templates/web/includes/address-form.html:26 templates/web/payment.html:73
+msgid "Address Details"
+msgstr "വിലാസത്തിന്റെ വിശദാംശങ്ങൾ"
+
+#: templates/web/includes/address-form.html:54 templates/web/payment.html:100
+msgid "Save Address As"
+msgstr "വിലാസം ഇതായി സംരക്ഷിക്കുക"
+
+#: templates/web/includes/address-form.html:59 templates/web/payment.html:105
+msgid "Home"
+msgstr ""
+
+#: templates/web/includes/address-form.html:64 templates/web/payment.html:110
+msgid "Office"
+msgstr ""
+
+#: templates/web/includes/address-form.html:72 templates/web/payment.html:118
+msgid "Use this as my default address"
+msgstr "ഇത് എന്റെ സ്ഥിര വിലാസമായി ഉപയോഗിക്കുക"
+
+#: templates/web/includes/address-form.html:76 templates/web/payment.html:122
+msgid "Save"
+msgstr "രക്ഷിക്കും"
+
+#: templates/web/index.html:63
+msgid "Best Sellers"
+msgstr "നല്ല വിൽപ്പനക്കാർ"
+
+#: templates/web/index.html:310
+msgid "Offers"
+msgstr "ഓഫറുകൾ"
+
+#: templates/web/my-booking.html:10
+msgid "My Booking"
+msgstr "എന്റെ ബുക്കിംഗ്"
+
+#: templates/web/my-booking.html:45
+msgid "Booking Date"
+msgstr "ബുക്കിംഗ് തീയതി"
+
+#: templates/web/my-booking.html:51
+msgid "Pending"
+msgstr "കെട്ടിക്കിടക്കുന്നു"
+
+#: templates/web/my-booking.html:53
+msgid "Confirmed"
+msgstr "സ്ഥിരീകരിച്ചു"
+
+#: templates/web/my-orders.html:11
+msgid "My Oders"
+msgstr "എന്റെ ഉത്തരവുകൾ"
+
+#: templates/web/my-orders.html:24
+msgid "Order ID"
+msgstr "ഓർഡർ ഐഡി"
+
+#: templates/web/my-orders.html:33
+msgid "Order Date"
+msgstr "ഓർഡർ തീയതി"
+
+#: templates/web/my-orders.html:73
+msgid "Delivery expected"
+msgstr "ഡെലിവറി പ്രതീക്ഷിക്കുന്നു"
+
+#: templates/web/my-orders.html:91
+#, fuzzy
+#| msgid "Featured Products"
+msgid "Return Product"
+msgstr "തിരഞ്ഞെടുത്ത ഉൽപ്പന്നം"
+
+#: templates/web/my-orders.html:110
+msgid "Rate & Review Order"
+msgstr "ഓർഡർ റേറ്റുചെയ്യുക, അവലോകനം ചെയ്യുക"
+
+#: templates/web/my-orders.html:117
+msgid "Order Status"
+msgstr "ഓർഡർ നില"
+
+#: templates/web/my-orders.html:178
+msgid "Delivery Address"
+msgstr "ഡെലിവറി വിലാസം"
+
+#: templates/web/my-orders.html:185 templates/web/payment.html:134
+#: templates/web/profile.html:40 templates/web/profile.html:81
+#: templates/web/profile.html:133 templates/web/profile.html:145
+msgid "Address"
+msgstr "വിലാസം"
+
+#: templates/web/my-orders.html:188 templates/web/order-confirmed.html:54
+#: templates/web/profile.html:45 templates/web/profile.html:86
+msgid "Phone"
+msgstr "ഫോൺ"
+
+#: templates/web/my-orders.html:202 templates/web/my-orders.html:322
+#: templates/web/my-orders.html:416
+msgid "Product List"
+msgstr "ഉൽപ്പന്ന ലിസ്റ്റ്"
+
+#: templates/web/my-orders.html:249 templates/web/my-orders.html:294
+msgid "Cancel Order"
+msgstr "ഓർഡർ റദ്ദാക്കാൻ"
+
+#: templates/web/my-orders.html:357
+msgid "Select Reason"
+msgstr "കാരണം തിരഞ്ഞെടുക്കുക"
+
+#: templates/web/my-orders.html:376 templates/web/my-orders.html:496
+msgid "Continue"
+msgstr "തുടരുക"
+
+#: templates/web/my-orders.html:391 templates/web/my-orders.html:457
+msgid "Rate Product"
+msgstr "ഉൽപ്പന്നം റേറ്റ് ചെയ്യുക"
+
+#: templates/web/order-confirmed.html:11
+msgid "Order Confirmed"
+msgstr "ഓർഡർ സ്ഥിരീകരിച്ചു"
+
+#: templates/web/order-confirmed.html:12
+msgid "Your order number"
+msgstr "നിങ്ങളുടെ ഓർഡർ നമ്പർ"
+
+#: templates/web/order-confirmed.html:19
+msgid "IN THIS ORDER"
+msgstr "ഈ ഉത്തരവിൽ"
+
+#: templates/web/order-confirmed.html:51
+msgid "YOU WILL RECIEVE UPDATE ON"
+msgstr "നിങ്ങൾക്ക് അപ്ഡേറ്റ് ലഭിക്കും"
+
+#: templates/web/payment.html:36
+#, fuzzy
+#| msgid "Add Address"
+msgid "Edit Address"
+msgstr "സംരക്ഷിച്ച വിലാസങ്ങൾ"
+
+#: templates/web/payment.html:51
+#, fuzzy
+#| msgid "Add Address"
+msgid "Add New Address"
+msgstr "സംരക്ഷിച്ച വിലാസങ്ങൾ"
+
+#: templates/web/payment.html:135
+msgid "Delivery Time"
+msgstr "വിതരണ സമയം"
+
+#: templates/web/payment.html:136
+#, fuzzy
+#| msgid "Payment Method"
+msgid "Payment"
+msgstr "പണംകൊടുക്കൽരീതി"
+
+#: templates/web/payment.html:145
+msgid "Payment Method"
+msgstr "പണംകൊടുക്കൽരീതി"
+
+#: templates/web/payment.html:166
+msgid "Credit card"
+msgstr "ക്രെഡിറ്റ് കാർഡ്"
+
+#: templates/web/payment.html:179
+msgid "Debit Card"
+msgstr "ഡെബിറ്റ് കാർഡ്"
+
+#: templates/web/payment.html:192
+msgid "Google Pay"
+msgstr "ഗൂഗിൾ പേ"
+
+#: templates/web/payment.html:205
+msgid "Apple Pay"
+msgstr "ആപ്പിൾ പേ"
+
+#: templates/web/payment.html:218
+msgid "Cash On Delivery"
+msgstr "ക്യാഷ് ഓൺ ഡെലിവറി"
+
+#: templates/web/payment.html:228 templates/web/payment.html:350
+#: templates/web/payment.html:498
+msgid "Items"
+msgstr ""
+
+#: templates/web/payment.html:274 templates/web/payment.html:399
+#: templates/web/payment.html:546
+msgid "Order Details"
+msgstr "ഓർഡർ വിശദാംശങ്ങൾ"
+
+#: templates/web/payment.html:278 templates/web/payment.html:403
+#: templates/web/payment.html:550
+#, fuzzy
+#| msgid "Item price"
+msgid "Item Price"
+msgstr "ഇനത്തിന്റെ വില"
+
+#: templates/web/payment.html:282 templates/web/payment.html:407
+#: templates/web/payment.html:554
+#, fuzzy
+#| msgid "Delivery charge"
+msgid "Delivery Charge"
+msgstr "ഡെലിവറി ചാർജ്"
+
+#: templates/web/payment.html:286 templates/web/payment.html:411
+#: templates/web/payment.html:558 templates/web/web_base.html:772
+msgid "Tax"
+msgstr "നികുതി"
+
+#: templates/web/payment.html:290 templates/web/payment.html:415
+#: templates/web/payment.html:562 templates/web/web_base.html:741
+#: templates/web/web_base.html:776
+msgid "Gift Voucher"
+msgstr "സമ്മാന കൂപ്പണ്"
+
+#: templates/web/payment.html:298 templates/web/payment.html:423
+#: templates/web/payment.html:570
+#, fuzzy
+#| msgid "Wallet amount"
+msgid "Wallet Amount"
+msgstr "വാലറ്റ് തുക"
+
+#: templates/web/payment.html:307 templates/web/payment.html:431
+#: templates/web/payment.html:578
+msgid "Proceed"
+msgstr "തുടരുക"
+
+#: templates/web/payment.html:318
+msgid "Delivery date setting"
+msgstr "ഡെലിവറി തീയതി ക്രമീകരണം"
+
+#: templates/web/payment.html:321
+msgid "Date"
+msgstr "തീയതി"
+
+#: templates/web/payment.html:326
+msgid "Choose a time slot"
+msgstr "ഒരു ടൈം സ്ലോട്ട് തിരഞ്ഞെടുക്കുക"
+
+#: templates/web/payment.html:345
+msgid "No time slots available"
+msgstr ""
+
+#: templates/web/payment.html:427 templates/web/payment.html:574
+#: templates/web/web_base.html:792
+msgid "Total"
+msgstr "ആകെ"
+
+#: templates/web/payment.html:439
+msgid "My Addresses"
+msgstr "എന്റെ വിലാസങ്ങൾ"
+
+#: templates/web/payment.html:445
+#, fuzzy
+#| msgid "Save Address As"
+msgid "Saved Addresses"
+msgstr "വിലാസം ഇതായി സംരക്ഷിക്കുക"
+
+#: templates/web/payment.html:448
+msgid "Add Address"
+msgstr "സംരക്ഷിച്ച വിലാസങ്ങൾ"
+
+#: templates/web/payment.html:451
+msgid "Please select a valid address"
+msgstr "സാധുവായ ഒരു വിലാസം തിരഞ്ഞെടുക്കുക"
+
+#: templates/web/payment.html:486
+#, fuzzy
+#| msgid "Delivery Address"
+msgid "Default Address"
+msgstr "ഡെലിവറി വിലാസം"
+
+#: templates/web/profile.html:15 templates/web/profile.html:119
+msgid "Edit Profile"
+msgstr "പ്രൊഫൈൽ എഡിറ്റ് ചെയ്യുക"
+
+#: templates/web/profile.html:36 templates/web/profile.html:76
+msgid "Name"
+msgstr ""
+
+#: templates/web/profile.html:62
+msgid "Profile"
+msgstr "പ്രൊഫൈൽ"
+
+#: templates/web/profile.html:96
+msgid "Privilege Point"
+msgstr ""
+
+#: templates/web/shop-single.html:39
+msgid "Grocery"
+msgstr "പലചരക്ക്"
+
+#: templates/web/shop-single.html:47 templates/web/single-product.html:60
+msgid "Reviews"
+msgstr "അവലോകനങ്ങൾ"
+
+#: templates/web/shop-single.html:100
+msgid "Featured Products"
+msgstr "തിരഞ്ഞെടുത്ത ഉൽപ്പന്നം"
+
+#: templates/web/single-product.html:62
+#, fuzzy
+#| msgid "Reviews"
+msgid "No Reviews"
+msgstr "അവലോകനങ്ങൾ"
+
+#: templates/web/single-product.html:132
+msgid "Quantity"
+msgstr "അളവ്"
+
+#: templates/web/single-product.html:139
+msgid "Go to Cart"
+msgstr ""
+
+#: templates/web/single-product.html:144
+msgid "Add to Cart"
+msgstr ""
+
+#: templates/web/single-product.html:148
+#, fuzzy
+#| msgid "Shop Now"
+msgid "Book Now"
+msgstr "ഇപ്പോൾ വാങ്ങുക"
+
+#: templates/web/single-product.html:186
+msgid "Item Description"
+msgstr "നിങ്ങൾക്ക് അപ്ഡേറ്റ് ലഭിക്കും"
+
+#: templates/web/single-product.html:189
+#, fuzzy
+#| msgid "Reviews"
+msgid "Item Reviews"
+msgstr "അവലോകനങ്ങൾ"
+
+#: templates/web/single-product.html:198
+msgid "General"
+msgstr ""
+
+#: templates/web/single-product.html:211
+msgid "Customer Reviews"
+msgstr "ഉപഭോക്തൃ അവലോകനങ്ങൾ"
+
+#: templates/web/single-product.html:250
+msgid "Load more reviews"
+msgstr "കൂടുതൽ അവലോകനങ്ങൾ ലോഡ് ചെയ്യുക"
+
+#: templates/web/web_base.html:222
+msgid "Support"
+msgstr "പിന്തുണ"
+
+#: templates/web/web_base.html:236 templates/web/web_base.html:1006
+msgid "Contact"
+msgstr "ബന്ധപ്പെടുക"
+
+#: templates/web/web_base.html:247
+msgid "WhatsApp"
+msgstr ""
+
+#: templates/web/web_base.html:258
+msgid "Mail"
+msgstr "മെയിൽ"
+
+#: templates/web/web_base.html:274
+msgid "Choose Pin code"
+msgstr "പിൻ കോഡ് തിരഞ്ഞെടുക്കുക"
+
+#: templates/web/web_base.html:279
+msgid "Select your pincode"
+msgstr "നിങ്ങളുടെ പിൻകോഡ് തിരഞ്ഞെടുക്കുക"
+
+#: templates/web/web_base.html:309
+msgid "Tickets"
+msgstr "ടിക്കറ്റ്"
+
+#: templates/web/web_base.html:459 templates/web/web_base.html:474
+msgid "Sign Up"
+msgstr "സൈൻ അപ്പ് ചെയ്യുക"
+
+#: templates/web/web_base.html:471
+msgid "I agree to the terms and conditions"
+msgstr "നിയമങ്ങളും വ്യവസ്തകളും ഞാന് അംഗീകരിക്കുന്നു"
+
+#: templates/web/web_base.html:475
+msgid "Already have an account"
+msgstr "ഇതിനകം ഒരു അക്കൗണ്ട് ഉണ്ടോ"
+
+#: templates/web/web_base.html:495 templates/web/web_base.html:505
+msgid "Sign In"
+msgstr "സൈൻ ഇൻ"
+
+#: templates/web/web_base.html:506
+msgid "Don't have an account"
+msgstr "ഒരു അക്കൗണ്ട് ഇല്ല"
+
+#: templates/web/web_base.html:507
+#, fuzzy
+#| msgid "Sign Up"
+msgid "Sign up"
+msgstr "സൈൻ അപ്പ് ചെയ്യുക"
+
+#: templates/web/web_base.html:528
+msgid "OTP Verification"
+msgstr "OTP പരിശോധന"
+
+#: templates/web/web_base.html:539
+msgid "Submit"
+msgstr "സമർപ്പിക്കുക"
+
+#: templates/web/web_base.html:540
+msgid "Don't recieve otp"
+msgstr "ഒടിപി ലഭിച്ചില്ല"
+
+#: templates/web/web_base.html:540
+msgid "Resend OTP"
+msgstr "OTP വീണ്ടും അയയ്‌ക്കുക"
+
+#: templates/web/web_base.html:557
+msgid "Successful"
+msgstr "വിജയിച്ചു"
+
+#: templates/web/web_base.html:562
+#, fuzzy
+#| msgid "OTP Varified Successfully"
+msgid "OTP Verified Successfully"
+msgstr "OTP വേരിഫൈ ചെയ്തു"
+
+#: templates/web/web_base.html:568 templates/web/web_base.html:593
+#: templates/web/web_base.html:619 templates/web/web_base.html:645
+msgid "Okay"
+msgstr "ശരി"
+
+#: templates/web/web_base.html:583
+#, fuzzy
+#| msgid "Successful"
+msgid "Successfully Signed Up"
+msgstr "വിജയിച്ചു"
+
+#: templates/web/web_base.html:588
+#, fuzzy
+#| msgid "Sign In"
+msgid "Go To Sign In"
+msgstr "സൈൻ ഇൻ"
+
+#: templates/web/web_base.html:609
+#, fuzzy
+#| msgid "Successful"
+msgid "Resend Successfully"
+msgstr "വിജയിച്ചു"
+
+#: templates/web/web_base.html:614
+#, fuzzy
+#| msgid "Successful"
+msgid "Successfully"
+msgstr "വിജയിച്ചു"
+
+#: templates/web/web_base.html:635
+msgid "Please Select Your Location"
+msgstr "നിങ്ങളുടെ ലൊക്കേഷൻ തിരഞ്ഞെടുക്കുക"
+
+#: templates/web/web_base.html:640
+#, fuzzy
+#| msgid "Choose Pin code"
+msgid "Pincode"
+msgstr "പിൻ കോഡ് തിരഞ്ഞെടുക്കുക"
+
+#: templates/web/web_base.html:656 templates/web/web_base.html:893
+msgid "My Cart"
+msgstr "എന്റെ കാർട്ട്"
+
+#: templates/web/web_base.html:722
+msgid "Wallet Balance"
+msgstr "വാലറ്റ് ബാലൻസ്"
+
+#: templates/web/web_base.html:759
+msgid "Price Details"
+msgstr "വില വിശദാംശങ്ങൾ"
+
+#: templates/web/web_base.html:764
+msgid "Item price"
+msgstr "ഇനത്തിന്റെ വില"
+
+#: templates/web/web_base.html:768
+msgid "Delivery charge"
+msgstr "ഡെലിവറി ചാർജ്"
+
+#: templates/web/web_base.html:784
+msgid "Wallet amount"
+msgstr "വാലറ്റ് തുക"
+
+#: templates/web/web_base.html:802
+msgid "Check Out"
+msgstr "ചെക്ക് ഔട്ട്"
+
+#: templates/web/web_base.html:822
+msgid "Search"
+msgstr "തിരയുക"
+
+#: templates/web/web_base.html:827 templates/web/web_base.html:834
+msgid "HOME"
+msgstr "ഹോം"
+
+#: templates/web/web_base.html:828 templates/web/web_base.html:835
+#| msgid "SHOP"
+msgid "SHOPS"
+msgstr "ഷോപ്പ്"
+
+#: templates/web/web_base.html:829 templates/web/web_base.html:836
+msgid "OFFER"
+msgstr "ഓഫർ"
+
+#: templates/web/web_base.html:892
+msgid "My Profile"
+msgstr "എന്റെ പ്രൊഫൈൽ"
+
+#: templates/web/web_base.html:894
+msgid "My Orders"
+msgstr "എന്റെ ഓർഡറുകൾ"
+
+#: templates/web/web_base.html:895
+#| msgid "My Whishlist"
+msgid "My Wishlist"
+msgstr "എന്റെ വിഷ്‌ലിസ്റ്റ്"
+
+#: templates/web/web_base.html:896
+msgid "My Bookings"
+msgstr "എന്റെ ബുക്കിംഗുകൾ"
+
+#: templates/web/web_base.html:897
+msgid "My Tickets"
+msgstr "എന്റെ ടിക്കറ്റുകൾ"
+
+#: templates/web/web_base.html:899
+msgid "My Location"
+msgstr "എന്റെ ലൊക്കേഷൻ"
+
+#: templates/web/web_base.html:902
+msgid "Logout"
+msgstr "പുറത്തുകടക്കുക"
+
+#: templates/web/web_base.html:904
+msgid "Signup / Login"
+msgstr "ലോഗിൻ / സൈൻ അപ്പ്"
+
+#: templates/web/web_base.html:948
+msgid "Choose Category"
+msgstr "വിഭാഗം തിരഞ്ഞെടുക്കുക"
+
+#: templates/web/web_base.html:997
+#, fuzzy
+#| msgid "Location"
+msgid "Information"
+msgstr "ലൊക്കേഷൻ"
+
+#: templates/web/web_base.html:1010
+msgid "Onaiza Group of company"
+msgstr "ഒനൈസ ഗ്രൂപ്പ് ഓഫ് കമ്പനി"
+
+#: templates/web/web_base.html:1011
+msgid "Trivandrum"
+msgstr "തിരുവനന്തപുരം"
+
+#: templates/web/web_base.html:1016
+msgid "Social"
+msgstr "സാമൂഹിക"
+
+#: templates/web/whishlist.html:10
+msgid "My Whishlist"
+msgstr "എന്റെ വിഷ്‌ലിസ്റ്റ്"
+
+#: templates/web/whishlist.html:87
+msgid "Your wishlist is empty"
+msgstr ""
+
+#: users/forms.py:182
+msgid "Password Mismatch."
+msgstr ""
+
+#: users/forms.py:211
+msgid "A user with that phone number already exists."
+msgstr ""
+
+#: users/models.py:44
+msgid "Registration Profile"
+msgstr ""
+
+#: users/models.py:45
+msgid "Registration Profiles"
+msgstr ""
+
+#: users/models.py:72
+msgid "user login"
+msgstr ""
+
+#: users/models.py:73
+msgid "user logins"
+msgstr ""
+
+#: users/models.py:87
+msgid "permission"
+msgstr ""
+
+#: users/models.py:88
+msgid "permissions"
+msgstr ""
+
+#: users/models.py:106
+msgid "wishlist item"
+msgstr ""
+
+#: users/models.py:107
+msgid "wishlist items"
+msgstr ""
+
+#: users/models.py:126
+msgid "cart item"
+msgstr ""
+
+#: users/models.py:127
+msgid "cart items"
+msgstr ""
+
+#: users/models.py:153
+#, fuzzy
+#| msgid "Location"
+msgid "notification"
+msgstr "ലൊക്കേഷൻ"
+
+#: users/models.py:154
+#, fuzzy
+#| msgid "Location"
+msgid "notifications"
+msgstr "ലൊക്കേഷൻ"
+
+#: users/models.py:170
+msgid "notification subject"
+msgstr ""
+
+#: users/models.py:171
+msgid "notification subjects"
+msgstr ""
+
+#: vendors/models.py:102
+msgid "vendor"
+msgstr ""
+
+#: vendors/models.py:103
+msgid "vendors"
+msgstr ""
+
+#: vendors/models.py:127
+msgid "vendors_commition"
+msgstr ""
+
+#: vendors/models.py:128
+msgid "vendors_commitions"
+msgstr ""
+
+#: warehouses/forms.py:32
+msgid "Location field is required."
+msgstr ""
+
+#: warehouses/forms.py:53
+msgid "Pincode field is required."
+msgstr ""
+
+#: warehouses/models.py:66 warehouses/models.py:67
+msgid "Warehouse"
+msgstr ""
+
+#: warehouses/models.py:83 warehouses/models.py:84
+msgid "Location"
+msgstr "ലൊക്കേഷൻ"
+
+#: web/models.py:44
+msgid "Feautured Category"
+msgstr ""
+
+#: web/models.py:45
+msgid "Feautured Categories"
+msgstr ""
+
+#: web/models.py:64
+msgid "Trending Category"
+msgstr ""
+
+#: web/models.py:65
+msgid "Trending Categories"
+msgstr ""
+
+#: web/models.py:80
+msgid "review"
+msgstr ""
+
+#: web/models.py:81
+#, fuzzy
+#| msgid "Reviews"
+msgid "reviews"
+msgstr "അവലോകനങ്ങൾ"
+
+#: web/models.py:97
+#, fuzzy
+#| msgid "Product List"
+msgid "product return"
+msgstr "ഉൽപ്പന്ന ലിസ്റ്റ്"
+
+#: web/models.py:98
+#, fuzzy
+#| msgid "Products"
+msgid "product returns"
+msgstr "ഉൽപ്പന്നങ്ങൾ"
+
+#: web/models.py:118 web/models.py:119
+msgid "spotlight banner"
+msgstr ""
+
+#~ msgid "Great Products at a"
+#~ msgstr "നിങ്ങൾ ഇഷ്ടപ്പെടുന്ന വിലയിൽ"
+
+#~ msgid "Price You'll love!"
+#~ msgstr "മികച്ച ഉൽപ്പന്നങ്ങൾ"
+
+#~ msgid "Cancel"
+#~ msgstr "റദ്ദാക്കുക"
+
+#~ msgid "Apply"
+#~ msgstr "അപേക്ഷിക്കുക"
+
+#~ msgid "Applied"
+#~ msgstr "അപേക്ഷിച്ചു"
+
+#~ msgid "Fruits"
+#~ msgstr "പഴങ്ങൾ"
+
+#~ msgid "Near by Shops"
+#~ msgstr "അടുത്തുള്ള കടകൾ"
+
+#~ msgid "Change Password"
+#~ msgstr "പാസ്വേഡ് മാറ്റുക"

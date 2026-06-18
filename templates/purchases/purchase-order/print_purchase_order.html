@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load main_template_tags %}
+
+<head>
+	<meta charset="utf-8" />
+	<title>{{title}}</title>
+	<link rel="stylesheet" href="{% static 'css/invoice_css/style.css' %}" />
+	<meta name="viewport" content="width=device-width" initial-scale="1.0" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<!--
+		<script src="js/jquery.min.js" type="text/javascript"></script>
+		<script src="js/script.js" type="text/javascript"></script> -->
+	<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+	<script src="{% static 'js/invoice_js/jquery.min.js' %}" type="text/javascript"></script>
+	<script src="{% static 'js/invoice_js/script.js' %}" type="text/javascript"></script>
+</head>
+
+<body>
+	<section id="gst-tax-invoice">
+		<section class="outer-module">
+			<div class="top-module">
+				<!-- <div class="left">
+						<h1><img src="{% static 'img/hghgh.jpg' %}" alt="image" /></h1>
+					</div> -->
+				<!-- <div class="right">
+						<div class="box">
+							<h1>PURCHASE BILL</h1>
+						</div>
+					</div> -->
+				<br class="clear" />
+			</div>
+			<div class="invoice">
+				<table>
+					<tr class="head">
+						<th colspan="14">PURCHASE ORDER</th>
+					</tr>
+					<tr>
+						<td rowspan="4" colspan="6">
+							<p class="bld">4AN Online Supermarket</p>
+							<p>Email : test@4anonlinegroceryshop.com</p>
+							<p>Ph : 8129253202</p>
+						</td>
+						<td colspan="2">Date</td>
+						<td colspan="2">{{instance.date|date:"d/m/Y"}}</td>
+						<td colspan="2">Order No.</td>
+						<td colspan="2">{{instance.auto_id}}</td>
+					</tr>
+					<tr>
+						<td colspan="2">Supplier</td>
+						<td colspan="2">{{instance.vendor}}</td>
+						<td colspan="2">Order ID.</td>
+						<td colspan="2">{{instance.order_id}}</td>
+					</tr>
+					<tr>
+						<td colspan="2">Supplier Phone</td>
+						<td colspan="2">{{ instance.vendor.phone|default:'-' }}</td>
+						<td colspan="2">Supplier Mail</td>
+						<td colspan="2">{{ instance.vendor.email|default:'-' }}</td>
+					</tr>
+					<tr>
+						<td colspan="2">Supplier Address</td>
+						<td colspan="2">{{ instance.vendor.address|default:'-' }}</td>
+						<td colspan="2">Supplier GSTIN</td>
+						<td colspan="2">{{ instance.vendor.gst_number|default:'-' }}</td>
+					</tr>
+					{% if purchase_items %}
+					<tr class="sub-title t-a-c">
+						<th class="bld" rowspan="2">Sl No.</th>
+						<th class="bld" rowspan="2">Items <br>Size/Model</th>
+						<th class="bld" rowspan="2">Variant</th>
+						<th class="bld" rowspan="2">HSN <br>Code</th>
+						<th class="bld" rowspan="2">Unit <br>Price</th>
+						<th class="bld" rowspan="2">QTY</th>
+						<th class="bld" rowspan="2">Amount</th>
+						<th class="bld" colspan="2">CGST</th>
+						<th class="bld" colspan="2">SGST/UGST</th>
+						<th class="bld" colspan="2">IGST</th>
+						<th class="bld" rowspan="2">Total</th>
+					</tr>
+					<tr class="t-a-c">
+						<td class="bld">Rate%</td>
+						<td class="bld">Amt</td>
+						<td class="bld">Rate%</td>
+						<td class="bld">Amt</td>
+						<td class="bld">Rate%</td>
+						<td class="bld">Amt</td>
+					</tr>
+					{% for i in purchase_items %}
+					<tr>
+						<td>{{ forloop.counter }}</td>
+						<td>{{i.product}}</td>
+						{% if i.product_variant %}
+						<td>{{i.product_variant}}</td>
+						{% else %}
+						<td>{{i.product.unit_type}}</td>
+						{% endif %}
+						<td>{{i.hsn}}</td>
+						<td>{{i.amount }}</td>
+						<td>{{i.quantity}}</td>
+						<td>{{i.subtotal}}</td>
+						{% if purchase_category == "intra_state" %}
+						<td>{{i.tax|default:0|tax_devide}}</td>
+						<td class="cgst">{{i.tax_amount|default:0|tax_devide}}</td>
+						<td>{{i.tax|default:0|tax_devide}}</td>
+						<td class="sgst">{{i.tax_amount|default:0|tax_devide}}</td>
+						{% else %}
+						<td>0</td>
+						<td class="cgst">0</td>
+						<td>0</td>
+						<td class="sgst">0</td>
+						{% endif %}
+
+						{% if purchase_category == "inter_state" %}
+						<td>{{i.tax}}</td>
+						<td class="igst">{{i.tax_amount}}</td>
+						{% else %}
+						<td>0</td>
+						<td class="igst">0</td>
+						{% endif %}
+						<td>{{i.total}}</td>
+					</tr>
+					{% endfor %}
+					{% endif %}
+					<tr>
+						<td class="bld" colspan="5">Total:{{instance.subtotal}}</td>
+						<td>xxxx</td>
+						<td></td>
+						<td></td>
+						<td>xxxx</td>
+						<td></td>
+						<td>xxxx</td>
+						<td></td>
+						<td>xxxx</td>
+						<td>{{instance.subtotal}}</td>
+					</tr>
+					<tr>
+						<td colspan="9"></td>
+						<td class="t-a-r" colspan="3">Total:</td>
+						<td colspan="2">{{instance.subtotal}}</td>
+					</tr>
+					<tr>
+						<td colspan="9"></td>
+						<td class="t-a-r" colspan="3">Round Off:</td>
+						<td colspan="2">{{instance.round_off}}</td>
+					</tr>
+					<tr>
+						<td colspan="9"></td>
+						<td class="t-a-r" colspan="3">Grand Total:</td>
+						<td colspan="2">{{total_amount}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="lower-module">
+				<div class="inner-module one">
+					<div class="left">
+						<p>Bank:- <span>Federal Bank</span></p>
+						<p>Branch:- <span>Pothencode</span></p>
+						<p>A/C No.:- <span>14390200002896</span></p>
+						<p>IFSC Code:- <span>FDRL0001439</span></p>
+					</div>
+					<div class="right">
+						<h3>4AN Online Supermarket</h3>
+						<div class="sign"></div>
+						<p>(Authorized Signatory)</p>
+					</div>
+					<br class="clear" />
+					<p>Customer Support Phone: <span>8129253202</span> | Email:
+						<span>test@4anonlinegroceryshop.com</span></p>
+				</div>
+				<div class="inner-module">
+					<p><span>Cash on Delivery:</span> please pay remaining amount to the sales representative before
+						unloading the materials.</p>
+					<p><span>Return Policy:</span> We try to deliver perfectly each and every time. But in case you need
+						to return the item, please do so with the original packing, tags & invoice without which it will
+						be really difficult for us to act on your request, please help us in helping you.</p>
+					<p><span>If Repurchasing any:</span> please contact our company we always ready to serve you at best
+						price.</p>
+				</div>
+			</div>
+			<p class="p">* Terms & Conditions apply</p>
+		</section>
+	</section>
+</body>
+
+</html>

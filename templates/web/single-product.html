@@ -1,0 +1,430 @@
+{% extends "web/web_base.html" %}
+
+{% load static %}
+{% load i18n %}
+
+{% load web_template_tags %}
+{% block content %}
+
+<div id="single-product" class="{{ product_variant.pk }}">
+    <div class="wrapper">
+        <div class="container-s">
+            {% if images %}
+            <div class="left-box-multiple-images gallery-parent">
+                <div class="swiper-container gallery-top">
+                    <div class="swiper-wrapper">
+                        {% for i in images %}
+                        <div class="swiper-slide easyzoom easyzoom--overlay">
+                            <a href="{{ i.image.url }}">
+                                <img src="{{ i.image.url }}" alt="Swiper" />
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Add Arrows -->
+                    <!-- <div class="swiper-button-next swiper-button-white"></div>
+                    <div class="swiper-button-prev swiper-button-white"></div> -->
+                </div>
+                <div class="swiper-container gallery-thumbs">
+                    <div class="swiper-wrapper">
+                        {% for i in images %}
+                        <div class="swiper-slide">
+                            <div class="thumbs-img-box">
+                                <img src="{{i.image.thumbnail.400x400 }}" alt="Swiper" />
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% elif product_variant.image %}
+            <div class="left-box ">
+                <div class="left-box-single-pic easyzoom easyzoom--overlay">
+                    <a href="{{ product_variant.image.url }}">
+                        <img src="{{product_variant.image.url}}" />
+                    </a>
+                </div>
+            </div>
+
+            {% else %}
+            <div class="left-box">
+                <img id="myimage" src="{% static 'web/images/placeholder.jpg' %}" style="width:40%;" />
+            </div>
+
+            {% endif %}
+
+            <div class="right-box">
+                <div class="top">
+                    <div class="left-card">
+                        {% if review_count > 0 %}
+                        <span class="zmdi zmdi-star"></span><small>{{product_variant.current_rating|floatformat:"1"}} ({% trans "Reviews" %} {{review_count}})</small>
+                        {% else %}
+                        <span class="zmdi zmdi-star"></span><small>{% trans "No Reviews" %}</small>
+                        {% endif %}
+                    </div>
+                    <div class="right-card">
+                        <span class="wishlist" id="{{ product_variant.pk }}">
+
+                            <button class="{% if not auth_status %}proceed_to_login {% endif %}" data-id="add-to-wishlist" id="wish-empty" data-pk="{{ product_variant.pk }}" href="{% url 'web:add_to_wishlist' %}" data-toggle="tooltip" title="Wish List" type="button" style="cursor: pointer;">
+                                <img data-path-empty="{% static 'web/images/icons/wish-list-empty.svg' %}" data-path="{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %}"
+                                    src="{% if product_variant.pk in wishlist_items %}{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %} {% else %} {% static 'web/images/icons/wish-list-empty.svg' %}{% endif %}" />
+
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="content">
+                    <h4 class="product-name">
+                        {% get_english_or_malayalam product_variant.pk 'product' language_code as PRODUCT %}
+                        {{PRODUCT.name}}
+                    </h4>
+
+                    <div class style="display: flex">
+                        {% if product_variant.offer_price %}
+                            {% if product_variant.offer_price < product_variant.retail_price %}
+                            <h5 class="product-mrp product-mrp"><span class="rupees-symbol"> ₹ </span>{{product_variant.offer_price}} /-</h5>
+                            <h5 style="margin-left: 10px; text-decoration:line-through;" class="product-mrp"><span class="rupees-symbol">₹ </span>{{product_variant.retail_price}} /-</h5>
+                            {% else %}
+                            <h5 class="product-mrp "><span class="rupees-symbol">₹ </span>{{product_variant.retail_price}} /-</h5>
+                            {% endif %}
+                        {% elif instance %}
+                            {% if instance.retail_price < instance.mrp %}
+                            <h5 class="product-mrp product-mrp"><span class="rupees-symbol"> ₹ </span>{{instance.retail_price}} /-</h5>
+                            <h5 style="margin-left: 10px; text-decoration:line-through;" class="product-mrp"><span class="rupees-symbol">₹ </span>{{instance.mrp}} /-</h5>
+                            {% else %}
+                            <h5 class="product-mrp "><span class="rupees-symbol">₹ </span>{{instance.mrp}} /-</h5>
+                            {% endif %}
+                        {% else %}
+                            {% if product_variant.retail_price < product_variant.mrp %}
+                                <h5 class="product-mrp product-mrp"><span class="rupees-symbol"> ₹ </span>{{product_variant.retail_price}} /-</h5>
+                                <h5 style="margin-left: 10px; text-decoration:line-through;" class="product-cross-mrp"><span class="rupees-symbol">₹ </span>{{product_variant.mrp}} /-</h5>
+                            {% else %}
+                                <h5 class="product-mrp"><span class="rupees-symbol">₹ </span>{{product_variant.mrp}} /-</h5>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    <p class="product-description">
+                        {{PRODUCT.description}}
+                    </p>
+                    <div class="nb">
+                        <p class="product-nb">NB: <span> {{product_variant.product.meta_description}}</span></p>
+                    </div>
+                </div>
+
+                {% if request.user.is_authenticated %}
+                <div class="bottom">
+                    <div class="custom-select">
+                        <select>
+                            <option value="{{product_variant.pk}}" id="{{product_variant.pk}}" data-goto="{% url 'web:product' product_variant.pk %}" data-url="{% url 'web:product_variant_switch' %}" selected>
+                                {% get_english_or_malayalam product_variant.pk 'product' language_code as PRODUCT %}
+                                {{PRODUCT.name}}
+                            </option>
+                            {% for v in variants %}
+                            <option value="{{v.pk}}" class="{{v.pk}}" data-goto="{% url 'web:product' v.pk %}" data-url="{% url 'web:product_variant_switch' %}">
+                                {% get_english_or_malayalam v.pk 'product' language_code as PRODUCT %}
+                                {{PRODUCT.name}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="quantity none {% if product_variant.pk in is_cart %} flex {% endif %}">
+                        <h5>{% trans "Quantity" %}</h5>
+
+                        <input id="minus" type="button" class="minus QuantityButton" value="-" data-pk="{{ product_variant.pk }}" href="{% url 'web:decrement_cart' %}" />
+                        <input id="theInput" type="text" size="1" class="input-text qty text" title="Qty" value="{% get_cart_count product_variant.pk request.user %}" min="0" step="1" disabled />
+                        <input id="plus" type="button" class="plus QuantityButton" value="+" data-pk="{{ product_variant.pk }}" href="{% url 'web:increment_cart' %}" />
+                    </div>
+                    <div class="apply my-cart {% if product_variant.pk in is_cart %} block{% else %} none{% endif %}">
+                        <button type="button" style="cursor: pointer;"  data-pk="{{product_variant.pk}}" href="#"><span class="zmdi zmdi-shopping-cart"></span>{% trans "Go to Cart" %}</button>
+                    </div>
+                    {% is_stock product_variant.pk pincode_session as stock %}
+
+                    <div class="apply apply-cart {% if product_variant.pk in is_cart %} none {% endif %} {% if not stock %} none {% endif %}">
+                        <button type="button" style="cursor: pointer;" class="add-to-cart" data-pk="{{product_variant.pk}}" href="{% url 'web:add_to_cart' %}"><span class="zmdi zmdi-shopping-cart"></span>{% trans "Add to Cart" %}</button>
+                    </div>
+
+                    <div class="apply book-now-button none {% if not stock and product_variant.pk not in is_cart %} flex {% endif %}">
+                        <button type="button" style="cursor: pointer;" class="bookNowButton" data-pk="{{product_variant.pk}}" data-url="{% url 'web:book_product' %}"><span class="zmdi zmdi-calendar-note"></span>{% trans "Book Now" %}</button>
+                    </div>
+
+                      <!-- Use a button to open the snackbar -->
+                    <!-- <button class="snack-btn" data-message="You are already booked">Show Snackbar</button> -->
+                </div>
+                {% endif %}
+                {% if not request.user.is_authenticated %}
+                <div class="bottom">
+                    <!-- added nov 9 -->
+                    <div class="custom-select">
+                        <select>
+                            <option value="{{product_variant.pk}}" id="{{product_variant.pk}}" data-goto="{% url 'web:product' product_variant.pk %}" data-url="{% url 'web:product_variant_switch' %}" selected>
+                                {% get_english_or_malayalam product_variant.pk 'product' language_code as PRODUCT %}
+                                {{PRODUCT.name}}
+                            </option>
+                            {% for v in variants %}
+                            <option value="{{v.pk}}" class="{{v.pk}}" data-goto="{% url 'web:product' v.pk %}" data-url="{% url 'web:product_variant_switch' %}">
+                                {% get_english_or_malayalam v.pk 'product' language_code as PRODUCT %}
+                                {{PRODUCT.name}}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div><!-- #single-product -->
+</div>
+
+<div id="review-list">
+    <div class="wrapper">
+        <div class="main">
+            <div class="tab">
+                <div class="tab1 active common">
+                    <h6>{% trans "Item Description" %}</h6>
+                </div>
+                <div class="tab2 common">
+                    <h6>{% trans "Item Reviews" %} ({{review_count}})</h6>
+                </div>
+            </div>
+            <div class="describtion">
+                <div class="detail">
+                    <h5>{{instance.title}}</h5>
+                    <p>{{instance.product.description}}</p>
+                </div>
+                <div class="contemt">
+                    <h5>{% trans "General" %}</h5>
+                    <div class="general">
+                        <p>Brand<span>{{product_variant.brand}}</span></p>
+                        <p>Quantity<span>{{product_variant.unit_of_measurement}}</span></p>
+                        <p>Type<span>{{product_variant.product.name}}</span></p>
+                        <p>Form Factor<span>Whole</span></p>
+                        <p>Organic <span> Yes</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews">
+                {% if review_count != 0 %}
+                <h5>{% trans "Customer Reviews" %} ({{review_count}})</h5>
+
+                <div class="cards">
+                    {% for i in review_instances %}
+                    <div class="card">
+                        <div class="left-box">
+                            {% get_pro_pic i.creator as image %}
+
+                            {% if not image %}
+                            <img src="{% static 'web/images/deliver-vector.png' %}" alt="Image" />
+                            {% else %}
+                            <img src="{{image}}" alt="Image" />
+                            {% endif %}
+
+                        </div>
+                        <div class="right-box">
+                            <div class="top-c">
+                                <h4>{% get_name i.creator %}</h4>
+                                <div class="date">
+                                    <span>{{i.date_updated}}</span>
+                                    <div class="review-c">
+                                        <small class="zmdi zmdi-star"></small><span>{{i.rating}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if i.review %}
+                            <div class="bottom-c">
+                                <p>
+                                    {{i.review}}
+                                </p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+                {% if review_instances %}
+                <div class="load">
+                    <button>{% trans "Load more reviews" %}</button>
+                </div>
+                {% endif %}
+                {% else %}
+            <h3>No Reviews</h3>
+            {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div><!-- #review-list -->
+
+
+<section class="boxitems slideritem arrow-icons" id="grocery" style="padding-bottom: 100px;">
+    <section class="wrapper">
+
+        <div class="top">
+            <h1>Related Products</h1>
+        </div>
+        <div class="grocery-main">
+            <div class="left-arrow">
+                <button aria-label="Previous" class="slick-prev slick-arrow" style="display: inline-block;" type="button">
+                    <span class="zmdi zmdi-chevron-left"></span>
+                </button>
+            </div>
+
+            <div class="cards" id="slick-slider-two">
+            {% for prod in related_products %}
+            <div class="item">
+                <span class="wishlist" id="{{ prod.pk }}">
+
+                    <button data-id="add-to-wishlist" data-pk="{{ prod.pk }}" title="Wish List" type="button"
+                        class="{% if not auth_status %}proceed_to_login {% endif %}" data-toggle="tooltip"
+                        href="{% url 'web:add_to_wishlist' %}" id="wish-empty" style="cursor: pointer;" >
+                            <img data-path="{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %}"
+                                data-path-empty="{% static 'web/images/icons/wish-list-empty.svg' %}"
+                                {% if prod.pk in wishlist_items %}
+                                src="{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %}" {% else %}
+                                src="{% static 'web/images/icons/wish-list-empty.svg' %}" {% endif %}/>
+                    </button>
+                </span>
+                <div class="item-img">
+                    <a href="{% url 'web:product' pk=prod.pk %}">
+                        {% if prod.image %}
+                        <img src="{{prod.image.thumbnail.200x200}}" />
+                        {% else %}
+                        <img src="{% static 'web/images/placeholder.jpg' %}" style="width:200px;" />
+                        {% endif %}
+                    </a>
+                </div>
+                <a href="{% url 'web:product' pk=prod.pk %}">
+                    <h1>{{ prod }}</h1>
+                </a>
+                <div class=item-bottom>
+                    <div class="box">
+                        <div style="display: flex">
+                            <h2 style="margin-right: 10px;"><span class="rupees-symbol">₹ </span>{{prod.retail_price}}</h2>
+                            {% if prod.retail_price < prod.mrp %}
+                            <h2 class="text-decoration-underline">{{prod.mrp}}</h2>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span class="rating">
+                        <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}" />
+                        <h4>{{prod.current_rating|floatformat:"1"}}</h4>
+                    </span>
+
+                    {% if pincode_session %}
+                    {% if not prod.pk in is_cart %}
+                    <div class="cart">
+                        <a class="add-to-cart-button {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ prod.pk }}" data-url="" href="{% url 'web:add_to_cart' %}" data-image="{% static 'web/images/icons/cart-added-Icon.svg' %}">
+                        <img class=""  src="{% static 'web/images/icons/add-to-cart-2.svg' %}" />
+                        </a>
+                    </div>
+
+                    {% else %}
+                    <div class="added-cart" style="background: none;">
+                        <a class=" {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ prod.pk }}" data-url="" href="javascript:void(0)">
+                        <img class="" src="{% static 'web/images/icons/cart-added-Icon.svg' %}" />
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+            </div>
+
+            <div class="right-arrow">
+                <button aria-label="Next" class="slick-next slick-arrow" style="display: inline-block;" type="button">
+                    <span class="zmdi zmdi-chevron-right"></span>
+                </button>
+            </div>
+        </div><!-- #category -->
+
+    </section>
+</section>
+
+{% endblock content %}
+
+{% block static %}
+<script>
+    function slide(direction) {
+        var container = document.getElementById('HorizondelScrollingCard');
+        scrollCompleted = 0;
+        var slideVar = setInterval(function () {
+            if (direction == 'left') {
+                container.scrollLeft -= 10;
+            } else {
+                container.scrollLeft += 10;
+            }
+            scrollCompleted += 10;
+            if (scrollCompleted >= 100) {
+                window.clearInterval(slideVar);
+            }
+        }, 50);
+    }
+
+    // Swiper
+    $('.gallery-parent').each(function () {
+    // We finding any "gallery-parent" and find child with class "gallery-top" and "gallery-thumbs" for multiple using plugin
+    let thumbs = $(this).children('.gallery-thumbs'),
+        top = $(this).children('.gallery-top');
+
+    // activation carousel plugin
+    let galleryThumbs = new Swiper(thumbs, {
+        spaceBetween: 5,
+        autoplay: {
+         delay: 5000,
+        },
+        freeMode: true,
+        watchSlidesVisibility: true,
+        watchSlidesProgress: true,
+        // autoHeight: true,
+        slidesPerView:4,
+        breakpoints: {
+        0: {
+            slidesPerView: 3,
+        },
+        992: {
+            // slidesPerView: 4,
+        },
+        },
+    });
+    let galleryTop = new Swiper(top, {
+        spaceBetween: 5,
+        slidesPerView:1,
+
+        // navigation: {
+        // nextEl: '.swiper-button-next',
+        // prevEl: '.swiper-button-prev',
+        // },
+        thumbs: {
+            swiper: galleryThumbs,
+        },
+    });
+
+    // change carousel item height
+    // gallery-top
+    let productCarouselTopWidth = top.outerWidth();
+    top.css('height', productCarouselTopWidth);
+
+    // gallery-thumbs
+    let productCarouselThumbsItemWith = thumbs.find('.swiper-slide').outerWidth();
+    thumbs.css('height', productCarouselThumbsItemWith);
+    });
+
+    // const instance_swiper = new Swiper(".gallery-thumbs .swiper-slide", {
+    // on: {
+    //     slideChange: function () {
+    //     const index_currentSlide = instance_swiper.realIndex;
+    //     const currentSlide = instance_swiper.slides[index_currentSlide]
+    //     //
+    //     currentSlide.style.background = "red";
+    //     },
+    // },
+    // });
+
+    // activation zoom plugin
+    let $easyzoom = $('.easyzoom').easyZoom();
+</script>
+{% endblock static %}

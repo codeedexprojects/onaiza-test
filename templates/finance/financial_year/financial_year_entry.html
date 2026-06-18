@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form class="ajax reset {% if redirect %}redirect{% endif %}" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <div class="row">
+
+
+
+                            <div class="col-sm-3">
+                                <div class="form-group fg-line">
+                                    <label for="{{ form.start_date.id_for_label }}">
+                                        {{ form.start_date.label }}
+                                        {% if form.start_date.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+                                        {% if form.start_date.help_text %}
+                                        <span data-original-title="Field Info" title=""
+                                            data-content="{{ form.start_date.help_text }}" data-placement="left"
+                                            data-toggle="popover" data-trigger="hover"
+                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                        {% endif %}
+                                    </label>
+                                    {% if is_create_page %}
+                                    <input id="{{ form.start_date.id_for_label }}" type="text"
+                                        class="required form-control date-picker-dd"
+                                        name="{{form.start_date.html_name}}" placeholder="Enter Start date">
+                                    {% else %}
+                                    <input id="{{ form.start_date.id_for_label }}" type="text"
+                                        class="required form-control date-picker-dd"
+                                        name="{{form.start_date.html_name}}" placeholder="Enter Start date"
+                                        value="{{ form.start_date.value|date:'d/m/Y' }}">
+                                    {% endif %}
+                                    {% if form.start_date.errors %}
+                                    <label class="error">{{ form.start_date.errors.as_text }}</label>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group fg-line">
+                                    <label for="{{ form.end_date.id_for_label }}">
+                                        {{ form.end_date.label }}
+                                        {% if form.end_date.field.required %}
+                                        <small class="star">*</small>
+                                        {% endif %}
+                                        {% if form.end_date.help_text %}
+                                        <span data-original-title="Field Info" title=""
+                                            data-content="{{ form.end_date.help_text }}" data-placement="left"
+                                            data-toggle="popover" data-trigger="hover"
+                                            class="help-text-icon zmdi zmdi-info-outline"></span>
+                                        {% endif %}
+                                    </label>
+                                    {% if is_create_page %}
+                                    <input id="{{ form.end_date.id_for_label }}" type="text"
+                                        class="required form-control date-picker-dd" name="{{form.end_date.html_name}}"
+                                        placeholder="Enter End date">
+                                    {% else %}
+                                    <input id="{{ form.end_date.id_for_label }}" type="text"
+                                        class="required form-control date-picker-dd" name="{{form.end_date.html_name}}"
+                                        placeholder="Enter End date" value="{{ form.end_date.value|date:'d/m/Y' }}">
+                                    {% endif %}
+                                    {% if form.end_date.errors %}
+                                    <label class="error">{{ form.end_date.errors.as_text }}</label>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <!-- <div class="checkbox"> -->
+                                <label>
+                                    {{ form.is_active }}
+                                    <!-- <input type="checkbox" class="custom-control-input" id="horizontalCheckbox"
+                                        data-parsley-multiple="groups" data-parsley-mincheck="2"> -->
+                                    <i class="input-helper"></i>
+                                    Active
+                                </label>
+                                <!-- </div> -->
+                                <br>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                </div>
+
+                <div class="m-t-20">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{{ form.media }}
+{% endblock %}

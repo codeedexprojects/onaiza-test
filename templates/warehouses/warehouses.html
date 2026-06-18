@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'warehouses:create_warehouse' %}"
+                            role="button"><i class="fas fa-plus mr-2"></i>New WareHouses</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+    <div class="table-responsive">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Manager</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>State</th>
+                    <th>Country</th>
+                    <th class="text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% load el_pagination_tags %}
+                {% paginate 20 instances %}
+
+                {% for i in instances %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.manager }}</td>
+                    <td>{{ i.phone }}</td>
+                    <td>{{ i.address }}</td>
+                    <td>{{ i.state }}</td>
+                    <td>{{ i.country }}</td>
+                    <td class="text-right">
+                        <a href="{% url 'warehouses:warehouse' pk=i.pk %}"><i
+                                class="las la-eye text-info font-18"></i></a>
+                        <a href="{% url 'warehouses:edit_warehouse' pk=i.pk %}"><i
+                                class="las la-pen text-info font-18"></i></a>
+                        <a data-id="{{ i.pk }}" class="action-button remove"
+                            href="{% url 'warehouses:delete_warehouse' pk=i.pk %}"
+                            data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                class="las la-trash-alt text-danger font-18"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <!--end /table-->
+
+        <div class="clearfix"></div>
+        <div class="row pagi my-3">
+            <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+            <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                <div class="m-t-10">
+                    Showing {{title}}
+                    <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                        class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                        class="total_count">{{ pages.total_count }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end /tableresponsive-->
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

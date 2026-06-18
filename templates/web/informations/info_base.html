@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        {% load static %}
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="{% static 'web/css/terms_style.css' %}" type="text/css" />
+
+        <title>{{title}} | Onaiza Private Limited </title>
+		<meta name="viewport" content="width=device-width" initial-scale="1.0" />
+
+        <!-- favicon -->
+        <link href="{% static 'web/fonts/favicon/apple-icon-57x57.png' %}" rel="apple-touch-icon" sizes="57x57" />
+        <link href="{% static 'web/fonts/favicon/apple-icon-60x60.png' %}" rel="apple-touch-icon" sizes="60x60" />
+        <link href="{% static 'web/fonts/favicon/apple-icon-72x72.png' %}" rel="apple-touch-icon" sizes="72x72" />
+        <link href="{% static 'web/fonts/favicon/apple-icon-76x76.png' %}" rel="apple-touch-icon" sizes="76x76" />
+        <link href="{% static 'web/fonts/favicon/apple-icon-114x114.png' %}" rel="apple-touch-icon" sizes="114x114" />
+        <link href="{% static 'web/fonts/favicon/apple-icon-120x120.png' %}" rel="apple-touch-icon" sizes="120x120" />
+        <link href="{% static 'web/fonts/favicon/apple-icon-144x144.png' %}" rel="apple-touch-icon" sizes="144x144" />
+        <link href="{% static 'web/fonts/favicon/apple-icon-152x152.png' %}" rel="apple-touch-icon" sizes="152x152" />
+        <link href="{% static 'web/fonts/favicon/apple-icon-180x180.png' %}" rel="apple-touch-icon" sizes="180x180" />
+        <link href="{% static 'web/fonts/favicon/manifest.json' %}" rel="manifest" />
+        <meta content="#ffffff" name="msapplication-TileColor" />
+        <meta content="/ms-icon-144x144.png" name="msapplication-TileImage" />
+        <meta content="#ffffff" name="theme-color" />
+
+        <meta content="{% static 'web/web/fonts/favicon/android-icon-192x192.png' %}" property="og:image" />
+        <meta content="Onaiza" property="og:title" />
+
+        <meta
+            name="description"
+            content="Onaiza Private Limited gives you a fast online shopping experience with a secure delivery system. Delivery of products will take a maximum speed and accurate. We introduced hygiene products as all products are made in your own areas."
+        />
+        <meta name="keywords" />
+        <script
+            src="{% static 'js/jquery.min.js' %}"
+            type="text/javascript"
+        ></script>
+        <script
+            src="{% static 'js/script.js' %}"
+            type="text/javascript"
+        ></script>
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=UA-129134064-1"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "UA-129134064-1");
+        </script>
+
+
+	</head>
+	<body>
+        <header>
+            <h1>
+                <a href="/" class="thumb">
+                    <img src="{% static 'web/images/onaiza-colour-logo.png' %}" alt="Onaiza" />
+                </a>
+            </h1>
+        </header>
+        {% block content %}
+
+        {% endblock %}
+        <section id="footer" class="privacy-policy">
+            <section class="content"
+                style="background-image: url('../tearms/bg.png');
+                width: 90%;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 55px 0;
+                /* box-shadow: 0 4px 4px 0 rgba(0,0,0,.1),0 0 0 rgba(0,0,0,.1); */
+                background-color: #fff;
+                background-size: cover;">
+                <h1>
+                    <a href="/">
+                        <img style="width: 200PX;" src="{% static 'images/logo.png' %}" alt="Onaiza" />
+                    </a>
+                </h1>
+                <p style="font-size: 20PX;" >
+                    Onaiza Group of company, Trivandrum, Kerala, India <br>
+                    <b style="color: #333;">{{title}}</b>
+                </p>
+            </section>
+        </section>
+
+    </body>
+
+</html>

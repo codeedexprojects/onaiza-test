@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+    <!-- Page Content -->
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <h3 class="ah-label hidden-xs palette-White text"></h3>
+
+                    <ul class="personal-info row">
+                        <li class="col">
+                            <a title="Edit Stock update" href="{% url 'general:edit_update_stock' pk=instance.pk %}" class="edit-icon">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </li>
+                        <li class="col">
+                            <a title="Delete stock updation" data-id="{{instance.pk}}" data-text="Are you sure you want to delete this item?"
+                                data-title="Are you sure?" href="{% url 'general:delete_stock_update' pk=instance.pk %}"
+                                class="action-button redirect delete-icon edit-icon">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+
+        <div class="tab-content">
+            <!-- Profile Info Tab -->
+            <div id="emp_profile" class="pro-overview tab-pane fade show active">
+                <div class="row">
+                    <div class="col-md-5 d-flex">
+                        <div class="card profile-box flex-fill">
+                            <div class="card-body">
+
+                                <ul class="personal-info">
+
+
+
+                                    <li>date</li>
+                                    <li>
+                                        <div class="text">{{instance.date|date:'d/m/Y'}}</div>
+                                    </li>
+                                    <li>Description</li>
+                                    <li>
+                                        <div class="text">{{instance.description}}</div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="table-responsive">
+
+                        <table id="data-table-basic"
+                            class="table table-striped table-vmiddle cash_day_book table2excel">
+                            <thead>
+                                <tr>
+                                    <th style="width:20px;"></th>
+                                    <th>Product</th>
+                                    <th>Batch number</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    {% if instance.update_type == 'inward' %}
+                                    <th>Taxable Amount</th>
+                                    {% endif %}
+                                    <th>Cost</th>
+                                    <th>MRP</th>
+                                    <th>Price</th>
+                                    <th>Expiry Date</th>
+                                    <!-- <th>Taxable Amount</th> -->
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for stock_item in stock_update_item %}
+                                <tr>
+                                    <td style="width:20px;"></td>
+                                    <td>{% if stock_item.product_variant %}
+                                        {{stock_item.product_variant.product}} - {{stock_item.product_variant.title}}
+                                        {% else %}
+                                        {{stock_item.product}} - {{stock_item.product.unit_type}}
+                                        {% endif %}
+                                    </td>
+                                    <td> {{ stock_item.batch }}</td>
+                                    <td> {{ instance.get_update_type_display }}</td>
+                                    <td> {{ stock_item.stock }}</td>
+                                    {% if instance.update_type == 'inward' %}
+                                    <td> {{ stock_item.taxable_amount }}</td>
+                                    {% endif %}
+                                    <td> {{ stock_item.cost }}</td>
+                                    <td> {{ stock_item.mrp }}</td>
+                                    <td> {{ stock_item.price }}</td>
+                                    <td> {{ stock_item.expire_date }}</td>
+                                    <!-- <td> {{stock_item.taxable_amount}}</td> -->
+
+                                </tr>
+                                {% endfor%}
+
+                            </tbody>
+                        </table>
+                        {% if is_excel_export %}
+                        <div class="export_button">
+                            <button class="exportToExcel" title="Export to XLS"><i class="la la-download"></i></button>
+                        </div>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Content -->
+</div>
+<!-- /Page Wrapper -->
+
+{% endblock %}

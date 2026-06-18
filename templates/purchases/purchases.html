@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="page-title">{{title|title}}</h4>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                    <li class="breadcrumb-item active">List</li>
+                </ol>
+            </div>
+            <div class="col-auto float-right ml-auto">
+
+
+                <button title="Filter" data-toggle="modal" data-target="#modal_aside_right" type="button"
+                    class="btn btn-sm btn-soft-primary"><i class="fa fa-align-center mr-2"></i>Filter</button>
+            </div>
+
+             <div class="col-auto float-right ml-auto">
+                 {% get_filtered_url request.get_full_path as export_params %}
+                <a class=" btn btn-sm btn-soft-primary" href="{% url 'purchases:purchase_export' %}?{{export_params}}"
+                    role="button">Export To Excel</a>
+            </div>
+
+            <div class="col-auto float-right ml-auto">
+
+                <a class=" btn btn-sm btn-soft-primary" href="{% url 'purchases:create_new_purchase' %}"
+                    role="button"><i class="fas fa-plus mr-2"></i>Add New</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable-">
+                    <thead>
+                        <tr>
+                            <!-- <th style="width:20px;"></th> -->
+                            <th data-column-id="id">ID</th>
+                            <th data-type="Date">Date</th>
+                            <th>Supplier</th>
+                            <th>Sub Total</th>
+                            <th>Paid</th>
+                            <th>Cancelled?</th>
+                            <!-- <th>Balance</th> -->
+                            <th data-column-id="action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for instance in instances %}
+                        <tr class="{% if instance.is_updated %}text-danger{% endif %}">
+                            <td>
+                                <a href="{% url 'purchases:purchase' pk=instance.pk %}">{{instance.purchase_id}}</a>
+                            </td>
+                            <td>{{instance.date|date:"d/m/Y"}}</td>
+                            <td>{{instance.supplier}}</td>
+                            <td>{{instance.subtotal}}
+                            </td>
+                            <td>{{instance.paid}}</td>
+
+                            <td class="text-danger">{{ instance.is_deleted|yesno:"Cancelled, " }}</td>
+                            <!-- <td>{{instance.balance}} -->
+                            <td class="text-right">
+                                <a href="{% url 'purchases:purchase' pk=instance.pk %}"><i
+                                        class="las la-eye text-info font-18"></i></a>
+                                {% if not instance.is_deleted %}
+                                <a href="{% url 'purchases:edit_purchase' pk=instance.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="get" action="{% url 'purchases:purchases' %}">
+                <div class="modal-body d-flex justify-content-between pt-3 pb-0">
+                    <div class="form-group fg-line">
+                        <label for='id_all' class="bmd-label-floating">View All</label>
+                        <input id='id_all' type="radio" name="view" value="all">
+                    </div>
+                    <div class="form-group fg-line">
+                        <label for='id_active' class="bmd-label-floating">View Active</label>
+                        <input id='id_active' type="radio" name="view" value="active">
+                    </div>
+                    <div class="form-group fg-line">
+                        <label for='id_cancelled' class="bmd-label-floating">View Cancelled</label>
+                        <input id='id_cancelled' type="radio" name="view" value="cancelled">
+                    </div>
+                </div>
+                <div class="pt-0 pb-0 modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Search</label>
+                        <input name="q" value="" type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">On date</label>
+                        <input type="date" name="on_date" value="" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-body d-flex justify-content-between pt-0 pb-0">
+                    <div class="form-group col-5 px-0 fg-line">
+                        <label class="bmd-label-floating">From date</label>
+                        <input type="date" name="from_date" value="" class="form-control">
+                    </div>
+                    <div class="form-group col-5 px-0 fg-line">
+                        <label class="bmd-label-floating">To date</label>
+                        <input type="date" name="to_date" value="" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Payment Type</label>
+                        <select name="payment_method" class="form-control selectpicker" id="id_payment_method">
+                            <option value="">------------</option>
+                            <option value="cash">Cash
+                            </option>
+                            <option value="cheque">
+                                Cheque</option>
+                            <option value="draft">
+                                Draft</option>
+                            <option value="bank transfer">Bank Transfer</option>
+                            <option value="credit">
+                                Credit</option>
+                        </select>
+                    </div>
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Vendors</label>
+                        <select name="suppliers" class="form-control selectpicker" id="id_vendors">
+                            <option value="">------------</option>
+                            {% for supplier in suppliers %}
+                            <option value="{{supplier.pk}}">{{supplier.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger waves-effect waves-light"
+                        data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div> <!-- modal-bialog .// -->
+</div> <!-- modal.// -->
+{% endblock %}

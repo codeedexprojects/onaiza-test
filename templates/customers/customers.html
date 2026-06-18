@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                {% comment %} <a title="Filter" data-toggle="modal" data-target="#modal_aside_right" href="javascript:void(0)"
+                    class="btn add-btn">Filter</a> {% endcomment %}
+
+                <button title="Filter" data-toggle="modal" data-target="#modal_aside_right" type="button" class="btn btn-sm btn-soft-primary"><i class="fa fa-align-center mr-2"></i>Filter</button>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn btn-sm btn-soft-primary" href="{% url 'customers:create' %}" role="button"><i
+                        class="fas fa-plus mr-2"></i>Add New</a>
+            </div>
+            <div class="col-auto float-right ml-auto">
+                <a class="btn btn-sm btn-soft-primary" href="{% url 'customers:export_to_excel' %}" role="button"><i
+                        class="fas fa-sensor mr-2"></i>Export To Excel</a>
+            </div>
+
+           {% get_filtered_url request.get_full_path as export_params %}
+
+            <div class="col-auto float-right ml-auto">
+                <a class="btn btn-sm btn-soft-primary" href="{% url 'customers:customer_to_pdf' %}?{{export_params}}" role="button"><i
+                        class="fas fa-sensor mr-2"></i>Export To Pdf</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable-">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">Sl.No</th>
+                            <th style="width: 30px;">ID</th>
+                            <th>Name </th>
+                            <th>Phone </th>
+                            <th>Email </th>
+                            <th>Address </th>
+                            <th>Current Privilege Points </th>
+                            <th>Current Balance </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+
+                        {% for instance in instances %}
+                        <tr class="">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ instance.auto_id }}</td>
+                            <td><a class="text-primary" href="{% url 'customers:customer' pk=instance.pk %}">{{ instance.name }}</a></td>
+                            <td>{{ instance.phone }}</td>
+                            <td>{{ instance.email }}</td>
+
+                            <td>{{ instance.address }}</td>
+                            <td>{{ instance.current_privilege_points }}</td>
+                            <td>{{instance.get_balance_data.balance}}({{instance.get_balance_data.balance_type}})</td>
+
+                            <td class="text-right noExl">
+                                <a href="{% url 'customers:customer' pk=instance.pk %}"><i
+                                        class="las la-eye text-info font-18"></i></a>
+                                <a href="{% url 'customers:edit' pk=instance.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ instance.pk }}" class="action-button remove"
+                                    href="{% url 'customers:delete' pk=instance.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="get" action="{% url 'customers:customers' %}">
+                <div class="modal-body d-flex justify-content-between pt-3 pb-0">
+                    <div class="form-group fg-line">
+                        <label for='id_all' class="bmd-label-floating">View All</label>
+                        <input id='id_all' type="radio" name="view" value="all" {% if filter_data.view == 'all' %}checked {% endif %}>
+                    </div>
+                    <div class="form-group fg-line">
+                        <label for='id_online' class="bmd-label-floating">Online Customers</label>
+                        <input id='id_online' type="radio" name="view" value="online" {% if filter_data.view == 'online' %}checked {% endif %}>
+                    </div>
+                    <div class="form-group fg-line">
+                        <label for='id_offline' class="bmd-label-floating">Offline Customers</label>
+                        <input id='id_offline' type="radio" name="view" value="offline" {% if filter_data.view == 'offline' %}checked {% endif %}>
+                    </div>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Search</label>
+                        <input name="q" value="{% if filter_data.query %}{{filter_data.query}}{% endif %}" type="text"
+                            class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-body pt-0 pb-0">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Balance type</label>
+                        <select name="balance_type" class="form-control selectpicker" id="id_balance_type">
+                            <option value="all">------All------</option>
+                            <option {% if filter_data.balance_type == 'credit' %}selected{% endif %} value="credit">Credit
+                            </option>
+                            <option {% if filter_data.balance_type == 'debit' %}selected{% endif %} value="debit">Debit
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-body d-flex justify-content-between pt-0 pb-0">
+                    <div class="form-group col-5 px-0 fg-line">
+                        <label class="bmd-label-floating">Sort By</label>
+                        <select name="sort_by" class="form-control selectpicker" id="id_sort_by">
+                            <option value="">------------</option>
+                            <option {% if filter_data.sort_by == 'auto_id' %}selected{% endif %} value="id">ID</option>
+                            <option {% if filter_data.sort_by == 'name' %}selected{% endif %} value="name">Name</option>
+                            <option {% if filter_data.sort_by == 'address' %}selected{% endif %} value="address">Address
+                            </option>
+                            <option {% if filter_data.sort_by == 'phone' %}selected{% endif %} value="phone">Phone
+                            </option>
+                            <option {% if filter_data.sort_by == 'email' %}selected{% endif %} value="email">E-mail
+                            </option>
+                            <option {% if filter_data.sort_by == 'current' %}selected{% endif %} value="current">Current
+                                Balance</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-5 px-0 fg-line">
+                        <label class="bmd-label-floating">Order by</label>
+                        <select name="order_by" class="form-control selectpicker" id="id_order_by">
+                            <option {% if filter_data.order_by == 'asc' %}selected{% endif %} value="asc">Ascending
+                            </option>
+                            <option {% if filter_data.order_by == 'desc' %}selected{% endif %} value="desc">Descending
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div> <!-- modal-bialog .// -->
+</div> <!-- modal.// -->
+{% endblock %}

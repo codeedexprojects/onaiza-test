@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+<style>
+    .b-shadow{
+       box-shadow: -2px 4px 8px 0px lightgrey;
+    }
+</style>
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+            <div class="col-auto float-right ml-auto">
+
+                <button title="Filter" data-toggle="modal" data-target="#modal_aside_right" type="button"
+                        class="btn btn-sm btn-soft-primary"><i class="fa fa-align-center mr-2"></i>Filter
+                </button>
+            </div>
+
+            {% if is_vendor %}
+                {% if query == "category" %}
+                <div class="col-auto float-right ml-auto">
+                    <a href="{% url 'vendors:vendor_create_category' %}" role="button" class="btn btn-sm btn-soft-primary"><i
+                        class="fa fa-plus"></i> Add New
+                    </a>
+                </div>
+                {% elif query == "sub-category" %}
+                <div class="col-auto float-right ml-auto">
+                    <a href="{% url 'vendors:vendor_create_sub_category' %}" role="button" class="btn btn-sm btn-soft-primary"><i
+                        class="fa fa-plus"></i> Add New
+                    </a>
+                </div>
+                {% elif query == "brands" %}
+                <div class="col-auto float-right ml-auto">
+                    <a href="{% url 'vendors:vendor_create_brand' %}" role="button" class="btn btn-sm btn-soft-primary"><i
+                        class="fa fa-plus"></i> Add New
+                    </a>
+                </div>
+                {% elif query == "products" %}
+                <div class="col-auto float-right ml-auto">
+                    <a href="{% url 'vendors:vendor_create_product' %}" role="button" class="btn btn-sm btn-soft-primary"><i
+                        class="fa fa-plus"></i> Add New
+                    </a>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row mb-3 pb-3 border-bottom border-top pt-3">
+        <div class="col-12">
+            <a class="btn btn-lg {% if condition == 'all' %}btn-primary b-shadow{% endif %}"
+                href="{{url}}?query={{query}}&condition=all" >All</a>
+            <a class="btn btn-lg {% if condition == 'non-approved' %}btn-primary b-shadow{% endif %}"
+                href="{{url}}?query={{query}}&condition=non-approved" >Pending</a>
+            <a class="btn btn-lg {% if condition == 'approved' %}btn-primary b-shadow{% endif %}"
+                href="{{url}}?query={{query}}&condition=approved" >Approved</a>
+            <a class="btn btn-lg {% if condition == 'cancelled' %}btn-primary b-shadow{% endif %}"
+                href="{{url}}?query={{query}}&condition=cancelled" >Cancelled</a>
+        </div>
+    </div>
+
+    {% if current_role != 'vendor_user' %}
+    <div class="row mb-3 pb-3 border-bottom">
+        <div class="col-12">
+            <a href="?query=category&condition={{condition}}" class="btn btn-lg {% if query == 'category' %}btn-outline-info {% endif %}">Categories</a>
+            <a href="?query=sub-category&condition={{condition}}" class="btn btn-lg {% if query == 'sub-category' %}btn-outline-info {% endif %}">Subcategories</a>
+            <a href="?query=brands&condition={{condition}}" class="btn btn-lg {% if query == 'brands' %}btn-outline-info {% endif %}">Brands</a>
+            <a href="?query=products&condition={{condition}}" class="btn btn-lg {% if query == 'products' %}btn-outline-info {% endif %}">Products</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+            {% if query == 'category' %}
+                {% include 'vendor/vendor_categories.html' %}
+            {% elif query == 'brands' %}
+                {% include 'vendor/vendor_brands.html' %}
+            {% elif query == 'sub-category' %}
+                {% include 'vendor/vendor_sub_categories.html' %}
+            {% elif query == 'products' %}
+                {% include 'vendor/vendor_products.html' %}
+            {% elif query == 'uom' %}
+                {% include 'vendor/vendor_uom.html' %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+{% endblock %}
+
+{% block static %}
+
+    {% if query == 'products' %}
+
+    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title m-0" id="exampleModalScrollableTitle">Approve Variant</h6>
+                    <button type="button" class="close " data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="la la-times"></i></span>
+                    </button>
+                </div><!--end modal-header-->
+
+                <div class="modal-body">
+                <form id="commission-form" action="" method="post" class="ajax reload reset">
+                    <div class="card col-md-12">
+                        <div class="card-body">
+                            {% csrf_token %}
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_commission">
+                                        Commission Percentage
+                                        <small class="star text-danger">*</small>
+                                    </label>
+                                    <input type="text" id="id_commission" name="commission" class="form-control required" value="0.00"/>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--end modal-body-->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                </form><!--end modal-footer-->
+            </div><!--end modal-content-->
+        </div><!--end modal-dialog-->
+    </div><!--end modal-->
+
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.approve-btn', function () {
+                var url = $(this).attr('href')
+                var commission = $(this).attr('data-value')
+
+                $("#commission-form").attr("action", url)
+                $("#commission-form input").val(commission)
+            });
+        });
+    </script>
+
+    {% endif %}
+{% endblock %}

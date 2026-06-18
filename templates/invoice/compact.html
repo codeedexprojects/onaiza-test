@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9"><![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{title}} | {{app_title}}</title>
+		{% load static %}
+        <!-- Vendor CSS -->
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
+        <link href="{% static 'vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css' %}" rel="stylesheet">
+        <link href="{% static 'vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css' %}" rel="stylesheet">
+        <link href="{% static 'vendors/bower_components/fullcalendar/dist/fullcalendar.min.css' %}" rel="stylesheet">
+        <link href="{% static 'vendors/bower_components/animate.css/animate.min.css' %}" rel="stylesheet">
+        <link href="{% static 'vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css' %}" rel="stylesheet">
+        <link href="{% static 'vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css' %}" rel="stylesheet">        
+        <link href="{% static 'vendors/bower_components/google-material-color/dist/palette.css' %}" rel="stylesheet">
+        
+        <!-- CSS -->
+        <link href="{% static 'css/app.min.1.css' %}" rel="stylesheet">
+        <link href="{% static 'css/app.min.2.css' %}" rel="stylesheet"> 
+
+        <script src="{% static 'vendors/bower_components/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'vendors/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        
+    </head>
+    <body">
+        <section id="content">
+            <div class="container invoice invoice-compact">
+                <div class="c-header">
+                    <h2 class="m-t-20 pull-left">{{title}}</h2>
+                    <a href="{% url "sales:create" %}" class="btn btn-primary m-t-15 pull-right">Back to Sale</a>
+                    <br class="clear">
+                </div>
+                
+                <div class="card">
+                    
+                    <!-- <div class="text-center">
+                        {% if current_shop.logo %}
+                        <img class="i-logo" src="{{current_shop.logo.url}}" alt="{{current_shop.name}}">
+                        {% else %}
+                        <img src="{% static 'img/logo.png' %}" alt="{{current_shop.name}}" />
+                        {% endif %}
+                    </div> -->
+                    
+                    <div class="p-l-10 p-r-10">
+                        <div class="row m-b-10">
+                            <div class="col-xs-12">
+                                <div class="text-center">
+                                    
+                                    <h3 class="f-14 text-muted m-b-5">4AN Online Supermarket</h3>
+
+                                    <strong class="text-muted f-8">
+                                        {{current_shop.address}} <br />
+                                        GSTIN : {{current_shop.gstin|default:" - "}}<br/>
+                                    </strong>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                        <div class="row f-9 primary-details">
+                            <div class="col-md-5 text-left"><strong class="text-muted"><h4 class="f-9">Invoice Id : </strong>{{instance.a_id}}</h4></div>
+                            <div class="col-md-7 text-right"><strong class="text-muted"><h4 class="f-9">Date : </strong>{{instance.sale_date}}</h4></div>
+                            <div class="col-md-5 text-left"><strong class="text-muted"><h5 class="f-9">Customer : </strong >{{instance.customer}}</h5></div> 
+                            <div class="col-md-7 text-right"><strong class="text-muted"><h5 class="f-9">Payment : </strong>Cash</h5></div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                        
+                        <table class="table f-9 i-table m-b-10">
+                            <thead class="text-capitalize">
+                                <th class="c-black text-capitalize" width="40%">Product</th>
+                                <th class="c-black text-capitalize">Qty</th>
+                                <th class="c-black text-capitalize">Price</th>
+                                <th class="c-black text-capitalize">Dis.</th>
+                                <th class="c-black text-capitalize">GST%</th>
+                                <th class="c-black text-capitalize">GSTA</th>
+                                <th class="highlight text-capitalize">Subtotal</th>
+                            </thead>
+                            
+                            <tbody>
+                                <thead>
+                                    {% for item in sale_items %}
+                                    <tr>
+                                        <td width="40%">
+                                            <h5 class="text-capitalize f-500 f-9">{{item.product}}</h5>
+                                        </td>
+                                        <td>{{item.quantity}}</td>
+                                        <td>{{item.amount}}</td>
+                                        <td>{{item.discount}}</td>
+                                        <td>{{item.tax}}</td>
+                                        <td>{{item.tax_amount}}</td>
+                                        <td class="highlight f-10">{{item.total}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </thead> 
+                            </tbody>
+                        </table>
+
+                        <table class="table f-9 i-table m-t-10 m-b-10">
+                            
+                            <tbody>
+                                <thead>
+                                    <tr>
+                                        <td class="text-uppercase f-400 f-14 first-td"><strong>SubTotal</strong></td>
+                                        <td class="highlight f-13 text-right"><strong>₹ {{instance.subtotal}}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-uppercase f-300 f-10  first-td">Discount</td>
+                                        <td class="highlight text-right">₹ {{instance.discount}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-uppercase f-300 f-10  first-td">CGST</td>
+                                        <td class="highlight text-right">₹ {{instance.total_tax_amount|default:0}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-uppercase f-300 f-10  first-td">SGST</td>
+                                        <td class="highlight text-right">₹ {{instance.total_tax_amount|default:0}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-uppercase f-400 f-14 first-td"><strong>Grand Total</strong></td>
+                                        <td class="highlight f-13 text-right"><strong>₹ {{instance.total}}</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-uppercase f-300 f-10 p-l-100 first-td">Round Off</td>
+                                        <td class="highlight text-right">₹ {{instance.round_off}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-uppercase f-300 f-10 p-l-100 first-td">Payment</td>
+                                        <td class="highlight text-right">₹ {{instance.payment_received}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-uppercase f-300 f-10 p-l-100 first-td">Balance Amount</td>
+                                        <td class="highlight text-right">₹ {{instance.balance}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-uppercase f-400 f-14 first-td"><strong>You Have Saved </strong></td>
+                                        <td class="highlight f-13 text-right"><strong>₹ {{saved_amount}}</strong></td>
+                                    </tr>
+                                </thead>
+                            </tbody>
+                        </table>
+                        
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                    <footer class="p-b-20 p-l-20 p-r-20">
+                        <ul class="list-inline text-center list-unstyled">
+                            <li class="m-b-5 f-11"><small>*This Product cannot be replaced after 3 days. Instead of returned product cutomer get only the same priced Product</small></li>
+                            <li class="m-l-5 m-r-5"><small>Email : {{current_shop.email}}</small></li>
+                            <li class="m-l-5 m-r-5"><small>Ph : {{current_shop.phone}}</small></li>
+                        </ul>
+                    </footer>
+                </div>
+                
+            </div>
+            
+            <button class="btn btn-float bgm-red m-btn print-button" data-action="print"><i class="zmdi zmdi-print"></i></button>
+        </section>
+    </body>
+</html>
+
+{% block static %}
+    {% load static %}
+    <style>
+        @page{
+            size: 77mm 150mm;
+        }
+    </style>
+    <script type="text/javascript">
+        
+        window.onload = function(){
+            var button = document.querySelector('.print-button');
+            button.click();
+        }
+        
+    </script>
+{% endblock %}

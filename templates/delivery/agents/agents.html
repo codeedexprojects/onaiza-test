@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'delivery_agent:create_delivery_agent' %}"
+                            role="button"><i class="fas fa-plus mr-2"></i>New Agent</a>
+                    </div>
+                    <!--end col-->
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'delivery_agent:delivery_agent_export'  %}"
+                            role="button"><i class="fas fa-plus mr-2"></i>Export To Excel</a>
+                    </div>
+
+                    <div class="col-auto align-self-center">
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'delivery_agent:hand_over_details'  %}"
+                            role="button"><i class="fas fa-eye mr-2"></i>View handover reports</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">ID</th>
+                            <th>Image </th>
+                            <th>Name </th>
+                            <th>Warehouse</th>
+                            <th>Phone </th>
+                            <th>Phone 2</th>
+                            <th>Email </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for i in instances %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                {% if i.image %}
+                                <img src="{{i.image.url}}" style="width: 100px;height: 100px;border-radius: 100%;" alt="">
+                                {% endif %}
+                            </td>
+                            <td>{{ i.name }}</td>
+                            <td>{{i.warehouse}}</td>
+                            <td>{{ i.phone1 }}</td>
+                            <td>{{ i.phone2 }}</td>
+                            <td>{{ i.email }}</td>
+                            <td class="text-right">
+
+                                <a href="{% url 'delivery_agent:delivery_agent' pk=i.pk %}"><i
+                                        class="las la-eye text-info font-18"></i></a>
+                                <a href="{% url 'delivery_agent:edit_delivery_agent' pk=i.pk %}"><i
+                                        class="las la-pen text-info font-18"></i></a>
+                                <a data-id="{{ offer.pk }}" class="action-button remove"
+                                    href="{% url 'delivery_agent:delete_delivery_agent' pk=i.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                        class="las la-trash-alt text-danger font-18"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+
+{% endblock %}

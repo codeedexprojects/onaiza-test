@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable-">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">Sl.No</th>
+                            <th>Date</th>
+                            <th>Name </th>
+                            <th>Subject</th>
+                            <th>Description </th>
+                            <th>Status </th>
+                            <th>Attachment </th>
+                            <th class="text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+
+                        {% for instance in instances %}
+                        <tr class="">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ instance.date_added }}</td>
+                            <td>{{ instance.customer.name }}</td>
+                            <td>{{ instance.subject }}</td>
+                            <td>{{ instance.description }}</td>
+                            <td>{{ instance.status }}</td>
+                            <td>{% if instance.attachment %}
+                                <a target="_blank" class="btn btn-sm btn-info" href="{{instance.attachment.url}}">View</a>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+
+                            <td class="text-right noExl">
+                                {% if instance.status == 'pending' %}
+                                <a class=" btn btn-sm btn-soft-warning action-button remove" data-id="{{ instance.pk }}" href="{% url 'customers:mark_as_pending' pk=instance.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Are you sure?" data-input="true" role="button">Mark as In progress</a>
+                                {% endif %}
+
+                                {% if instance.status == 'in_progress' %}
+                                <a class=" btn btn-sm btn-danger" href="{% url 'customers:reject_ticket' pk=instance.pk %}" role="button">Reject</a>
+                                <a class=" btn btn-sm btn-success" href="{% url 'customers:mark_as_solved_ticket' pk=instance.pk %}" role="button">Mark as Solved</a>
+                                {% endif %}
+
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- modal -->
+
+{% endblock %}

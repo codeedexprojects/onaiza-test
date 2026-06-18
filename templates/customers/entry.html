@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form enctype="multipart/form-data" class="ajax redirect reset" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.name.id_for_label }}">
+                                        {{ form.name.label }}
+
+                                        {% if form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.name }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.email.id_for_label }}">
+                                        {{ form.email.label }}
+
+                                        {% if form.email.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.email }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.phone.id_for_label }}">
+                                        {{ form.phone.label }}
+
+                                        {% if form.phone.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.phone }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.address.id_for_label }}">
+                                        {{ form.address.label }}
+
+                                        {% if form.address.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.address }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+
+
+                                <div class="form-group">
+                                    <label for="{{ form.opening_type.id_for_label }}">
+                                        {{ form.opening_type.label }}
+
+                                        {% if form.opening_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.opening_type }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.opening_balance.id_for_label }}">
+                                        {{ form.opening_balance.label }}
+
+                                        {% if form.opening_balance.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.opening_balance }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.customer_type.id_for_label }}">
+                                        {{ form.customer_type.label }}
+
+                                        {% if form.customer_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.customer_type }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.country.id_for_label }}">
+                                        {{ form.country.label }}
+
+                                        {% if form.country.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.country }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.state.id_for_label }}">
+                                        {{ form.state.label }}
+
+                                        {% if form.state.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.state }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.district.id_for_label }}">
+                                        {{ form.district.label }}
+
+                                        {% if form.district.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.district }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.gst_number.id_for_label }}">
+                                        {{ form.gst_number.label }}
+
+                                        {% if form.gst_number.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.gst_number }}
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{{ form.media }}
+{% endblock %}

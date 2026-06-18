@@ -1,0 +1,40 @@
+<html>
+<head>
+<style>
+    @page title_template { margin: 5cm; }
+    @page regular_template { margin: 2cm; }
+</style>
+</head>
+{% load total_orders_tags %}
+
+<body>
+    <h1>Onaiza customers</h1>
+    <table>
+      <tr>
+        <th>Phone</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>District</th>
+        <th>State</th>
+        <th>Country</th>
+        <th>Total Orders</th>
+        <th>Current Privilege Points</th>
+      </tr>
+     {% for i in instances %}
+      <tr style="text-align:center;">
+        <td>
+          {{i.phone}}
+        </td>
+        <td>{{i.name}}</td>
+        <td>{{i.email}}</td>
+        <td>{{i.district}}</td>
+        <td>{{i.state}}</td>
+        <td>{{i.country}}</td>
+        <td>{% get_total_orders  i %}</td>
+        <td>{{i.current_privilege_points}}</td>
+
+      </tr>
+      {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,453 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form enctype="multipart/form-data" class="ajax redirect reset" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.date.id_for_label }}">
+                                        {{ form.date.label }}
+
+                                        {% if form.date.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.date }}
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="{{ form.warehouse.id_for_label }}">
+                                        {{ form.warehouse.label }}
+
+                                        {% if form.warehouse.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.warehouse }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="id_barcode">Product Code</label>
+                                    <input type="text" class="form-control" id="id_barcode">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.product_variant.id_for_label }}">
+                                        {{ form.product_variant.label }}
+
+                                        {% if form.product_variant.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.product_variant }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.batch.id_for_label }}">
+                                        {{ form.batch.label }}
+
+                                        {% if form.batch.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.batch }}
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.description.id_for_label }}">
+                                        {{ form.description.label }}
+
+                                        {% if form.description.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.description }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.amount.id_for_label }}">
+                                        {{ form.amount.label }}
+
+                                        {% if form.amount.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.amount }}
+                                </div>
+
+                                <!-- <div class="form-group">
+                                        <label for="{{ form.price.id_for_label }}">
+                                            {{ form.price.label }}
+
+                                            {% if form.price.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.price }}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="{{ form.mrp.id_for_label }}">
+                                            {{ form.mrp.label }}
+
+                                            {% if form.mrp.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.mrp }}
+                                    </div> -->
+
+                                <!-- <div class="form-group">
+                                        <label for="{{ form.expire_date.id_for_label }}">
+                                            {{ form.expire_date.label }}
+
+                                            {% if form.expire_date.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.expire_date }}
+                                    </div> -->
+
+                                <div class="form-group">
+                                    <label for="id_available_stock">Current Stock</label>
+                                    <input type="text" readonly class="form-control" id="id_available_stock">
+                                </div>
+                                <div class="form-group">
+                                    <label for="{{ form.quantity.id_for_label }}">
+                                        {{ form.quantity.label }}
+
+                                        {% if form.quantity.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.quantity }}
+                                </div>
+                                <!-- <div class="form-group">
+                                        <label for="{{ form.total.id_for_label }}">
+                                            {{ form.total.label }}
+
+                                            {% if form.total.field.required %}
+                                            <small class="star text-danger">*</small>
+                                            {% endif %}
+                                        </label>
+                                        {{ form.total }}
+                                    </div> -->
+                            </div>
+
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block static %}
+<script>
+    $('input').on('focus', function () {
+        $(this).select();
+    })
+
+    function calculate_total() {
+        let cost = parseFloat($('#id_cost').val())
+        let quantity = parseFloat($('#id_quantity').val())
+        // let curent_stock = $('#id_available_stock').val();
+        if (!cost)
+            cost = 0
+        if (!quantity)
+            quantity = 0
+        // if (!curent_stock)
+        //     curent_stock = 0
+        let total_cost = Math.round((cost * quantity) * 100) / 100;
+        $('#id_total').val(total_cost);
+        // qty = curent_stock - quantity
+        // $('#id_available_stock').val(qty);
+    }
+
+    function get_product_items(barcode) {
+
+    }
+    function get_product_variant_items() {
+        var url = "{% url 'sales:get_product_variant_items' %}"
+        var product_id = $('#id_product_variant').val();
+        var selected_batch_pk = '{% if is_edit %}{{ instance.batch.pk }}{% endif %}';
+        if (!product_id)
+            product_id = $('#id_product').val();
+
+        if (product_id != undefined && product_id != null && product_id != "") {
+            var code = "no";
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    batch_id: selected_batch_pk,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var name = data['name'];
+                        var pk = data['pk'];
+                        var product_code = data['product_code'];
+                        var batch_list = data['batch_list'];
+
+                        if (batch_list.length == 1) {
+                            var batch_list_option = '';
+                        } else {
+                            var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>';
+                        }
+
+                        for (j = 0; j < batch_list.length; j++) {
+                            item = batch_list[j]
+                            batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                        }
+
+                        $("#id_batch").html(batch_list_option);
+                        $("#id_batch").selectpicker('refresh');
+
+                        if (selected_batch_pk && selected_batch_pk != '') {
+                            $("#id_batch").find(`[value="${selected_batch_pk}"]`).attr('selected', '')
+                        }
+
+                        $("#id_batch").selectpicker('refresh');
+                        $("#id_batch").trigger('change')
+
+                        $('#id_barcode').val(product_code);
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+
+    function get_batch_data() {
+        var batch_id = $('#id_batch').val();
+        var url = "{% url 'general:get_batch_data' %}"
+        if (batch_id != undefined && batch_id != null && batch_id != "") {
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: batch_id,
+                },
+                success: function (data) {
+                    var status = data['status'];
+                    if (status == 'true') {
+                        var stock = data['stock'];
+                        var mrp = data['mrp'];
+                        var price = data['price'];
+                        var cost = data['cost'];
+                        var expire_date = data['expire_date'];
+
+                        stock = parseFloat(stock)
+                        if (batch_id == '{{ instance.batch.pk }}') {
+                            stock += parseFloat('{{ instance.quantity }}')
+                        }
+                        stock = Math.round(stock * 100) / 100
+
+                        $("#id_mrp").val(mrp);
+                        $("#id_price").val(price);
+                        $("#id_cost").val(cost);
+                        $("#id_available_stock").val(stock);
+                        $("#id_expire_date").val(expire_date);
+
+                        // {% if is_edit %}
+                        old_qty = parseFloat('{{instance.quantity}}');
+                        // {% else %}
+                        old_qty = parseFloat($("#id_quantity").val());
+
+                        if (!old_qty || old_qty == 0)
+                            old_qty = 1
+                        // {% endif %}
+
+                        $("#id_quantity").val(old_qty);
+
+                        calculate_total()
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+
+    function get_product_items(element, barcode) {
+        var url = "{% url 'sales:get_product_items' %}"
+        var warehouse = $('#id_warehouse').val()
+        var product_id = element.val();
+        var selected_batch_pk = $('#id_batch').attr('data-value')
+        if (product_id != undefined && product_id != null && product_id != "") {
+            var code = "no";
+            if (barcode) {
+                code = "yes";
+            }
+            $.ajax({
+                type: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    id: product_id,
+                    barcode: code,
+                    warehouse: warehouse,
+                    batch_id: selected_batch_pk
+                },
+                success: function (data) {
+                    var status = data['status'];
+
+                    if (status == 'true') {
+                        var unit_type = data['unit'];
+                        var pk = data['pk'];
+                        var product_code = data['product_code'];
+                        var current_varient = data['current_varient'];
+                        var varient_barcode = data['varient_barcode'];
+                        var varience = data['varience'];
+                        var batch_list = data['batch_list'];
+                        var variant_name = data['variant_name'];
+                        var product_name = data['product_name'];
+
+                        if (current_varient)
+                            var options = `<option value="${current_varient}" selected="">${variant_name}</option>`
+                        else
+                            var options = '<option value="" selected="">' + variant_name + '</option>'
+
+                        var i, maxlength = varience.length;
+                        for (i = 0; i < maxlength; i++) { options += `<option value="${varience[i]['varience_pk']}">${varience[i]['varience_name']}</<option>` }
+                        $("#id_product_variant").html(options).selectpicker('refresh');
+                        $("#id_product_variant").parent().find('div.filter-option-inner-inner').html(variant_name);
+
+                        // {% if is_edit %}
+                        if ('{{instance.product_variant|default:""}}') {
+                            var selected_variant = '{{instance.product_variant.pk|default:""}}'
+                            $(`#id_product_variant option[value="${selected_variant}"]`).attr('selected', '')
+                            $("#id_product_variant").selectpicker('refresh');
+                            $("#id_product_variant").trigger('change');
+                        }
+                        // {% endif %}
+
+                        if (batch_list.length == 1) {
+                            var batch_list_option = '';
+                        } else {
+                            var batch_list_option = '<option data-text="Select batch" value="">Select batch</option>';
+                        }
+                        for (j = 0; j < batch_list.length; j++) {
+                            item = batch_list[j]
+                            batch_list_option += `<option data-text="${item['text']}" value="${item['pk']}">${item['text']}</option>`
+                        }
+
+                        $("#id_batch").html(batch_list_option);
+                        $("#id_batch").selectpicker('refresh');
+
+                        if (batch_list.length == 1) {
+                            $("#id_batch").find('[data-text="0DEFLT"]').attr('selected', '')
+                        }
+
+                        if (selected_batch_pk && selected_batch_pk != '') {
+                            $("#id_batch").find(`[value="${selected_batch_pk}"]`).attr('selected', '')
+                        }
+
+                        $("#id_batch").selectpicker('refresh');
+                        $("#id_batch").trigger('change')
+
+                        if (barcode) {
+                            $('#id_product').html(`<option selected value=${pk}>${product_name}</option>`);
+                            $(`#id_product_variant option[value="${pk}"]`).attr('value', '')
+                        }
+                        else
+                            $('#id_barcode').val(product_code);
+
+                    }else {
+                        var message = data['message']
+                        var title = data['title']
+
+                        if (barcode) {
+                            element.val('');
+                        } else if (element.parent().hasClass('product_variant')) {
+                            element.html('');
+                        }
+
+                        swal(title, message, "error");
+                        // var batch_list_option = `<option data-text='${message}' value="">${message}</option>`;
+
+                        // $("#id_batch").html(batch_list_option);
+                        // $("#id_batch").selectpicker('refresh');
+                        // $("#id_batch").trigger('change')
+                    }
+                },
+                error: function (data) {
+                }
+            })
+        }
+    }
+
+
+
+    $(document).ready(function () {
+        // {% if is_edit %}
+        $('#id_product_variant').attr('data-value', '{{ instance.product_variant.pk|default:"" }}');
+        let variant_id = $('#id_batch').attr('data-value', '{{ instance.batch.pk|default:"" }}');
+
+        // get_product_items(false);
+        get_product_variant_items(false)
+        // {% endif %}
+    })
+    $(document).on('keypress', '#id_barcode', function (event) {
+        if (event.which == '10' || event.which == '13') {
+            event.preventDefault();
+            $selector = $(this);
+
+            get_product_items($selector, true);
+        }
+    })
+
+    $(document).on('change', '#id_product', function () {
+        get_product_items(false);
+    })
+
+    $(document).on('change', '#id_product_variant', function () {
+        get_product_variant_items($(this));
+    })
+    $(document).on('change', '#id_batch', function () {
+        console.log('batch')
+        get_batch_data($(this));
+    })
+    $(document).on('change keyup', '#id_quantity', function () {
+        calculate_total()
+    })
+
+</script>
+{{ form.media }}
+{% endblock %}

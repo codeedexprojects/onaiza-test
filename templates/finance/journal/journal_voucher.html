@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load main_template_tags %}
+
+    <!-- Page Content -->
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <h3 class="ah-label hidden-xs palette-White text">{{instance.name}}</h3>
+
+                    <ul class="personal-info row">
+                        {% if not instance.is_deleted and not instance.system_generated %}
+                        <li class="col">
+                            <a title="Edit voucher" href="{% url 'finance:edit_journal_voucher' pk=instance.pk %}"
+                                class="edit-icon">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </li>
+                        <li class="col">
+                            <a title="Cancel Voucher" data-id="{{instance.pk}}" data-text="Are you sure you want to cancel this Voucher?"
+                                data-title="Are you sure?"
+                                href="{% url 'finance:delete_journal_voucher' pk=instance.pk %}"
+                                class="action-button redirect text-danger delete-icon edit-icon">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Basic Info <small></small></h2>
+            </div>
+            <div class="card-body">
+                <div class="list-group lg-alt c-overflow">
+                    <div class="list-group-item media">
+                        <div class="media-body">
+                            <div class="lgi-heading">Voucher Number</div>
+                            <small class="lgi-text">{{instance.voucher_number}}</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item media">
+                        <div class="media-body">
+                            <div class="lgi-heading">Voucher Date</div>
+                            <small class="lgi-text">{{instance.voucher_date}}</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item media">
+                        <div class="media-body">
+                            <div class="lgi-heading">Title</div>
+                            <small class="lgi-text">{{instance.title}}</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item media">
+                        <div class="media-body">
+                            <div class="lgi-heading">Description</div>
+                            <small class="lgi-text">{{instance.description}}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            {% if entries %}
+            <div class="card">
+                <div class="card-header">
+                    <h2>Journal</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="data-table-basic" class="table table-striped table-vmiddle">
+                            <thead>
+                                <tr>
+                                    <th>Account Head</th>
+                                    <th>Credit/ Debit</th>
+                                    <th>Amount</th>
+                                    <th>Sub-Ledger</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in entries %}
+                                <tr class="journal_entries">
+                                    <td>{{i.account_head}}</td>
+                                    <td class="amount_type">{{i.get_amount_type_display}}</td>
+                                    <td class="amount">{{i.amount}}</td>
+
+
+                                    <td>
+                                        {% if i.account_head.name == 'Sundry Creditor (Vendor)' %}
+                                        <a href="{% url 'vendors:vendor' pk=i.sub_ledger %}">
+                                            {{i.sub_ledger}}</a>
+                                        {% elif i.account_head.name == "Sundry Creditor (Delivery Agent)" %}
+                                        <a href="{% url 'users:delivery_agent' pk=i.sub_ledger %}">
+                                            {{i.sub_ledger}}</a>
+                                        {% elif i.account_head.name == "Sundry Debtor" %}
+                                        <a href="{% url 'customers:customer' pk=i.sub_ledger %}">
+                                            {{i.sub_ledger}}</a>
+                                            {% else%}
+                                            ------
+                                        {% endif %}
+                                    </td>
+
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+
+                                    <td>Credit Total : <span class="credit_total">{{instance.credit_total}}</span> </td>
+                                    <td>Debit Total : <span class="debit_total">{{instance.debit_total}}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+{% block static %}
+<!-- <script>
+    $(document).ready(function () {
+        credit_total = 0;
+        debit_total = 0;
+
+        $('.journal_entries').each(function () {
+            let amount_type = $(this).find('.amount_type').text()
+            let amount = parseFloat($(this).find('.amount').text())
+
+            if (amount_type == 'Credit') {
+                credit_total += amount
+            }
+            else if (amount_type == 'Debit') {
+                debit_total += amount
+            }
+        });
+
+        $('.credit_total').text(credit_total)
+        $('.debit_total').text(debit_total)
+
+    });
+</script> -->
+{% endblock %}

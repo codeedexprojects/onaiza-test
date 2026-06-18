@@ -1,0 +1,636 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">Create</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form class="ajax redirect" enctype="multipart/form-data" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <h3>Basic Info</h3>
+                        <div class="card-body card card-padding">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.staff_id.id_for_label }}">
+                                            {{ form.staff_id.label }}
+                                            {% if form.staff_id.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.staff_id.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.staff_id.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.staff_id }}
+
+                                        {% if form.staff_id.errors %}
+                                        <label class="error">{{ form.staff_id.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.name.id_for_label }}">
+                                            {{ form.name.label }}
+                                            {% if form.name.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.name.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.name.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.name }}
+
+                                        {% if form.name.errors %}
+                                        <label class="error">{{ form.name.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 phone" id="phone">
+
+                                    <div class="form-group fg-line phone" id="phone">
+                                        <label for="{{ form.phone.id_for_label }}">
+                                            {{ form.phone.label }}
+                                            {% if form.phone.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.phone.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.phone.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.phone }}
+
+                                        {% if form.phone.errors %}
+                                        <label class="error">{{ form.phone.errors.as_text }}</label>
+                                        {% endif %}
+
+                                        <div class="form-group phone_alert" style="display: none;">
+                                            <label id="phone_alert" for="id_phone_alert" class="error phone_alert"
+                                                style="width:300px">Phone number must contain atleast 10
+                                                characters</label>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.address.id_for_label }}">
+                                            {{ form.address.label }}
+                                            {% if form.address.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.address.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.address.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.address }}
+
+                                        {% if form.address.errors %}
+                                        <label class="error">{{ form.address.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.designation.id_for_label }}">
+                                            {{ form.designation.label }}
+                                            {% if form.designation.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.designation.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.designation.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.designation }}
+
+                                        {% if form.designation.errors %}
+                                        <label class="error">{{ form.designation.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.joining_date.id_for_label }}">
+                                            {{ form.joining_date.label }}
+                                            {% if form.joining_date.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.joining_date.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.joining_date.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline"></span>
+                                            {% endif %}
+                                        </label>
+                                        {% if is_create_page %}
+                                        <input id="{{ form.joining_date.id_for_label }}" type="text"
+                                            class="required form-control date-picker"
+                                            name="{{form.joining_date.html_name}}" placeholder="Enter joining date"
+                                            value="{% now " d-m-Y" %}">
+                                        {% else %}
+                                        <input id="{{ form.joining_date.id_for_label }}" type="text"
+                                            class="required form-control date-picker"
+                                            name="{{form.joining_date.html_name}}" placeholder="Enter joining date"
+                                            value="{{ form.joining_date.value|date:'d/m/Y' }}">
+                                        {% endif %}
+                                        {% if form.date.errors %}
+                                        <label class="error">{{ form.joining_date.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.staff_age.id_for_label }} required">
+                                            {{ form.staff_age.label }}
+                                            {% if form.staff_age.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.staff_age.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.staff_age.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.staff_age }}
+
+                                        {% if form.staff_age.errors %}
+                                        <label class="error">{{ form.staff_age.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.gender.id_for_label }} required">
+                                            {{ form.gender.label }}
+                                            {% if form.gender.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.gender.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.gender.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.gender }}
+
+                                        {% if form.gender.errors %}
+                                        <label class="error">{{ form.gender.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.salary.id_for_label }}">
+                                            {{ form.salary.label }}
+                                            {% if form.salary.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.salary.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.salary.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.salary }}
+
+                                        {% if form.salary.errors %}
+                                        <label class="error">{{ form.salary.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.photo.id_for_label }} required">
+                                            {{ form.photo.label }}
+                                            {% if form.photo.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.photo.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.photo.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.photo }}
+
+                                        {% if form.photo.errors %}
+                                        <label class="error">{{ form.photo.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.staff_role.id_for_label }} required">
+                                            {{ form.staff_role.label }}
+                                            {% if form.staff_role.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.staff_role.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.staff_role.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.staff_role }}
+
+                                        {% if form.staff_role.errors %}
+                                        <label class="error">{{ form.staff_role.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.warehouse.id_for_label }} required">
+                                            {{ form.warehouse.label }}
+                                            {% if form.warehouse.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.warehouse.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.warehouse.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.warehouse }}
+
+                                        {% if form.warehouse.errors %}
+                                        <label class="error">{{ form.warehouse.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <h3>Bank Info</h3>
+                        <div class="card-body card card-padding">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.bank_name.id_for_label }}">
+                                            {{ form.bank_name.label }}
+                                            {% if form.bank_name.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.bank_name.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.bank_name.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.bank_name }}
+
+                                        {% if form.bank_name.errors %}
+                                        <label class="error">{{ form.bank_name.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.branch.id_for_label }}">
+                                            {{ form.branch.label }}
+                                            {% if form.branch.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.branch.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.branch.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.branch }}
+
+                                        {% if form.branch.errors %}
+                                        <label class="error">{{ form.branch.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.bank_account_name.id_for_label }}">
+                                            {{ form.bank_account_name.label }}
+                                            {% if form.bank_account_name.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.bank_account_name.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.bank_account_name.help_text }}"
+                                                data-placement="left" data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.bank_account_name }}
+
+                                        {% if form.bank_account_name.errors %}
+                                        <label class="error">{{ form.bank_account_name.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.ifsc_code.id_for_label }}">
+                                            {{ form.ifsc_code.label }}
+                                            {% if form.ifsc_code.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.ifsc_code.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.ifsc_code.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.ifsc_code }}
+
+                                        {% if form.ifsc_code.errors %}
+                                        <label class="error">{{ form.ifsc_code.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.account_num.id_for_label }}">
+                                            {{ form.account_num.label }}
+                                            {% if form.account_num.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if form.account_num.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ form.account_num.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline">
+                                                {% endif %}
+                                        </label>
+                                        {{ form.account_num }}
+
+                                        {% if form.account_num.errors %}
+                                        <label class="error">{{ form.account_num.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if user_form %}
+                        <h3>Staff User Info</h3>
+                        <div class="card-body card card-padding">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ user_form.username.id_for_label }}">
+                                            {{ user_form.username.label }}
+                                            {% if user_form.username.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if user_form.username.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ user_form.username.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline"></span>
+                                            {% endif %}
+                                        </label>
+                                        {{ user_form.username }}
+
+                                        {% if user_form.username.errors %}
+                                        <label class="error">{{ user_form.username.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ user_form.email.id_for_label }}">
+                                            {{ user_form.email.label }}
+                                            {% if user_form.email.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if user_form.email.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ user_form.email.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline"></span>
+                                            {% endif %}
+                                        </label>
+                                        {{ user_form.email }}
+
+                                        {% if user_form.email.errors %}
+                                        <label class="error">{{ user_form.email.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ user_form.password1.id_for_label }}">
+                                            {{ user_form.password1.label }}
+                                            {% if user_form.password1.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if user_form.password1.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ user_form.password1.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline"></span>
+                                            {% endif %}
+                                        </label>
+                                        {{ user_form.password1 }}
+
+                                        {% if user_form.password1.errors %}
+                                        <label class="error">{{ user_form.password1.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+                                <div class="col-sm-3">
+
+                                    <div class="form-group fg-line">
+                                        <label for="{{ user_form.password2.id_for_label }}">
+                                            {{ user_form.password2.label }}
+                                            {% if user_form.password2.field.required %}
+                                            <small class="star">*</small>
+                                            {% endif %}
+
+                                            {% if user_form.password2.help_text %}
+                                            <span data-original-title="Field Info" title=""
+                                                data-content="{{ user_form.password2.help_text }}" data-placement="left"
+                                                data-toggle="popover" data-trigger="hover"
+                                                class="help-text-icon zmdi zmdi-info-outline"></span>
+                                            {% endif %}
+                                        </label>
+                                        {{ user_form.password2 }}
+
+                                        {% if user_form.password2.errors %}
+                                        <label class="error">{{ user_form.password2.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                    <br>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        {% endif %}
+
+
+                        <div>
+                            <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{{ form.media }}
+{% endblock %}
+{% block static %}
+{% load static %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".phone_alert").hide()
+    });
+
+    $(document).on('change keyup', '#id_phone', function () {
+        var $this = $(this);
+        var amount_to_pay = $('#id_phone').val();
+        if (amount_to_pay.length < 10) {
+            $(".phone_alert").show()
+        }
+        else {
+            $(".phone_alert").hide()
+        }
+        return true;
+
+    });
+</script>
+{% if is_edit %}
+<script>
+    $(document).ready(function () {
+        $('div.check_all_box').each(function () {
+            inputs = $(this).find('input[type="checkbox"]')
+            inputs_len = inputs.length;
+            i = 0;
+            inputs.each(function () {
+                value = $(this).attr('checked');
+                if (value) {
+                    i += 1;
+                }
+            });
+            if (inputs_len - 1 == i) {
+                $(this).find('input.list1').click();
+            }
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Page Wrapper -->
+<!-- <div class="page-wrapper"> -->
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        <div class="card">
+            <div class="card-body">
+                <form action="{{url}}" method="post" class="ajax redirect" enctype="multipart/form-data" action="{{ url }}">
+                    {% csrf_token %}
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.title.id_for_label }}">
+                                        {{ form.title.label }}
+
+                                        {% if form.title.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.title }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.product_code.id_for_label }}">
+                                        {{ form.product_code.label }}
+
+                                        {% if form.product_code.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.product_code }}
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group custom-control custom-switch switch-primary " style="margin-bottom: 0;margin-top: 30px;">
+                                        <input class="custom-control-input" type="checkbox" {% if form.is_default.value %}checked{% endif %} id="id_is_default" name="is_default" />
+                                        <label class="ts-helper" for="ts1">&nbsp;</label>
+                                        <label for="id_is_default" class="custom-control-label ts-label mb-3">
+                                            <span>Is Default Variant</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                {% if not product.vendor %}
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.warehouse.id_for_label }}">
+                                        {{ form.warehouse.label }}
+
+                                        {% if form.warehouse.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.warehouse }}
+                                </div>
+                                {% endif %}
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.unit.id_for_label }}">
+                                        {{ form.unit.label }}
+
+                                        {% if form.unit.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    <input type="hidden" name="unit_of_measurement" value="{{ product.unit_of_measurement_id }}" />
+                                    {{ form.unit }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.cost.id_for_label }}">
+                                        {{ form.cost.label }}
+
+                                        {% if form.cost.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.cost }}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.retail_price.id_for_label }}">
+                                        {{ form.retail_price.label }}
+
+                                        {% if form.retail_price.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.retail_price }}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.whole_sale_price.id_for_label }}">
+                                        {{ form.whole_sale_price.label }}
+
+                                        {% if form.whole_sale_price.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.whole_sale_price }}
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.mrp.id_for_label }}">
+                                        {{ form.mrp.label }}
+
+                                        <small class="star text-danger">*</small>
+                                    </label>
+                                    {{ form.mrp }}
+                                </div>
+
+                                {% if not product.vendor %}
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.batch_number.id_for_label }}">
+                                        {{ form.batch_number.label }}
+
+                                        <small class="star text-danger">*</small>
+                                    </label>
+                                    {{ form.batch_number }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.commission_percentage.id_for_label }}">
+                                        {{ form.commission_percentage.label }}
+
+                                        {% if form.commission_percentage.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.commission_percentage }}
+                                </div>
+                                {% endif %}
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.first_time_stock.id_for_label }}">
+                                        {{ form.first_time_stock.label }}
+
+                                        {% if form.first_time_stock.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.first_time_stock }}
+                                </div>
+
+                                {% if not product.vendor %}
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.low_stock_limit.id_for_label }}">
+                                        {{ form.low_stock_limit.label }}
+
+                                        {% if form.low_stock_limit.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.low_stock_limit }}
+                                </div>
+                                {% endif %}
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.expire_date.id_for_label }}">
+                                        {{ form.expire_date.label }}
+
+                                        {% if form.expire_date.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.expire_date }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.manufacturing_date.id_for_label }}">
+                                        {{ form.manufacturing_date.label }}
+
+                                        {% if form.manufacturing_date.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.manufacturing_date }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.sgst.id_for_label }}">
+                                        {{ form.sgst.label }}
+
+                                        {% if form.sgst.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.sgst }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.cgst.id_for_label }}">
+                                        {{ form.cgst.label }}
+
+                                        {% if form.cgst.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.cgst }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.igst.id_for_label }}">
+                                        {{ form.igst.label }}
+
+                                        {% if form.igst.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.igst }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.discount_limit.id_for_label }}">
+                                        {{ form.discount_limit.label }}
+
+                                        {% if form.discount_limit.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.discount_limit }}
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label for="{{ form.image.id_for_label }}">
+                                        {{ form.image.label }}
+
+                                        {% if form.image.field.required %}
+                                            <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.image }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if product_image_formset %}
+                        <div class="card sale-item-card">
+                            <div class="table-responsive card-body add_item_container product_image_formset">
+                                <table id="data-table-basic" class="table table-striped table-vmiddle">
+                                    <thead>
+                                        <tr>
+                                            {% if has_images %}
+                                            <th>Current</th>
+                                            {% endif %}
+                                            <th data-column-id="image">Image</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in product_image_formset.forms %}
+                                        <tr class="form_set_row">
+
+                                            {% if has_images %}
+                                            <td>
+                                                <img style="max-width:100px;" src="{{ item.image.value.url }}" alt="Image">
+                                            </td>
+                                            {% endif %}
+                                            <td class="image">
+                                                <span class="order_request_qty">
+                                                    {{ item.image }}
+                                                    {{ item.id }}
+                                                </span>
+                                            </td>
+                                            <td class="delete">{% if item.instance.pk %}{{ item.DELETE }}{% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {{ product_image_formset.management_form }}
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- /Page Wrapper -->
+{{form.media}}
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+
+<style>
+    #id_need_special_variant {
+        height: 18px;
+        width: 18px;
+        margin-left: 10px;
+    }
+    .commission-percentage{
+        display: none;
+    }
+</style>
+
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.product_image_formset table tr.form_set_row').formset({
+            prefix: '{{ product_image_formset.prefix }}',
+            formCssClass: 'dynamic-formset1',
+
+            'added': function (row) {
+                row.find('img').remove();
+            },
+        });
+    });
+</script>
+{% endblock %}

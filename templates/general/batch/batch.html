@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+   <!-- Page Header -->
+   <div class="page-header">
+      <div class="row">
+         <div class="col-sm-12">
+            <h3 class="page-title">{{title|title}}</h3>
+            <ul class="breadcrumb">
+               <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+               <li class="breadcrumb-item active">{{title|title}}</li>
+            </ul>
+         </div>
+         <div class="col-auto float-right ml-auto">
+            <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.name}}</h3>
+
+            <ul class="personal-info row">
+               <li class="col">
+                  <a title="Create new product sub-category" href="{% url 'products:create_subcategory' %}"
+                     style="background-color: #ff9b44;" class=" text-white edit-icon">
+                     <i class="fa fa-plus"></i>
+                  </a>
+               </li>
+
+               {% if instance.creator == request.user %}
+
+               <li class="col">
+                  <a title="Edit Subcategory" href="{% url 'products:edit_subcategory' pk=instance.pk %}"
+                     class="edit-icon">
+                     <i class="fa fa-pencil"></i>
+                  </a>
+               </li>
+               <li class="col">
+                  <a title="Delete Subcategory" data-id="{{instance.pk}}" data-text="{{confirm_delete_message}}"
+                     data-title="Are you sure?" href="{% url 'products:delete_sub_category' pk=instance.pk %}"
+                     class="action-button redirect delete-icon edit-icon">
+                     <i class="fa fa-trash"></i>
+                  </a>
+               </li>
+               {% endif %}
+            </ul>
+         </div>
+      </div>
+   </div>
+   <!-- /Page Header -->
+
+
+   <div class="tab-content">
+      <!-- Profile Info Tab -->
+      <div id="emp_profile" class="pro-overview tab-pane fade show active">
+         <div class="row">
+            <div class="col-md-6 d-flex">
+               <div class="card profile-box flex-fill">
+                  <div class="card-body">
+
+                     <ul class="personal-info">
+                        <li>
+                           <div class="title">Name</div>
+                           <div class="text">{{instance.name}}</div>
+                        </li>
+                        <li>
+                           <div class="title">Category</div>
+                           <div class="text">{{instance.category}}</div>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+      <!-- /Profile Info Tab -->
+
+
+   </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

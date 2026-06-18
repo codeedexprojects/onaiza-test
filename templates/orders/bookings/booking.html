@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load web_template_tags %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="row">
+      <div class="col-sm-6">
+        <h3 class="page-title">{{title|title}}</h3>
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+          <li class="breadcrumb-item active">{{title|title}}</li>
+        </ul>
+      </div>
+      <div class="col-auto float-right ml-auto">
+        <h3 class="ah-label hidden-xs palette-White text">{{instance.auto_id}} - {{instance.order_id}}</h3>
+      </div>
+    </div>
+  </div>
+  <!-- /Page Header -->
+
+  <div class="tab-content  col-md-12">
+    <div class="row">
+      <div class=" col-6">
+        <div class="card-header d-flex justify-content-between">
+          <h5>Basic Info <small></small></h5>
+          {% if instance.status != 'confirmed' %}
+          <small class="lgi-text">
+            <button data-id="{{ instance.pk }}" class="action-button remove btn btn-success text-white"
+              href="{% url 'orders:accept_booking' pk=instance.pk address_pk=address %}" data-title="Are you sure?"
+              data-text="Do you want to convert this booking to an order" data-reason="no">Accept Booking
+            </button>
+          </small>
+          {% endif %}
+        </div>
+        <div class="card-body">
+
+          <div class="list-group lg-alt c-overflow">
+
+            <div class="list-group-item media">
+              <div class="media-body">
+                <div class="lgi-heading">Address</div>
+                <small class="lgi-text">{% get_customer_active_address instance.customer as address %}
+                  {{address}}</small>
+              </div>
+            </div>
+
+            <div class="list-group-item media">
+              <div class="media-body">
+                <div class="lgi-heading">Customer Name</div>
+                <small class="lgi-text">{{instance.customer.name}}</small>
+              </div>
+            </div>
+
+            <div class="list-group-item media">
+              <div class="media-body">
+                <div class="lgi-heading">Booking Status</div>
+                <small class="lgi-text">{{instance.status}}</small>
+              </div>
+            </div>
+
+            {% if instance.status == "pending" %}
+            <div class="list-group-item media">
+              <div class="media-body">
+                <div class="lgi-heading">Accept Booking</div>
+                {% get_customer_active_address instance.customer as address %}
+                            {{address}}
+
+              </div>
+            </div>
+            {% endif %}
+
+          </div>
+
+        </div>
+      </div>
+      <div class=" col-6">
+        <div class="card-header d-flex justify-content-between">
+          <h5>Product Info</h5>
+        </div>
+
+        <div class="card-body">
+          <div class="table-responsive text-center">
+            <table class="table table-striped table-vmiddle " id="data-table-basic">
+              <img alt="" class="w-100" src="{{instance.product_variant.image.url}}">
+              <div class="list-group lg-alt c-overflow mt-3">
+                <div class="list-group-item media">
+                  <div class="media-body">
+                    <div class="lgi-heading">Name</div>
+                    <small class="lgi-text">{{instance.product_variant}}</small>
+                  </div>
+                </div>
+                <div class="list-group-item media">
+                  <div class="media-body">
+                    <div class="lgi-heading">MRP</div>
+                    <small class="lgi-text">{{instance.product_variant.mrp}}</small>
+                  </div>
+                </div>
+                <div class="list-group-item media">
+                  <div class="media-body">
+                    <div class="lgi-heading">Warehouse</div>
+                    <small class="lgi-text">{{instance.product_variant.warehouse}}</small>
+                  </div>
+                </div>
+              </div>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+
+<script>
+$(document).ready(function() {
+    $('.delivery_agents').select2();
+});
+
+</script>
+<script src="{% static 'js/delivery_agent.js' %}"></script>
+{{ form.media }}
+{% endblock %}

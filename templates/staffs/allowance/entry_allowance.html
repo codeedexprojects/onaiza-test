@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+<div class="content container-fluid">
+
+    <!-- Page-Title -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">Create</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+                        <a href="forms-advanced.html#" class="btn btn-sm btn-outline-primary" id="Dash_Date">
+                            <span class="day-name" id="Day_Name">Today:</span>&nbsp;
+                            <span class="" id="Select_date">Jan 11</span>
+                            <i data-feather="calendar" class="align-self-center icon-xs ml-1"></i>
+                        </a>
+                        <a href="forms-advanced.html#" class="btn btn-sm btn-outline-primary">
+                            <i data-feather="download" class="align-self-center icon-xs"></i>
+                        </a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!--end row-->
+    <!-- /Page Header -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+
+                <div class="card-body">
+                    <form class="ajax reset redirect" method="post" action="{{url}}">
+                        {% csrf_token %}
+                        <div class="card-body card-padding">
+                            <div class="row">
+    
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.date.id_for_label }}">
+                                            {{ form.date.label }}
+                                            {% if form.date.field.required %}
+                                                <small class="star">*</small>
+                                            {% endif %}
+    
+                                            {% if form.date.help_text %}
+                                                <span data-original-title="Field Info" title="" data-content="{{ form.date.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline">
+                                            {% endif %}
+                                        </label>
+                                        {% if date %}
+                                        <input type="text" name="date" value="{{date|date:'m/d/Y'}}" class="required date-picker form-control" placeholder="DATE" required="" id="id_date">
+                                        {% else %}
+                                        {{ form.date }}
+                                        {% endif %}
+    
+                                        {% if form.date.errors %}
+                                            <label class="error">{{ form.date.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-3 staff">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.staff.id_for_label }}">
+                                            {{ form.staff.label }}
+                                            {% if form.staff.field.required %}
+                                                <small class="star">*</small>
+                                            {% endif %}
+    
+                                            {% if form.staff.help_text %}
+                                                <span data-original-title="Field Info" title="" data-content="{{ form.staff.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline">
+                                            {% endif %}
+                                        </label><br />
+                                        {{ form.staff }}
+    
+                                        {% if form.staff.errors %}
+                                            <label class="error">{{ form.staff.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+    <!-- 
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="salary">Salary</label><br />
+                                        <input type="text" class='form-control' readonly id='id_salary' val=0.00>
+                                    </div>
+                                </div> -->
+    
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.allowance_type.id_for_label }}">
+                                            {{ form.allowance_type.label }}
+                                            {% if form.allowance_type.field.required %}
+                                                <small class="star">*</small>
+                                            {% endif %}
+    
+                                            {% if form.allowance_type.help_text %}
+                                                <span data-original-title="Field Info" title="" data-content="{{ form.allowance_type.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline">
+                                            {% endif %}
+                                        </label>
+                                        {{ form.allowance_type }}
+    
+                                        {% if form.allowance_type.errors %}
+                                            <label class="error">{{ form.allowance_type.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-3 hours">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.hours.id_for_label }}">
+                                            {{ form.hours.label }}
+                                            {% if form.hours.field.required %}
+                                                <small class="star">*</small>
+                                            {% endif %}
+    
+                                            {% if form.hours.help_text %}
+                                                <span data-original-title="Field Info" title="" data-content="{{ form.hours.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline">
+                                            {% endif %}
+                                        </label>
+                                        {{ form.hours }}
+    
+                                        {% if form.hours.errors %}
+                                            <label class="error">{{ form.hours.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-3 hours">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.rate_per_hour.id_for_label }}">
+                                            {{ form.rate_per_hour.label }}
+                                            {% if form.rate_per_hour.field.required %}
+                                                <small class="star">*</small>
+                                            {% endif %}
+    
+                                            {% if form.rate_per_hour.help_text %}
+                                                <span data-original-title="Field Info" title="" data-content="{{ form.rate_per_hour.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline">
+                                            {% endif %}
+                                        </label>
+                                        {{ form.rate_per_hour }}
+    
+                                        {% if form.rate_per_hour.errors %}
+                                            <label class="error">{{ form.rate_per_hour.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-3 days">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.days.id_for_label }}">
+                                            {{ form.days.label }}
+                                            {% if form.days.field.required %}
+                                                <small class="star">*</small>
+                                            {% endif %}
+    
+                                            {% if form.days.help_text %}
+                                                <span data-original-title="Field Info" title="" data-content="{{ form.days.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline">
+                                            {% endif %}
+                                        </label>
+                                        {{ form.days }}
+    
+                                        {% if form.days.errors %}
+                                            <label class="error">{{ form.days.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-3 days">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.rate_per_day.id_for_label }}">
+                                            {{ form.rate_per_day.label }}
+                                            {% if form.rate_per_day.field.required %}
+                                                <small class="star">*</small>
+                                            {% endif %}
+    
+                                            {% if form.rate_per_day.help_text %}
+                                                <span data-original-title="Field Info" title="" data-content="{{ form.rate_per_day.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline">
+                                            {% endif %}
+                                        </label>
+                                        {{ form.rate_per_day }}
+    
+                                        {% if form.rate_per_day.errors %}
+                                            <label class="error">{{ form.rate_per_day.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+    
+                                <div class="col-sm-3">
+                                    <div class="form-group fg-line">
+                                        <label for="{{ form.allowance.id_for_label }}">
+                                            {{ form.allowance.label }}
+                                            {% if form.allowance.field.required %}
+                                                <small class="star">*</small>
+                                            {% endif %}
+    
+                                            {% if form.allowance.help_text %}
+                                                <span data-original-title="Field Info" title="" data-content="{{ form.allowance.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline">
+                                            {% endif %}
+                                        </label>
+                                        {{ form.allowance }}
+    
+                                        {% if form.allowance.errors %}
+                                            <label class="error">{{ form.allowance.errors.as_text }}</label>
+                                        {% endif %}
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <div class="m-t-20">
+                                <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                            </div>
+                         </div>
+                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{{ form.media }}
+
+{% endblock %}
+
+{% block static %}
+    {% load static %}
+    <style>
+        div.col-sm-3:nth-child(n+5){
+            margin-top: 15px;
+        }
+        div.col-sm-3:nth-child(6){
+            margin-top: 0px;
+        }
+    </style>
+
+	<script type="text/javascript">
+        function get_staff_details(){
+            var id = $('.staff select').val();
+            var url = '{% url "staffs:get_staff_details" %}'
+            
+            $.ajax({
+                type : "GET",
+                url : url,
+                dataType : 'json',
+                data : {
+                    id : id,
+                },
+                success : function(data){
+                    var status = data['status'];
+                    if (status == "true"){
+                        var salary = data['salary'];
+
+                        $('#id_salry').val(salary);                            
+                    }
+                },
+                error : function(data){}
+            });
+        }
+        // $(document).on('change','#id_staff',function(){
+        //     console.log('---------------------------');
+        //     get_staff_details()
+        // })
+		$(document).ready(function(){
+			$('input[type=text]').focus(function () {
+                $(this).select();
+            });
+            var type = $('#id_allowance_type').val()
+            if(type == 'over time'){
+                $('.col-sm-3.hours').show();
+                $('.col-sm-3.days').hide().find('input').val(0);
+            }else{
+                $('.col-sm-3.hours').hide().find('input').val(0);
+                $('.col-sm-3.days').show();
+            }
+            $('#id_allowance_type').on('change',function(){
+                var type = $(this).val();
+                if(type == 'over time'){
+                    $('.col-sm-3.hours').show();
+                    $('.col-sm-3.days').hide();
+                }else{
+                    $('.col-sm-3.hours').hide();
+                    $('.col-sm-3.days').show();
+                }
+            });
+            $('#id_hours, #id_rate_per_hour').on('change keyup',function(){
+                var hours = $('#id_hours').val();
+                var rate = $('#id_rate_per_hour').val();
+                var total = hours * rate
+                $('#id_allowance').val(total)
+            })
+            $('#id_days, #id_rate_per_day').on('change keyup',function(){
+                var days = $('#id_days').val();
+                var rate = $('#id_rate_per_day').val();
+                var total = days * rate
+                $('#id_allowance').val(total)
+            })
+        });
+	</script>
+{% endblock %}

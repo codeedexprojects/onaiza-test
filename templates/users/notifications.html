@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <!-- Page Content -->
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table mb-0 datatable">
+                        <thead>
+                            <tr>
+                                <th style="width: 30px;">ID</th>
+                                <th>Date</th>
+                                <th>Subject</th>
+                                <th>Messsage</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for instance in instances %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ instance.time|date:'M-d, Y h:i A' }}</td>
+                                <td>{{ instance.subject }}</td>
+                                <td>{{ instance.message }}</td>
+                       
+                                <td title="Read Notifications" class="text-right">
+                                    {% if instance.is_read %}
+                                    <i
+                                        class="dripicons-checkmark text-danger font-18"></i>
+                                    {% else %}
+                                    <a data-id="{{ instance.pk }}" class="action-button remove"
+                                    href="{% url 'users:read_notification' pk=instance.pk %}"
+                                    data-text="{{ confirm_delete_message }}" data-title="Read Notication?" data-input="true"><i
+                                        class="dripicons-cross text-danger font-18"></i></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Content -->
+
+{% endblock %}

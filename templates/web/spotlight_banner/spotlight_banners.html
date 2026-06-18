@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+                    <!--end col-->
+                    <div class="col-auto align-self-center">
+
+                        <a class=" btn btn-sm btn-soft-primary" href="{% url 'web:create_spotlight_banner' %}"
+                           role="button"><i class="fas fa-plus mr-2"></i>New Spotlight Banner</a>
+                    </div>
+                    <!--end col-->
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="row mb-3">
+            <div class="col-md-3 ">
+                <a href="{% url 'web:spotlight_banners' %}?query=product"
+                   class="btn btn-lg {% if query == 'product' %}btn-primary {% endif %}">Product</a>
+            </div>
+            <div class="col-md-3 ml-3 mr-3">
+                <a href="{% url 'web:spotlight_banners' %}?query=brand"
+                   class="btn btn-lg {% if query == 'brand' %}btn-primary {% endif %}">Brand</a>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'web:spotlight_banners' %}?query=category"
+                   class="btn btn-lg {% if query == 'category' %}btn-primary {% endif %}">Category</a>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                    <tr>
+                        <th style="width: 30px;">ID</th>
+                        {% if query == 'product' %}
+                        <th>Product</th>
+                        {% elif query == 'brand' %}
+                        <th>Brand</th>
+                        {% elif query == 'category' %}
+                        <th>Category</th>
+                        {% endif %}
+                        <th>Banner Type</th>
+                        <th>Image</th>
+                        <th class="text-right">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% load el_pagination_tags %}
+                    {% paginate 20 instances %}
+                    {% for instance in instances %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        {% if query == 'product' %}
+                        <td>{{ instance.product_variant }}</td>
+                        {% elif query == 'brand' %}
+                        <td>{{ instance.brand }}</td>
+                        {% elif query == 'category' %}
+                        <td>{{ instance.category }}</td>
+                        {% endif %}
+                        <td>{{instance.banner_type}}</td>
+                        <td><a href="{{instance.image.url}}">click to view image</a></td>
+                        <td class="text-right">
+                            <a href="{% url 'web:spotlight_banner' pk=instance.pk %}"><i
+                                    class="las la-eye text-info font-18"></i></a>
+                            <a href="{% url 'web:edit_spotlight_banner' pk=instance.pk %}"><i
+                                    class="las la-pen text-info font-18"></i></a>
+                            <a data-id="{{ instance.pk }}" class="action-button remove"
+                               href="{% url 'web:delete_spotlight_banner' pk=instance.pk %}"
+                               data-text="{{ confirm_delete_message }}" data-title="Are you sure?"><i
+                                    class="las la-trash-alt text-danger font-18"></i></a>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+{% endblock %}

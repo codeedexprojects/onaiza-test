@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="row">
+            <div class="col">
+                <h3 class="page-title">{{title|title}}</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{title|title}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+
+                <div class="card-body">
+                    <form action="{{url}}" method="post" class="ajax redirect">
+                        {% csrf_token %}
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.account_group.id_for_label }}">
+                                        {{ form.account_group.label }}
+
+                                        {% if form.account_group.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.account_group }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.name.id_for_label }}">
+                                        {{ form.name.label }}
+
+                                        {% if form.name.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.name }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.opening_balance.id_for_label }}">
+                                        {{ form.opening_balance.label }}
+
+                                        {% if form.opening_balance.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.opening_balance }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.opening_balance_type.id_for_label }}">
+                                        {{ form.opening_balance_type.label }}
+
+                                        {% if form.opening_balance_type.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.opening_balance_type }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.warehouse.id_for_label }}">
+                                        {{ form.warehouse.label }}
+
+                                        {% if form.warehouse.field.required %}
+                                        <small class="star text-danger">*</small>
+                                        {% endif %}
+                                    </label>
+                                    {{ form.warehouse }}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-soft-primary btn-sm">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block static %}
+{% if is_edit %}
+<script>
+    $(document).ready(function(){
+        // {% if warehouse %}
+        GetOpeningBalance($('#id_warehouse'))
+        // {% endif %}
+        $('#id_warehouse').change(function(){
+            GetOpeningBalance($(this));
+        })
+    })
+
+    function GetOpeningBalance($this){
+        $.ajax({
+            type: "GET",
+            url: "{% url 'finance:get_account_head' %}",
+            dataType: 'json',
+            data: {
+                'warehouse': $this.val(),
+                'id': "{{ instance.pk|default:'' }}",
+            },
+            success: function (data) {
+                var status = data['status'];
+                if (status == "true") {
+                    var opening_balance = data['opening_balance'];
+                    var opening_balance_type = data['opening_balance_type'];
+
+                    $('#id_opening_balance').val(opening_balance);
+                    $(`#id_opening_balance_type`).val(opening_balance_type).selectpicker('refresh');
+                }
+            },
+            error: function (data) { }
+        });
+    }
+</script>
+{% endif %}
+{{ form.media }}
+{% endblock %}

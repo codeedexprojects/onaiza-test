@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+		{% load static %}
+		{% load main_template_tags %}
+	<head>
+		<meta charset="utf-8" />
+		<title>{{title}}</title>
+		<link rel="stylesheet" href="{% static 'css/invoice_css/style.css' %}" />
+		<meta name="viewport" content="width=device-width" initial-scale="1.0" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!-- <script src="js/jquery.min.js" type="text/javascript"></script>		
+		<script src="js/script.js" type="text/javascript"></script> -->
+		<script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>		
+		<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+		<script src="{% static 'js/invoice_js/jquery.min.js' %}" type="text/javascript"></script>	
+		<script src="{% static 'js/invoice_js/script.js' %}" type="text/javascript"></script>
+	</head>
+	<body>
+		<section id="gst-tax-invoice">
+			<section class="outer-module">
+				<div class="top-module">
+					<!-- <div class="left">
+						<h1><img src="{% static 'img/hghgh.jpg' %}" alt="image" /></h1>
+					</div> -->
+					<!-- <div class="right">
+						<div class="box">
+							<h1>SALE BILL</h1>
+						</div>
+					</div> -->
+					<br class="clear" />
+				</div>
+				<div class="invoice">
+					<table>
+						<tr class="head">
+							<th colspan="13">SALE RETURN BILL</th>
+						</tr>
+						<tr>
+                            <td rowspan="4" colspan="5">
+                                <p class="bld">4AN Online Supermarket</p>
+                                <p>****</p>
+                                <p>****</p>
+                            </td>
+							<td colspan="2">Order No.</td>
+							<td colspan="2"></td>
+							<td colspan="2">Sale No.</td>
+							<td colspan="2">{{instance.sale.sale_id}}</td>
+						</tr>
+						<tr>
+							<td colspan="2">Customer</td>
+							<td colspan="2">{{instance.customer}}</td>
+							<td colspan="2">Sale Date</td>
+							<td colspan="2">{{instance.sale.sale_date|date:"d/m/Y"}}</td>
+						</tr>
+						<tr>
+							<td colspan="2">Return Date</td>
+							<td colspan="2">{{instance.time|date:"d/m/Y"}}</td>
+							<td colspan="2">Tracking Number</td>
+							<td colspan="2">{{instance.tracking_id}}</td>
+						</tr>
+						<tr>
+							<td colspan="2">Payment Method</td>
+							<td colspan="2"></td>
+							<td colspan="2"></td>
+							<td colspan="2"></td>
+						</tr>
+						{% if sale_items %}
+							<tr class="sub-title t-a-c">
+								<th class="bld"  >Sale No.</th>
+								<th class="bld" colspan="2" >Items <br>Size/Model</th>
+								<th class="bld" colspan="2" >HSN <br>Code</th>
+								<!-- <th class="bld" colspan="1" >Unit <br>Price</th> -->
+								<th class="bld" colspan="3" >QTY</th>
+								<th class="bld" colspan="2" >Amount</th>
+								<th class="bld" colspan="2">Total</th>
+							</tr>
+							{% for i in sale_items %}
+								<tr>
+									<td>{{ forloop.counter }}</td>
+									<td colspan="2" >{{i.product}}</td>
+									<td colspan="2">{{i.product.hsn}}</td>
+									<!-- <td colspan="1">{{i.amount }}</td> -->
+									<td colspan="3">{{i.qty}}</td>
+									<td colspan="2">{{i.price}}</td>
+									<td colspan="2" style="border-right: 1px solid #000;">{{i.t|to_fixed_two}}</td>
+								</tr>
+							{% endfor %}
+						{% endif %}
+						<tr>
+							<td class="bld" colspan="5">Total:{{instance.subtotal}}</td>
+							<td colspan="3">xxxx</td>
+							<td colspan="2"></td>
+							<!-- <td></td>
+							<td>xxxx</td>
+							<td></td>
+							<td>xxxx</td> -->
+							<td colspan=2 style="border-right: 1px solid #000;">{{grant_total_value|to_fixed_two}}</td>
+						</tr>
+						<tr>
+							<td colspan="8"></td>
+							<td class="t-a-r" colspan="3">Grand Total:</td>
+							<td colspan="2">{{grant_total_value|to_fixed_two}}</td>
+						</tr>
+						<!-- <tr>
+							<td colspan="8"></td>
+							<td class="t-a-r" colspan="3">Advance Amount:</td>
+							<td colspan="2">{{instance.paid}}</td>
+						</tr>
+						<tr>
+							<td colspan="8"></td>
+							<td class="t-a-r" colspan="3">Balance Amount:</td>
+							<td colspan="2">{{instance.balance}}</td>
+						</tr> -->
+					</table>
+				</div>
+				<div class="lower-module">
+                    <div class="inner-module one">
+                        <div class="left">
+                            <p>Bank:- <span>****</span></p>
+                            <p>Branch:- <span>****</span></p>
+                            <p>A/C No.:- <span>****</span></p>
+                            <p>IFSC Code:- <span>****</span></p>
+                        </div>
+                        <div class="right">
+                            <h3>4AN Online Supermarket</h3>
+                            <div class="sign"></div>
+                            <p>(Authorized Signatory)</p>
+                        </div>
+                        <br class="clear" />
+                        <p>Customer Support Phone: <span>****</span> | Email: <span>****</span></p>
+                    </div>
+					<div class="inner-module">
+						<p><span>Cash on Delivery:</span> please pay remaining amount to the sales representative before unloading the materials.</p>
+						<p><span>Return Policy:</span> We try to deliver perfectly each and every time. But in case you need to return the item, please do so with the original packing, tags & invoice without which it will be really difficult for us to act on your request, please help us in helping you.</p>
+						<p><span>If Repurchasing any:</span> please contact our company we always ready to serve you at best price.</p>
+					</div>
+				</div>
+				<p class="p">* Terms & Conditions apply</p>
+			</section>
+		</section>
+	</body>
+</html>

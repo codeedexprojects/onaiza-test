@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- Page Content -->
+    <div class="content container-fluid">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <h3 class="ah-label hidden-xs palette-White text">{{instance.name}}</h3>
+
+                    <ul class="personal-info row">
+                        {% if not instance.is_deleted %}
+                        <li class="col">
+                            <a title="Edit Category" href="{% url 'finance:edit_credit_note_voucher' pk=instance.pk %}"
+                                class="edit-icon">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </li>
+                        <li class="col">
+                            <a title="Cancel Voucher" data-id="{{instance.pk}}" data-text="Are you sure you want to cancel this Voucher?"
+                                data-title="Are you sure?"
+                                href="{% url 'finance:delete_credit_note_voucher' pk=instance.pk %}"
+                                class="action-button text-danger redirect delete-icon edit-icon">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+
+        <div class="tab-content">
+            <!-- Profile Info Tab -->
+            <div id="c-grid" class="clearfix" data-columns="2">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Basic Info <small></small></h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group lg-alt c-overflow">
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Voucher Number</div>
+                                    <small class="lgi-text">{{instance.voucher_number}}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Voucher Date</div>
+                                    <small class="lgi-text">{{instance.voucher_date|date:'d/m/Y'}}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Title</div>
+                                    <small class="lgi-text">{{instance.title}}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Description</div>
+                                    <small class="lgi-text">{{ instance.description }}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Returned Amount</div>
+                                    <small class="lgi-text">{{ instance.amount }}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Customer</div>
+                                    <small class="lgi-text">{{ instance.customer|default:"-" }}</small>
+                                </div>
+                            </div>
+
+                            {% if instance.sale_return %}
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Sub-Ledger</div>
+                                    <small class="lgi-text">
+                                        <a href="{% url 'sales:sale_return' pk=instance.sub_ledger %}">{{ instance.sub_ledger_name }}</a>
+                                    </small>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Description</div>
+                                    <small class="lgi-text">{{instance.description|default:"-"}}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Transfer Type</div>
+                                    <small class="lgi-text">{{instance.get_transfer_type_display}}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Cheque Status</div>
+                                    <small class="lgi-text">{{instance.cheque_status|default:"-"}}</small>
+                                </div>
+                            </div>
+                            <div class="list-group-item media">
+                                <div class="media-body">
+                                    <div class="lgi-heading">Cheque Updating Date</div>
+                                    <small class="lgi-text">{{instance.cheque_updating_date|default:"-"}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Page Content -->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

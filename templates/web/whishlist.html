@@ -1,0 +1,92 @@
+{% extends "web/web_base.html" %}
+{% load static %}
+{% block content %}
+{% load i18n %}
+{% load web_template_tags %}
+ {% if instances %}
+    <section id="best-seller" class="boxitems whishlist-item">
+        <section class="wrapper">
+            <div class="top">
+                <h1 style="text-align: center;" >{% trans "My Wishlist" %}</h1>
+            </div>
+
+            <div class="bottom">
+
+                {% for wish_item in instances %}
+
+                    <div class="item">
+                        <span class="wishlist" id="{{ wish_item.product_variant.pk }}">
+
+
+                                  <button data-id="add-to-wishlist" class="{% if not auth_status %}proceed_to_login {% endif %}" id="wish-empty" data-pk="{{ wish_item.product_variant.pk }}"
+                                          href="{% url 'web:add_to_wishlist' %}"
+                                          data-toggle="tooltip"
+                                          title="Wish List" type="button" style="cursor: pointer;">
+                                    <img data-path-empty="{% static 'web/images/icons/wish-list-empty.svg' %}"
+                                            data-path="{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %}"
+                                         src="{% if wish_item.product_variant.pk in wishlist_items %}{% static 'web/images/icons/Icon feather-heart-2-svg.svg' %} {% else %} {% static 'web/images/icons/wish-list-empty.svg' %}{% endif %}"/>
+
+                                  </button>
+                              </span>
+                        <div class="item-img">
+                            <a href="{% url 'web:product' pk=wish_item.product_variant.pk %}">
+                                {% if wish_item.product_variant.image %}
+                                <img src="{{wish_item.product_variant.image.thumbnail.200x200}}"/>
+                                {% else %}
+                                <img src="{% static 'web/images/placeholder.jpg' %}" style="width:200px;"/>
+                                {% endif %}
+                            </a>
+                        </div>
+                        <a href="{% url 'web:product' pk=wish_item.product_variant.pk %}">
+                            <h1>
+                             {% get_english_or_malayalam wish_item.product_variant.pk 'product' language_code as PRODUCT %}
+                              {{ PRODUCT.name }}
+                            </h1>
+                        </a>
+                        <div class=item-bottom>
+                            <div class="box">
+                              <div style="display: flex">
+                                <h2 class="text-decoration-underline" style="margin-right: 10px;">{{wish_item.product_variant.mrp}}</h2>
+                                <h2 ><span class="rupees-symbol">₹ </span>{{wish_item.product_variant.retail_price}}</h2>
+                             </div>
+                                <span class="rating">
+                                    <img src="{% static 'web/images/icons/Icon ionic-ios-star.svg' %}" />
+                                    <h4>{{wish_item.product_variant.current_rating|floatformat:"1"}}</h4>
+                                </span>
+                            </div>
+                            {% if pincode_session %}
+                            {% if not wish_item.product_variant.pk in is_cart %}
+
+                            <div class="cart">
+                              <a class="add-to-cart-button {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ wish_item.product_variant.pk }}" data-url="" href="{% url 'web:add_to_cart' %}" data-image="{% static 'web/images/icons/cart-added-Icon.svg' %}">
+                                <img class=""  src="{% static 'web/images/icons/add-to-cart-2.svg' %}" />
+                              </a>
+                            </div>
+
+                            {% else %}
+                            <div class="added-cart" style="background: none;">
+                              <a class=" {% if not auth_status %}proceed_to_login {% endif %}" data-pk="{{ wish_item.product_variant.pk }}" data-url="" href="#">
+                                <img class="" src="{% static 'web/images/icons/cart-added-Icon.svg' %}" />
+                              </a>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </section>
+{% else %}
+    <section id="order-spotlight">
+        <section class="wrapper">
+            <div class="container">
+                <div class="img-container">
+                    <img src="{% static 'web/images/icons/empty-wish-list.svg' %}">
+                </div>
+                <p>{% trans "Your wishlist is empty" %}</p>
+            </div>
+        </section>
+    </section>
+{% endif %}
+  {% endblock content %}

@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Wrapper -->
+<div class="page-wrapper">
+
+    <div class="content container-fluid">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col">
+                    <h3 class="page-title">{{title|title}}</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'app' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">{{title|title}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body card-padding">
+                        <form action="" method="get">
+                            <div class="row m-b-20" style="align-items: center;">
+
+                                <div class="col-md-4">
+                                    <label for="id_date">Date</label>
+                                    <input type="text" class="form-control date-picker-dd" value="{{filter_date}}"
+                                        id="id_date" name="date" />
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-info waves-effect">Submit</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card p-20">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="table-responsive">
+                                <h4 style="text-align: center;">{{title}}</h4>
+                                <table class="table table-bordered table2excel">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:20px;"></th>
+                                            <th style="font-weight: bold">Particulars</th>
+                                            <th style="font-weight: bold">Cash</th>
+                                            <th style="font-weight: bold">Bank</th>
+                                            <th style="font-weight: bold">Credit</th>
+                                            <th style="font-weight: bold">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <th>1</th>
+                                            <th>Opening Balance</th>
+                                            <td>{{ instances.opening.cash }}</td>
+                                            <td>{{ instances.opening.bank }}</td>
+                                            <td>{{ instances.opening.credit }}</td>
+                                            <td>{{ instances.opening.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>2</th>
+                                            <th>Online Sale</th>
+                                            <td>{{ instances.online.cash }}</td>
+                                            <td>{{ instances.online.bank }}</td>
+                                            <td>{{ instances.online.credit }}</td>
+                                            <td>{{ instances.online.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>3</th>
+                                            <th>Offline Sale</th>
+                                            <td>{{ instances.offline.cash }}</td>
+                                            <td>{{ instances.offline.bank }}</td>
+                                            <td>{{ instances.offline.credit }}</td>
+                                            <td>{{ instances.offline.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>4</th>
+                                            <th>Purchases</th>
+                                            <td>{{ instances.purchases.cash }}</td>
+                                            <td>{{ instances.purchases.bank }}</td>
+                                            <td>{{ instances.purchases.credit }}</td>
+                                            <td>{{ instances.purchases.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>5</th>
+                                            <th>Withdrawals</th>
+                                            <td>{{ instances.withdraw.cash }}</td>
+                                            <td>{{ instances.withdraw.bank }}</td>
+                                            <td>{{ instances.withdraw.credit }}</td>
+                                            <td>{{ instances.withdraw.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>6</th>
+                                            <th>Deposits</th>
+                                            <td>{{ instances.deposit.cash }}</td>
+                                            <td>{{ instances.deposit.bank }}</td>
+                                            <td>{{ instances.deposit.credit }}</td>
+                                            <td>{{ instances.deposit.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>7</th>
+                                            <th>Payments</th>
+                                            <td>{{ instances.payments.cash }}</td>
+                                            <td>{{ instances.payments.bank }}</td>
+                                            <td>{{ instances.payments.credit }}</td>
+                                            <td>{{ instances.payments.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>8</th>
+                                            <th>Receipts</th>
+                                            <td>{{ instances.receipts.cash }}</td>
+                                            <td>{{ instances.receipts.bank }}</td>
+                                            <td>{{ instances.receipts.credit }}</td>
+                                            <td>{{ instances.receipts.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>9</th>
+                                            <th>Credit Notes</th>
+                                            <td>{{ instances.credit_note.cash }}</td>
+                                            <td>{{ instances.credit_note.bank }}</td>
+                                            <td>{{ instances.credit_note.credit }}</td>
+                                            <td>{{ instances.credit_note.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>10</th>
+                                            <th>Debit Notes</th>
+                                            <td>{{ instances.debit_note.cash }}</td>
+                                            <td>{{ instances.debit_note.bank }}</td>
+                                            <td>{{ instances.debit_note.credit }}</td>
+                                            <td>{{ instances.debit_note.total }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>11</th>
+                                            <th>Closing Balance</th>
+                                            <td>{{ instances.closing.cash }}</td>
+                                            <td>{{ instances.closing.bank }}</td>
+                                            <td>{{ instances.closing.credit }}</td>
+                                            <td>{{ instances.closing.total }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <th colspan="4">Total Special Discount</th>
+                                            <th class="text-center">{{ special_discounts }}</th>
+                                        </tr>
+                                    </tfoot>
+
+                                </table>
+                                {% if is_excel_export %}
+                                <div class="export_button">
+                                    <button class="exportToExcel" title="Export to XLS"><i
+                                            class="la la-download"></i></button>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Page Wrapper -->
+{{ form.media }}
+{% endblock %}
+{% block static %}
+{% endblock %}

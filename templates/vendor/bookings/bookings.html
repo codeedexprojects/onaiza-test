@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load web_template_tags %}
+
+{% load static %}
+
+
+
+<!-- Page Content -->
+<div class="content container-fluid">
+
+    <!-- Page Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="page-title">{{title|title}}</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">{{title|title}}</a></li>
+                            <li class="breadcrumb-item active">List</li>
+                        </ol>
+                    </div>
+
+                </div>
+                <!--end row-->
+            </div>
+            <!--end page-title-box-->
+            {% if accepted_order %}
+            <div class="col-auto float-right ml-auto">
+                <a title="Filter" href="{% url 'vendors:bookings' %}"
+                    class=" btn btn-sm btn-success">View Pending Bookings
+                </a>
+            </div>
+            {% endif %}
+
+            {% if pending_order %}
+            <div class="col-auto float-right ml-auto">
+                <a title="Filter" href="{% url 'vendors:accepted_bookings' %}"
+                    class=" btn btn-sm btn-success">View Accepted Bookings
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+        <!--end col-->
+    </div>
+    <!-- /Page Header -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped custom-table mb-0 datatable">
+                    <thead>
+                        <tr>
+                            <th style="width: 30px;">ID</th>
+                            <th>Name </th>
+                            <th>Address</th>
+                            <th>Product </th>
+                            <th>Booking Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% load el_pagination_tags %}
+                        {% paginate 20 instances %}
+                        {% for i in instances %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.customer.name }}</td>
+                            <td>{% get_customer_active_address i.customer as address %}
+                            {{address}}
+                            </td>
+                            <td>{{ i.product_variant }}</td>
+                            <td>{{ i.get_status_display }}</td>
+
+                             <td class="text-right">
+                                 {% if pending_order %}
+                                    <a class="submit btn action-button  btn-primary remove " data-reason="no"
+                                        href="{% url 'vendors:accept_booking' pk=i.pk address_pk=address.pk %}" data-id="{{instance.pk}}"
+                                        data-text="{{confirm_delete_message}}" data-title="Are you sure?">Accept</a>
+                                 {% endif %}
+                                <a class="btn btn-sm btn-soft-primary" href="{% url 'vendors:booking' pk=i.pk %}" role="button">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% get_pages %}
+                <div class="clearfix"></div>
+                <div class="row pagi my-3">
+                    <div class="col-sm-6 col-xs-6 text-left my-pagina">{% show_pages %}</div>
+                    <div class="col-sm-6 col-xs-6 text-right tot my-pagination align-items-center">
+                        <div class="m-t-10">
+                            Showing {{title}}
+                            <span class="current_page_index">{{ pages.current_start_index }}</span> - <span
+                                class="current_end_status">{{ pages.current_end_index }}</span> of <span
+                                class="total_count">{{ pages.total_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Page Content -->
+
+<!-- modal -->
+<div id="modal_aside_right" class="modal fixed-left fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-aside" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                    <div class="form-group fg-line">
+                        <label class="bmd-label-floating">Order Status</label>
+                        <!-- <input name="category" type="text" class="form-control" /> -->
+                        <select class="select order-select-query form-control">
+                            <option value="no">---Select----</option>
+                            <option value="pending">Pending Orders</option>
+                            <option value="unassigned">Delivery Agent Unassigned Orders</option>
+                            <option value="assigned">Delivery Agent Assigned Orders</option>
+                            <option value="shipped">Shipped Orders</option>
+                            <option value="completed">Completed Orders</option>
+                            <option value="cancelled">Cancelled Orders</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button"  class="btn btn-sm btn-primary order-filter-button" data-url="{% url 'orders:orders' order_type=order_type %}">Submit</button>
+                </div>
+
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block static %}
+{% load static %}
+    <script src="{% static 'js/delivery_agent.js' %}"> </script>
+{% endblock %}

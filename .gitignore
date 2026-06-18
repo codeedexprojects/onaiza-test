@@ -19,6 +19,8 @@ migrations/*.py
 
 db.sqlite3
 db.sqlite3-journal
+database.json
+onz-database.json
 media/
 media.zip
 staticfiles/

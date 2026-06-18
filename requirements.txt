@@ -11,7 +11,6 @@ cssselect2==0.6.0
 Django==3.2.25
 django-autocomplete-light==3.8.2
 django-el-pagination==3.3.0
-django-keyboard-shortcuts==0.0.6
 django-model-utils==1.1.0
 django-pwa==1.0.10
 django-registration-redux==2.9

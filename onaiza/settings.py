@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'el_pagination',
     'django_template_maths',
     'pwa',
-    'keyboard_shortcuts',
 
     'django.contrib.admin',
     'django.contrib.auth',

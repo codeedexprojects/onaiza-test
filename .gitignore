@@ -9,13 +9,6 @@ __pycache__/
 */__pycache__/
 */*/__pycache__/
 
-migrations/*.py
-*/migrations/*.py
-*/*/migrations/*.py
-
-!migrations/__init__.py
-!*/migrations/__init__.py
-!*/*/migrations/__init__.py
 
 db.sqlite3
 db.sqlite3-journal

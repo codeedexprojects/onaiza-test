@@ -6,10 +6,10 @@ services:
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
     startCommand: gunicorn onaiza.wsgi:application --bind 0.0.0.0:$PORT --workers 2
     nativePackages:
-      - libmagic1
+      - name: libmagic1
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.9
+        value: "3.11.9"
       - key: DEBUG
         value: "False"
       - key: SERVER
@@ -17,7 +17,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: ALLOWED_HOSTS
-        value: .onrender.com
+        value: ".onrender.com"
       - key: DATABASE_URL
         fromDatabase:
           name: onaiza-db
@@ -25,4 +25,5 @@ services:
 
 databases:
   - name: onaiza-db
+    databaseName: onaiza
     plan: free

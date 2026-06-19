@@ -5,8 +5,6 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate
     startCommand: gunicorn onaiza.wsgi:application --bind 0.0.0.0:$PORT --workers 2
-    nativePackages:
-      - name: libmagic1
     envVars:
       - key: PYTHON_VERSION
         value: "3.11.9"
